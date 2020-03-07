@@ -30,6 +30,12 @@
 				"navigationBarTitleText": "授权"
 			}
 		}
+        ,{
+            "path" : "pages/anchor/ranklist/ranklist",
+            "style" : {
+				"navigationBarTitleText": "提现排行榜"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -3,9 +3,11 @@
   "usingComponents": {
     "uni-tag": "/components/uni-tag/uni-tag",
     "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar",
+    "uni-icons": "/components/uni-icons/uni-icons",
     "neil-modal": "/components/neil-modal/neil-modal",
     "segmented-control": "/pages/components/tabbar-own/tabbar-own",
     "uni-section": "/components/uni-section/uni-section",
-    "uni-noticebar": "/components/uni-notice-bar/uni-notice-bar"
+    "uni-noticebar": "/components/uni-notice-bar/uni-notice-bar",
+    "time-selector": "/components/wing-time-selector/wing-time-selector"
   }
 }

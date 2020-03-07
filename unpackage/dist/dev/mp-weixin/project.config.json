@@ -27,8 +27,15 @@
       "list": []
     },
     "miniprogram": {
-      "current": -1,
-      "list": []
+      "current": 0,
+      "list": [
+        {
+          "id": 0,
+          "name": "pages/anchor/anchor",
+          "pathName": "pages/anchor/anchor",
+          "query": ""
+        }
+      ]
     }
   }
 }

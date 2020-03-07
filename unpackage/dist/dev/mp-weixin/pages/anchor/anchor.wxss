@@ -75,6 +75,11 @@
 .neil-modal__footer-right {
   line-height: 120rpx;
 }
+timeSelector {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 .zblistitem {
   border-bottom: 1px solid #cccccc;
   height: 5em;
@@ -123,7 +128,29 @@
   bottom: 0;
   left: 0;
 }
-.ranklist .uni-notice-bar {
-  position: relative;
+.ranklist .phbtag {
+  width: 15%;
+  float: left;
+  margin-left: 2%;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.ranklist .phbut {
+  width: 20%;
+  vertical-align: middle;
+}
+.ranklist .notice {
+  width: 80%;
+  float: right;
+}
+.ranklist .notice .uni-noticebar {
+  margin-bottom: 0;
+}
+.picktime {
+  position: absolute;
+  top: 22rpx;
+  right: 0;
 }
 

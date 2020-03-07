@@ -4,7 +4,8 @@
     "pages/withdraw/withdraw",
     "pages/invite/invite",
     "pages/mine/mine",
-    "pages/authorise/authorise"
+    "pages/authorise/authorise",
+    "pages/anchor/ranklist/ranklist"
   ],
   "subPackages": [],
   "window": {

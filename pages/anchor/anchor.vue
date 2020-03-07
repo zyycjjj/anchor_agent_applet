@@ -33,13 +33,29 @@
 				</view>
 				<!-- 排行榜固定底部 -->
 				<view class="ranklist">
-					<uni-tag text="排行榜" type="primary" size="small"></uni-tag>
-					<uni-notice-bar :show-icon="true" :scrollable="true" :single="true" text="uni-app 1.6版正式发布，开发一次，同时发布iOS、Android、H5、微信小程序、支付宝小程序、百度小程序、头条小程序等7大平台。" />
+					<navigator :url="`./ranklist/ranklist?data=` + encodeURIComponent(JSON.stringify(ranklist))">
+						<view class="phbtag"><uni-tag class="phbut" text="排行榜" type="warning" size="small"></uni-tag></view>
+					</navigator>
+					<view class="notice">
+						<uni-notice-bar
+							:show-icon="true"
+							:scrollable="true"
+							:single="true"
+							text="uni-app 1.6版正式发布，开发一次，同时发布iOS、Android、H5、微信小程序、支付宝小程序、百度小程序、头条小程序等7大平台。"
+						/>
+					</view>
 				</view>
 			</view>
 
-			<!-- 啥 -->
+			<!-- 主播数据 -->
 			<view class="zblist" v-else>
+				<!-- 时间选择器 -->
+				<timeSelector class='picktime' showType="date" @btnConfirm="btnConfirm" @btnCancel="btnCancel" beginDate="2019-12-01" endDate="2020-03-05">
+					<view class="box-time">
+						{{ time }}
+						<uni-icons class="iconfont icon-rili" style="color: red;margin-left: 5rpx;"></uni-icons>
+					</view>
+				</timeSelector>
 				<!-- 根据主播数据是否为空来判断是否居中显示添加新主播按钮 -->
 				<view class="addzb" @tap="bindClick()">
 					<i class="iconfont icon-tianjia"></i>
@@ -77,14 +93,16 @@ import segmentedControl from '../components/tabbar-own/tabbar-own.vue';
 import neilModal from '../../components/neil-modal/neil-modal.vue';
 import uniTag from '../../components/uni-tag/uni-tag.vue';
 import uniSection from '../../components/uni-section/uni-section.vue';
-import uniNoticebar from '../../components/uni-notice-bar/uni-notice-bar.vue'
+import uniNoticebar from '../../components/uni-notice-bar/uni-notice-bar.vue';
+import timeSelector from '../../components/wing-time-selector/wing-time-selector.vue';
 export default {
 	components: {
 		segmentedControl,
 		neilModal,
 		uniTag,
 		uniSection,
-		uniNoticebar
+		uniNoticebar,
+		timeSelector
 	},
 	data() {
 		return {
@@ -98,7 +116,16 @@ export default {
 			// 是否有主播列表
 			haszblist: 1,
 			// 主播数据信息
-			zbdata: []
+			zbdata: [],
+			// 是否有主播收益数据
+			haszbdata: 1,
+			// 排行榜信息
+			ranklist: [123],
+			title: '当前选择器',
+			time: new Date().toLocaleDateString(),
+			// 查询收益的起止时间
+			beginDate:'',
+			endDate:''
 		};
 	},
 	onLoad() {
@@ -106,12 +133,24 @@ export default {
 		this.getZbdata();
 	},
 	methods: {
+		// 获取主播列表信息
 		getZblist() {
 			console.log('获取主播列表信息');
 			// 获取的返回值如果有 就把haszblist赋值为1，否则赋值为0
 		},
+		// 获取主播收益数据
 		getZbdata() {
 			console.log('获取主播收益信息');
+		},
+		// 获取排行榜数据
+		getRanklist() {
+			console.log('获取排行榜数据');
+		},
+		// 点击跳转到排行榜列表页
+		navagateto() {
+			uni.navigateTo({
+				url: '`./ranklist/ranklist?`+encodeURIComponent(JSON.stringify(this.ranklist))'
+			});
 		},
 		/**
 		 * 点击segmentedControl 事件回调
@@ -144,6 +183,15 @@ export default {
 			// 先做表单校验，再发请求提交
 			// 提交后重新获取主播列表数据
 			this.show4 = false;
+		},
+		// 时间选择器相关函数
+		btnConfirm(e) {
+			console.log('确定时间为：', e);
+			this.time = e.value;
+			this.title = '当前选择时间';
+		},
+		btnCancel() {
+			console.log('取消时间：');
 		}
 	}
 };
@@ -216,6 +264,11 @@ export default {
 .neil-modal__footer-right {
 	line-height: 120rpx;
 }
+timeSelector{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
 .zblistitem {
 	border-bottom: 1px solid #cccccc;
 	height: 5em;
@@ -257,13 +310,34 @@ export default {
 	color: brown;
 }
 // 底部排行榜
-.ranklist{
+.ranklist {
 	width: 100%;
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	.uni-notice-bar{
-		position: relative;
+	.phbtag {
+		width: 15%;
+		float: left;
+		margin-left: 2%;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
 	}
+	.phbut {
+		width: 20%;
+		vertical-align: middle;
+	}
+	.notice {
+		width: 80%;
+		float: right;
+		.uni-noticebar {
+			margin-bottom: 0;
+		}
+	}
+}
+.picktime{
+	position: absolute;
+	top: 22rpx;
+	right: 0;
 }
 </style>
