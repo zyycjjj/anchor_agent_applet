@@ -8652,7 +8652,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@alpha","_id":"@dcloudio/uni-stat@2
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/anchor/anchor": { "navigationBarTitleText": "我的主播" }, "pages/withdraw/withdraw": { "navigationBarTitleText": "提现" }, "pages/invite/invite": { "navigationBarTitleText": "邀请" }, "pages/mine/mine": { "navigationBarTitleText": "个人中心" }, "pages/authorise/authorise": { "navigationBarTitleText": "授权" }, "pages/anchor/ranklist/ranklist": { "navigationBarTitleText": "提现排行榜" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "经纪人云系统", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/anchor/anchor": { "navigationBarTitleText": "我的主播", "usingComponents": { "segmented-control": "/pages/components/tabbar-own/tabbar-own", "neil-modal": "/components/neil-modal/neil-modal", "uni-tag": "/components/uni-tag/uni-tag", "uni-section": "/components/uni-section/uni-section", "uni-noticebar": "/components/uni-notice-bar/uni-notice-bar", "time-selector": "/components/wing-time-selector/wing-time-selector" }, "usingAutoImportComponents": { "uni-tag": "/components/uni-tag/uni-tag", "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar", "uni-icons": "/components/uni-icons/uni-icons", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/withdraw/withdraw": { "navigationBarTitleText": "提现", "usingComponents": {}, "usingAutoImportComponents": { "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/invite/invite": { "navigationBarTitleText": "邀请", "usingComponents": { "uni-icons": "/components/uni-icons/uni-icons", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-icons": "/components/uni-icons/uni-icons" } }, "pages/mine/mine": { "navigationBarTitleText": "个人中心", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/authorise/authorise": { "navigationBarTitleText": "授权", "usingComponents": { "neil-modal": "/components/neil-modal/neil-modal" }, "usingAutoImportComponents": { "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/anchor/ranklist/ranklist": { "navigationBarTitleText": "提现排行榜", "usingComponents": {}, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "经纪人云系统", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 
@@ -8668,7 +8668,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 
-/***/ 83:
+/***/ 87:
 /*!*******************************************************!*\
   !*** G:/uni-app/jjr-wx/components/uni-icons/icons.js ***!
   \*******************************************************/

@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "提现",
-  "usingComponents": {}
+  "usingComponents": {
+    "neil-modal": "/components/neil-modal/neil-modal"
+  }
 }
