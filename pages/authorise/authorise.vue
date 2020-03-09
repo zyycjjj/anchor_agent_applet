@@ -21,13 +21,24 @@
         <view class="swiper-item uni-bg-blue">
           <text>实时查看主播数据</text>
           <button class="authorize" type="primary" size="mini" @tap="modalTap">授权</button>
-          <neil-modal
+          <!-- <neil-modal
             :show="show2"
             @close="closeModal('2')"
             :show-cancel="false"
             title="服务协议"
             content="这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议" @confirm="getuserinfo"
-          ></neil-modal>
+          ></neil-modal> -->
+		  <view class="modal" v-show="show2">
+			  <view class="modal_tit">
+			  	服务协议
+			  </view>
+			  <view class="mod_info">
+				  这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议
+			  </view>
+			  <view class="btn">
+			  	<button type="primary" size="mini">同意并继续</button>
+			  </view>
+		  </view>
         </view>
       </swiper-item>
     </swiper>
@@ -55,12 +66,25 @@ export default {
 	},
 	getuserinfo() {
 		console.log('123')
+	},
+	cancelAuth(){
+		this.show2 = false
+	},
+	getAuth(){
+		wx.getUserInfo({
+			success() {
+				console.log('获取信息成功')
+			},
+			error(){
+				console.log('获取信息失败')
+			}
+		})
 	}
   }
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .sq-container {
   height: 100%;
   width: 100%;
@@ -90,5 +114,32 @@ text {
   left: 50%;
   transform: translateX(-50%);
   width: 60%;
+}
+/* 模态框样式 */
+.modal{
+	color: #000000;
+	width: 60%;
+	height: 200px;
+	background-color: #FFFFFF;
+	border-radius: 30px;
+	padding: 20px;
+	position: absolute;
+	top: 140px;
+	left: 50%;
+	transform: translateX(-50%);
+	.modal_tit{
+		text-align: left;
+		height: 25px;
+		// line-height: 25px;
+		color: #C86F4E;
+	}
+	.mod_info{
+		height: 130px;
+		overflow-y: scroll;
+	}
+	.btn{
+		margin-top: 20px;
+		text-align: center;
+	}
 }
 </style>

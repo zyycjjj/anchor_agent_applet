@@ -36,6 +36,10 @@
 				"navigationBarTitleText": "提现排行榜"
 			}
         }
+        ,{
+            "path" : "pages/mine/help/help",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

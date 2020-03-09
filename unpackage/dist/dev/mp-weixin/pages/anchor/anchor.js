@@ -108,13 +108,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-tag": () =>
-    __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 68)),
+    __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 76)),
   "uni-notice-bar": () =>
-    __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 75)),
+    __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 83)),
   "uni-icons": () =>
-    Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 82)),
+    Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 90)),
   "neil-modal": () =>
-    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 90))
+    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 98))
 }
 var render = function() {
   var _vm = this
@@ -160,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 97));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 90));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 68));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 104));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 75));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 111));};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 105));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 98));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 76));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 112));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 83));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 119));};var _default =
 
 
 
@@ -266,6 +266,9 @@ __webpack_require__.r(__webpack_exports__);
     uniNoticebar: uniNoticebar,
     timeSelector: timeSelector },
 
+  beforeCreate: function beforeCreate() {
+    console.log(页面创建前);
+  },
   data: function data() {
     return {
       // tab选项卡信息

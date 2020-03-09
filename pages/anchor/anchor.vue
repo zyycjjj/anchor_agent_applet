@@ -104,6 +104,9 @@ export default {
 		uniNoticebar,
 		timeSelector
 	},
+	beforeCreate(){
+		console.log(页面创建前)
+	},
 	data() {
 		return {
 			// tab选项卡信息
