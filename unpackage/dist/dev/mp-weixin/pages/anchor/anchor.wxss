@@ -1,6 +1,7 @@
 .anchor {
   height: 100%;
   width: 100%;
+  padding-top: 44px;
   position: relative;
 }
 .anchor .addzb {
@@ -15,6 +16,12 @@
 }
 .anchor .addzb .icon-tianjia {
   font-size: 100px;
+}
+.anchor segmented-control {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
 }
 .anchor .neil-modal__header {
   color: red;
@@ -84,12 +91,12 @@ timeSelector {
   border-bottom: 1px solid #cccccc;
   height: 5em;
   position: relative;
-  text-indent: 70px;
-  padding-top: 10px;
+  text-indent: 80px;
+  padding-top: 25px;
 }
 .zblistitem .avatar {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   position: absolute;
   left: 5px;
   top: 50%;
@@ -117,16 +124,20 @@ timeSelector {
   text-indent: 0;
 }
 .addanch {
-  position: absolute;
+  position: fixed;
   right: 10rpx;
   top: 20rpx;
   color: brown;
+  z-index: 2;
+  background-color: #ffffff;
 }
 .ranklist {
   width: 100%;
   position: fixed;
   bottom: 0;
   left: 0;
+  background-color: #ffffff;
+  z-index: 3;
 }
 .ranklist .phbtag {
   width: 15%;
@@ -136,6 +147,7 @@ timeSelector {
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
+  background-color: #ffffff;
 }
 .ranklist .phbut {
   width: 20%;
@@ -149,8 +161,10 @@ timeSelector {
   margin-bottom: 0;
 }
 .picktime {
-  position: absolute;
+  position: fixed;
   top: 22rpx;
   right: 0;
+  background-color: #ffffff;
+  z-index: 4;
 }
 

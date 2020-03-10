@@ -122,7 +122,8 @@ export default {
 		height: 300rpx;
 		margin: 30rpx auto;
 		border-radius: 40rpx;
-		background-image: url(../../static/widthdraw/bg.jpg);
+		background: url(../../static/widthdraw/bg.png)  fixed no-repeat ;
+		background-size: contain;
 	}
 	.mask {
 		width: 100%;

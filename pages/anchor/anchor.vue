@@ -10,24 +10,13 @@
 						<i class="iconfont icon-tianjia"></i>
 						<text style="color:grey">添加新主播</text>
 					</view>
-					<view class="showanchlist" v-else>
+					<view class="showanchlist" v-else v-for="item in zblist" :key="item.anchor_id">
 						<view class="zblistitem">
-							<image src="../../static/imgs/mrtx.jpg" mode="" class="avatar"></image>
-							<text class="zbname">[未开播]</text>
-							<text class="dyid">抖音id:123321323</text>
-							<uni-tag text="未开播" type="warning" :inverted="true" :circle="true" size="small" />
-						</view>
-						<view class="zblistitem">
-							<image src="../../static/imgs/mrtx.jpg" mode="" class="avatar"></image>
-							<text class="zbname">[未开播]</text>
-							<text class="dyid">抖音id:123321323</text>
-							<uni-tag text="未开播" type="warning" :inverted="true" :circle="true" size="small" />
-						</view>
-						<view class="zblistitem">
-							<image src="../../static/imgs/mrtx.jpg" mode="" class="avatar"></image>
-							<text class="zbname">[未开播]</text>
-							<text class="dyid">抖音id:123321323</text>
-							<uni-tag text="未开播" type="warning" :inverted="true" :circle="true" size="small" />
+							<image :src="item.headimage" mode="" class="avatar"></image>
+							<text class="zbname">{{ item.real_name }}</text>
+							<text class="dyid">抖音id:{{ item.third_user_id }}</text>
+							<uni-tag text="未开播" type="warning" :inverted="true" :circle="true" size="small" v-if="item.live_status == 0" />
+							<uni-tag text="已开播" type="warning" :inverted="true" :circle="true" size="small" v-else />
 						</view>
 					</view>
 				</view>
@@ -36,21 +25,14 @@
 					<navigator :url="`./ranklist/ranklist?data=` + encodeURIComponent(JSON.stringify(ranklist))">
 						<view class="phbtag"><uni-tag class="phbut" text="排行榜" type="warning" size="small"></uni-tag></view>
 					</navigator>
-					<view class="notice">
-						<uni-notice-bar
-							:show-icon="true"
-							:scrollable="true"
-							:single="true"
-							text="uni-app 1.6版正式发布，开发一次，同时发布iOS、Android、H5、微信小程序、支付宝小程序、百度小程序、头条小程序等7大平台。"
-						/>
-					</view>
+					<view class="notice"><uni-notice-bar ref="noticebar" :show-icon="true" :scrollable="true" :single="true" text=" " id="noticebar" /></view>
 				</view>
 			</view>
 
 			<!-- 主播数据 -->
 			<view class="zblist" v-else>
 				<!-- 时间选择器 -->
-				<timeSelector class='picktime' showType="date" @btnConfirm="btnConfirm" @btnCancel="btnCancel" beginDate="2019-12-01" endDate="2020-03-05">
+				<timeSelector class="picktime" showType="date" @btnConfirm="btnConfirm" @btnCancel="btnCancel" beginDate="2019-12-01" endDate="2020-03-05">
 					<view class="box-time">
 						{{ time }}
 						<uni-icons class="iconfont icon-rili" style="color: red;margin-left: 5rpx;"></uni-icons>
@@ -68,15 +50,15 @@
 				<view class="input-view">
 					<view class="mtk-input input-name">
 						<view>抖音账号</view>
-						<input type="text" placeholder="请输入抖音号" />
+						<input type="text" placeholder="请输入抖音号" v-model="anchorInfo.third_user_id" />
 					</view>
 					<view class="mtk-input input-password">
 						<view>真实姓名</view>
-						<input type="text" placeholder="请输入真实姓名" />
+						<input type="text" placeholder="请输入真实姓名" v-model="anchorInfo.real_name" />
 					</view>
 					<view class="mtk-input input-password">
 						<view>手机号码</view>
-						<input type="text" number placeholder="请输入手机号码" />
+						<input type="text" number placeholder="请输入手机号码" v-model="anchorInfo.mobile" />
 					</view>
 					<view class="mtk-input input-password">
 						<view>分账比例</view>
@@ -104,8 +86,11 @@ export default {
 		uniNoticebar,
 		timeSelector
 	},
-	beforeCreate(){
-		console.log(页面创建前)
+	beforeCreate() {
+		// console.log(页面创建前);
+	},
+	onLoad(e) {
+		// console.log(e);
 	},
 	data() {
 		return {
@@ -118,36 +103,92 @@ export default {
 			zblist: [],
 			// 是否有主播列表
 			haszblist: 1,
-			// 主播数据信息
+			// 主播收入数据信息
 			zbdata: [],
 			// 是否有主播收益数据
 			haszbdata: 1,
 			// 排行榜信息
-			ranklist: [123],
+			ranklist: [],
 			title: '当前选择器',
 			time: new Date().toLocaleDateString(),
 			// 查询收益的起止时间
-			beginDate:'',
-			endDate:''
+			beginDate: '',
+			endDate: '',
+			// 登录的token
+			token: '',
+			// 添加的主播信息
+			anchorInfo: {
+				// 添加的账号
+				third_user_id: '',
+				// 真实姓名
+				real_name: '',
+				// 手机号
+				mobile: ''
+			},
+			// noticebar文字信息
+			rank_string: '',
+			// 查询时间
+			date:'',
+			// 查询页码
+			page:''
 		};
 	},
-	onLoad() {
+	onLoad() {},
+	onShow() {
+		this.getToken();
 		this.getZblist();
+		this.getRanklist();
+		this.setNoticebar();
 		this.getZbdata();
 	},
 	methods: {
+		getToken() {
+			this.token = uni.getStorageSync('token');
+		},
+		setNoticebar() {
+			console.log(this.$refs.noticebar.text)
+			this.$refs.noticebar.text = this.rank_string
+			console.log(this.$refs.noticebar.text)
+		},
 		// 获取主播列表信息
 		getZblist() {
-			console.log('获取主播列表信息');
+			const that = this;
+			uni.request({
+				url: 'http://www.vzoyo.com/api/anchor/lists',
+				header: { token: this.token },
+				success(res) {
+					if (res.data.data.list) {
+						that.zblist = res.data.data.list;
+						that.rank_string = res.data.data.rank_string;
+						that.haszblist = 1;
+					} else {
+						that.haszblist = 0;
+					}
+				}
+			});
 			// 获取的返回值如果有 就把haszblist赋值为1，否则赋值为0
 		},
 		// 获取主播收益数据
 		getZbdata() {
-			console.log('获取主播收益信息');
+			// console.log('获取主播收益信息');
+			uni.request({
+				url:'http://www.vzoyo.com/api/anchor/AnchorData',
+				data:{date:this.date,page:this.page},
+				header: { token: this.token },
+				success(res) {
+				}
+			})
 		},
 		// 获取排行榜数据
 		getRanklist() {
-			console.log('获取排行榜数据');
+			const that = this;
+			uni.request({
+				url: 'http://www.vzoyo.com/api/Rank/yesterList',
+				header: { token: this.token },
+				success(res) {
+					that.ranklist = res.data.data;
+				}
+			});
 		},
 		// 点击跳转到排行榜列表页
 		navagateto() {
@@ -165,8 +206,6 @@ export default {
 		},
 		// 点击添加新主播，调出模态框
 		addzb() {
-			// 添加
-			console.log('添加了');
 			this.iShow = true;
 		},
 		// 关于模态框的函数
@@ -184,17 +223,30 @@ export default {
 			// 发请求提交主播信息
 			console.log('提交');
 			// 先做表单校验，再发请求提交
+			uni.request({
+				url: 'http://www.vzoyo.com/api/anchor/create',
+				method: 'POST',
+				data: this.anchorInfo,
+				header: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					token: this.token
+				},
+				success(res) {
+					this.anchorInfo = {};
+					this.getZblist();
+					this.show4 = false;
+				}
+			});
 			// 提交后重新获取主播列表数据
-			this.show4 = false;
 		},
 		// 时间选择器相关函数
 		btnConfirm(e) {
-			console.log('确定时间为：', e);
+			// console.log('确定时间为：', e);
 			this.time = e.value;
 			this.title = '当前选择时间';
 		},
 		btnCancel() {
-			console.log('取消时间：');
+			// console.log('取消时间：');
 		}
 	}
 };
@@ -204,6 +256,7 @@ export default {
 .anchor {
 	height: 100%;
 	width: 100%;
+	padding-top: 44px;
 	position: relative;
 	.addzb {
 		color: red;
@@ -216,6 +269,12 @@ export default {
 		.icon-tianjia {
 			font-size: 100px;
 		}
+	}
+	segmented-control {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 2;
 	}
 	.neil-modal__header {
 		color: red;
@@ -267,7 +326,7 @@ export default {
 .neil-modal__footer-right {
 	line-height: 120rpx;
 }
-timeSelector{
+timeSelector {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -276,11 +335,11 @@ timeSelector{
 	border-bottom: 1px solid #cccccc;
 	height: 5em;
 	position: relative;
-	text-indent: 70px;
-	padding-top: 10px;
+	text-indent: 80px;
+	padding-top: 25px;
 	.avatar {
-		width: 50px;
-		height: 50px;
+		width: 60px;
+		height: 60px;
 		position: absolute;
 		left: 5px;
 		top: 50%;
@@ -307,10 +366,12 @@ timeSelector{
 	}
 }
 .addanch {
-	position: absolute;
+	position: fixed;
 	right: 10rpx;
 	top: 20rpx;
 	color: brown;
+	z-index: 2;
+	background-color: #ffffff;
 }
 // 底部排行榜
 .ranklist {
@@ -318,6 +379,8 @@ timeSelector{
 	position: fixed;
 	bottom: 0;
 	left: 0;
+	background-color: #ffffff;
+	z-index: 3;
 	.phbtag {
 		width: 15%;
 		float: left;
@@ -325,6 +388,7 @@ timeSelector{
 		position: absolute;
 		top: 50%;
 		transform: translateY(-50%);
+		background-color: #ffffff;
 	}
 	.phbut {
 		width: 20%;
@@ -338,9 +402,11 @@ timeSelector{
 		}
 	}
 }
-.picktime{
-	position: absolute;
+.picktime {
+	position: fixed;
 	top: 22rpx;
 	right: 0;
+	background-color: #ffffff;
+	z-index: 4;
 }
 </style>

@@ -136,7 +136,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -192,27 +192,50 @@ var _default =
   data: function data() {
     return {
       // 总收益
-      all: 100,
+      all: '0',
       // 前日收益
-      lasmo: 133,
+      lasmo: '0',
       // 昨日收益
-      yester: 232,
+      yester: '0',
       // 可提现金额
-      wimoney: 1231,
+      wimoney: '0',
       // 提现模态框显示隐藏
       showMonmodal: false,
       // 有无提现记录
-      haslist: 1 };
+      haslist: 1,
+      // token
+      token: '',
+      // 要体现的金额
+      form: {
+        cashMoney: '' } };
+
 
   },
   onLoad: function onLoad() {
+    this.getToken();
     // 调用获取收益信息的函数
     this.getWithdraw();
   },
   methods: {
+    // 获取token
+    getToken: function getToken() {
+      this.token = uni.getStorageSync('token');
+    },
     getWithdraw: function getWithdraw() {
       // 获取收益信息，更新数据，绑定数据
-      console.log('获取收益信息');
+      var that = this;
+      uni.request({
+        url: 'http://www.vzoyo.com/api/user/cashShow',
+        method: 'POST',
+        header: { token: this.token },
+        success: function success(res) {
+          console.log(res);
+          that.all = res.data.data.total_money;
+          that.lasmo = res.data.data.before_yester_money;
+          that.yester = res.data.data.yester_money;
+          that.wimoney = res.data.data.able_money;
+        } });
+
     },
     getMoney: function getMoney() {
       this.showMonmodal = true;
@@ -222,7 +245,26 @@ var _default =
     },
     bindBtn: function bindBtn(type) {
       this.showMonmodal = false;
+    },
+    // 关于模态框的函数
+    withdraw: function withdraw() {
+      var that = this;
+      uni.request({
+        url: 'http://www.vzoyo.com/api/user/applyWithdraw',
+        method: 'POST',
+        header: {
+          token: this.token,
+          'Content-Type': 'application/x-www-form-urlencoded' },
+
+        data: {
+          money: that.form.cashMoney },
+
+        success: function success(res) {
+          console.log(res);
+        } });
+
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

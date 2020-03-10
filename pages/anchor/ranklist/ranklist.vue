@@ -5,146 +5,16 @@
 			<view class="line"></view>
 		</view>
 		<view class="phblb">
-			<view class="phb-item">
+			<view class="phb-item" v-for="item in data" :key="item.headimage">
 				<!-- 排序 -->
-				<text class="index">1</text>
+				<text class="index">{{item.rank_id}}</text>
 				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
+				<image class="avatar" :src="item.headimage" mode=""></image>
 				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
+				<text class="nickname">{{ item.nickname }}</text>
 				<!-- 提现金额 -->
 				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">2</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">3</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">4</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">5</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">6</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">7</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">1</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">1</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">1</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
-					元
-				</text>
-			</view>
-			<view class="phb-item">
-				<!-- 排序 -->
-				<text class="index">1</text>
-				<!-- 头像 -->
-				<image class="avatar" src="../../../static/imgs/mrtx.jpg" mode=""></image>
-				<!-- 昵称 -->
-				<text class="nickname">陌上花开</text>
-				<!-- 提现金额 -->
-				<text class="money">
-					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">999</text>
+					<text class="getmoney" style="color: red;margin-right: 10rpx;font-weight: bold;">{{ item.money }}</text>
 					元
 				</text>
 			</view>
@@ -162,8 +32,9 @@ export default {
 	},
 	onLoad(e) {
 		if (e.data) {
-			this.data = decodeURIComponent(e.data);
+			this.data = JSON.parse(decodeURIComponent(e.data));
 			// this.data = JSON.parse(decodeURIComponent(e.data))
+			console.log(this.data);
 		}
 	}
 };

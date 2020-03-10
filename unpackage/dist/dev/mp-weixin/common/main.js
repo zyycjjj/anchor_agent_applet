@@ -103,11 +103,13 @@ __webpack_require__.r(__webpack_exports__);
     wx.getSetting({
       success: function success(res) {
         console.log(res);
-        if (res.authSetting) {
-          console.log(123);
-          uni.reLaunch({
+        if (!res.authSetting['scope.userInfo']) {
+          uni.navigateTo({
             url: '/pages/authorise/authorise' });
 
+          // ({
+          // 	url: '/pages/authorise/authorise'
+          // });
         }
       } });
 

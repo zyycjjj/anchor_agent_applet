@@ -2,9 +2,9 @@
 	<view class="mine">
 		<!-- 头像区域 -->
 		<view class="ownInfo">
-			<view class="avatar"><image src="../../static/imgs/mrtx.jpg" mode=""></image></view>
+			<view class="avatar"><image :src="userinfo.avatarUrl" mode=""></image></view>
 			<view class="info">
-				<view class="nickname">{{ nickname }}</view>
+				<view class="nickname">{{ userinfo.nickName }}</view>
 				<view class="ancNum">主播数： {{ num }} 人</view>
 			</view>
 		</view>
@@ -89,10 +89,19 @@ export default {
 			// 可提现金额
 			could: 120.02,
 			// 提现模态框的显示隐藏
-			showMonmodal: false
+			showMonmodal: false,
+			// 用户信息
+			userinfo:{}
 		};
 	},
+	onLoad() {
+		this.getuserInfo()
+	},
 	methods: {
+		getuserInfo(){
+			this.userinfo = uni.getStorageSync('userinfo');
+			console.log(this.userinfo)
+		},
 		getMoney() {
 			this.showMonmodal = true;
 			console.log(123)
@@ -117,7 +126,8 @@ export default {
 	.ownInfo {
 		width: 100%;
 		height: 180px;
-		background-image: url(../../static/widthdraw/bg.jpg);
+		background: url(../../static/widthdraw/bg.png)  fixed no-repeat ;
+		background-size: contain;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;

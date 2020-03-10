@@ -133,18 +133,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 98));};var _default =
-
-
-
-
-
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 98));};var _default =
 
 
 
@@ -187,11 +176,13 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
-      background: ["color1", "color2", "color3"],
+      background: ['color1', 'color2', 'color3'],
       indicatorDots: true,
       autoplay: false,
       //  用户协议框的显示隐藏
-      show2: false };
+      show2: false,
+      // 获取到的用户信息
+      userInfo: {} };
 
   },
   methods: {
@@ -199,22 +190,112 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       //   展示用户协议框
       this.show2 = true;
     },
-    getuserinfo: function getuserinfo() {
-      console.log('123');
-    },
     cancelAuth: function cancelAuth() {
       this.show2 = false;
     },
-    getAuth: function getAuth() {
-      wx.getUserInfo({
-        success: function success() {
-          console.log('获取信息成功');
+    // 获取用户信息 API 在小程序可直接使用，在 5+App 里面需要先登录才能调用
+    getUserInfo: function getUserInfo() {var _this = this;
+      uni.getUserInfo({
+        provider: "weixin",
+        success: function success(result) {
+          console.log('getUserInfo success', result);
+          _this.userInfo = result.userInfo;
         },
-        error: function error() {
-          console.log('获取信息失败');
+        fail: function fail(error) {
+          console.log('getUserInfo fail', error);
+          var content = error.errMsg;
+          if (~content.indexOf('uni.login')) {
+            content = '请在登录页面完成登录操作';
+          }
+
+          uni.getSetting({
+            success: function success(res) {
+              var authStatus = res.authSetting['scope.userInfo'];
+              if (!authStatus) {
+                uni.showModal({
+                  title: '授权失败',
+                  content: 'Hello uni-app需要获取您的用户信息，请在设置界面打开相关权限',
+                  success: function success(res) {
+                    if (res.confirm) {
+                      uni.openSetting();
+                    }
+                  } });
+
+              } else {
+                uni.showModal({
+                  title: '获取用户信息失败',
+                  content: '错误原因' + content,
+                  showCancel: false });
+
+              }
+            } });
+
+
+
+
+
+
+
+
+
+        } });
+
+    },
+    mpGetUserInfo: function mpGetUserInfo(result) {
+      if (result.detail.errMsg !== 'getUserInfo:ok') {
+        uni.showModal({
+          title: '获取用户信息失败',
+          content: '错误原因' + result.detail.errMsg,
+          showCancel: false });
+
+        return;
+      }
+      this.userInfo = result.detail.userInfo;
+      var that = this;
+      uni.login({
+        provider: 'weixin',
+        success: function success(loginRes) {
+          uni.setStorageSync('code', loginRes.code);
+          that.userInfo.code = loginRes.code;
+          console.log(that.userInfo);
+          uni.setStorageSync('userinfo', result.detail.userInfo);
+          uni.request({
+            url: 'http://www.vzoyo.com/api/user/MiniProgramLogin',
+            data: {
+              code: that.userInfo.code,
+              nickname: that.userInfo.nickName,
+              headimage: that.userInfo.avatarUrl,
+              gender: that.userInfo.gender,
+              province: that.userInfo.province,
+              city: that.userInfo.city,
+              country: that.userInfo.country },
+
+            method: 'POST',
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded' },
+
+            success: function success(res) {
+              if (res.data.code != 1) {
+                uni.showModal({
+                  title: '登录失败',
+                  showCancel: false });
+
+              } else {
+                console.log(res);
+                // uni.setStorageSync('token', res.data.userinfo.token)
+                uni.setStorageSync("token", res.data.data.userinfo.token);
+                // 登陆成功 跳转到tab首页
+                uni.navigateBack({
+                  delta: 1 });
+
+              }
+
+            } });
+
         } });
 
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

@@ -7,11 +7,13 @@ export default {
 		wx.getSetting({
 			success(res) {
 				console.log(res);
-				if (res.authSetting) {
-					console.log(123)
-					uni.reLaunch({
+				if (!res.authSetting['scope.userInfo']) {
+					uni.navigateTo({
 						url: '/pages/authorise/authorise'
-					});
+					})
+					// ({
+					// 	url: '/pages/authorise/authorise'
+					// });
 				}
 			}
 		});

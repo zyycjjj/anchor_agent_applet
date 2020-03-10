@@ -138,7 +138,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -229,10 +229,19 @@ var _default =
       // 可提现金额
       could: 120.02,
       // 提现模态框的显示隐藏
-      showMonmodal: false };
+      showMonmodal: false,
+      // 用户信息
+      userinfo: {} };
 
   },
+  onLoad: function onLoad() {
+    this.getuserInfo();
+  },
   methods: {
+    getuserInfo: function getuserInfo() {
+      this.userinfo = uni.getStorageSync('userinfo');
+      console.log(this.userinfo);
+    },
     getMoney: function getMoney() {
       this.showMonmodal = true;
       console.log(123);
@@ -248,6 +257,7 @@ var _default =
       // 提现 点击提现 验证提现金额是否合法 发送请求 关闭模态框
       this.showMonmodal = false;
     } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 

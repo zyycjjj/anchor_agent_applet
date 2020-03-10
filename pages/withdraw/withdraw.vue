@@ -5,16 +5,16 @@
 		<view class="withdrawData">
 			<!-- 总收益 -->
 			<view class="allmoney">
-				<text class='tit' style="color: #CCCCCC;">总收益（元）</text>
+				<text class='tit' style="color:#6b1b34 ;">总收益（元）</text>
 				<text class="moNum" style="color: #FFFFFF;font-size: 50rpx;font-weight: bold;">{{all}}</text>
 			</view>
 			<view class="moneyEd">
 				<view class="laster">
-					<text class='tit' style="color: #CCCCCC;">前日收益（元）</text>
+					<text class='tit' style="color:#6b1b34;">前日收益（元）</text>
 					<text class="moNum" style="color: #FFFFFF;font-size: 50rpx;font-weight: bold;">{{lasmo}}</text>
 				</view>
 				<view class="yester">
-					<text class='tit' style="color: #CCCCCC;">昨日收益（元）</text>
+					<text class='tit' style="color:#6b1b34;">昨日收益（元）</text>
 					<text class="moNum" style="color: #FFFFFF;font-size: 50rpx;font-weight: bold;">{{yester}}</text>
 				</view>
 			</view>
@@ -38,11 +38,11 @@
 		</view>
 		
 		<!-- 提现模态框 -->
-		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入用户名密码">
+		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入用户名密码" @cancel="bindBtn('cancel')" @confirm="withdraw()">
 		    <view class="input-view">
 		        <view class="moneyNum">
 		            <view>提现金额</view>
-		            <input type="number" placeholder="请输入提现金额" />
+		            <input type="number" placeholder="请输入提现金额" :model='form.cashMoney'/>
 		        </view>
 		    </view>
 		</neil-modal>
@@ -54,27 +54,50 @@
 		data() {
 			return {
 				// 总收益
-				all:100,
+				all:'0',
 				// 前日收益
-				lasmo:133,
+				lasmo:'0',
 				// 昨日收益
-				yester:232,
+				yester:'0',
 				// 可提现金额
-				wimoney:1231,
+				wimoney:'0',
 				// 提现模态框显示隐藏
 				showMonmodal:false,
 				// 有无提现记录
-				haslist: 1
+				haslist: 1,
+				// token
+				token:'',
+				// 要体现的金额
+				form:{
+					cashMoney:''
+				}
 			};
 		},
 		onLoad() {
+			this.getToken()
 			// 调用获取收益信息的函数
 			this.getWithdraw()
 		},
 		methods:{
+			// 获取token
+			getToken(){
+				this.token = uni.getStorageSync('token');
+			},
 			getWithdraw(){
 				// 获取收益信息，更新数据，绑定数据
-				console.log('获取收益信息')
+				const that = this
+				uni.request({
+					url:'http://www.vzoyo.com/api/user/cashShow',
+					method:'POST',
+					header: { token: this.token },
+					success(res) {
+						console.log(res)
+						that.all = res.data.data.total_money
+						that.lasmo = res.data.data.before_yester_money
+						that.yester = res.data.data.yester_money
+						that.wimoney = res.data.data.able_money
+					}
+				})
 			},
 			getMoney(){
 				this.showMonmodal = true
@@ -84,7 +107,26 @@
 			},
 			bindBtn(type) {
 				this.showMonmodal = false
+			},
+			// 关于模态框的函数
+			withdraw(){
+				const that = this
+				uni.request({
+					url:'http://www.vzoyo.com/api/user/applyWithdraw',
+					method:'POST',
+					header: { 
+						token: this.token,
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					data:{
+						money:that.form.cashMoney
+					},
+					success(res) {
+						console.log(res)
+					}
+				})
 			}
+			
 		}
 	}
 </script>
@@ -94,8 +136,9 @@
 	.withdrawData{
 		width: 100%;
 		height: 200px;
-		background-color: red;
-		background-image: url(../../static/widthdraw/bg.jpg);
+		background: url(../../static/widthdraw/bg.png)  fixed no-repeat ;
+		background-size: contain;
+		// background-image: url(../../static/widthdraw/bg.png);
 		display: flex;
 		flex-direction: column;
 		view{
