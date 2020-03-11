@@ -76,7 +76,7 @@
           transform: translateY(-50%);
 }
 .widthdraw .wDlist {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   text-indent: 40rpx;
   height: 60rpx;
   line-height: 60rpx;
@@ -85,7 +85,7 @@
   text-align: center;
 }
 .widthdraw .wDlist view text {
-  color: #8B8B8B;
+  color: #8b8b8b;
 }
 .moneyNum {
   height: 80rpx;
@@ -120,5 +120,44 @@
           flex: 1;
   height: 50rpx;
   line-height: 50rpx;
+}
+.widthdrawlist {
+  width: 100%;
+}
+.widthdrawlist .widthdrawlistItem {
+  width: 100%;
+  text-align: left;
+}
+.widthdrawlist .widthdrawlistItem view {
+  width: 40%;
+  float: left;
+  font-size: 27rpx;
+  position: relative;
+}
+.widthdrawlist .widthdrawlistItem view .uni-tag {
+  text-indent: 0;
+  position: absolute;
+  left: 30%;
+  margin-top: 10rpx;
+}
+.widthdrawlist .widthdrawlistItem .moneycontainer {
+  width: 20%;
+}
+.widthdrawlist .widthdrawlistItem .statuscontainer {
+  height: 33px;
+}
+.widthdrawlist .pagenation button {
+  text-indent: 0;
+}
+.widthdrawlist .tit {
+  width: 100%;
+  text-align: left;
+}
+.widthdrawlist .tit view {
+  width: 40%;
+  float: left;
+}
+.widthdrawlist .tit .money {
+  width: 20%;
 }
 

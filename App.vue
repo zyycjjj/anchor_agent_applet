@@ -6,7 +6,6 @@ export default {
 	onShow: function() {
 		wx.getSetting({
 			success(res) {
-				console.log(res);
 				if (!res.authSetting['scope.userInfo']) {
 					uni.navigateTo({
 						url: '/pages/authorise/authorise'

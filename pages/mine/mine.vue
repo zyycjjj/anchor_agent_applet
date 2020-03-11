@@ -16,7 +16,7 @@
 			</view>
 			<view class="can">
 				<view>可提现（元）</view>
-				<view class="could">{{ could }}</view>
+				<view class="could">{{ ablemoney }}</view>
 			</view>
 			<view class="btn"><button type="primary" size="mini" plain="true" @tap="getMoney">提现</button></view>
 		</view>
@@ -65,11 +65,12 @@
 		</view>
 
 		<!-- 提现模态框 -->
-		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" @confirm="getRmb()" title="请输入提现金额">
+		<!-- 提现模态框 -->
+		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入提现金额" @cancel="bindBtn('cancel')" @confirm="withdraw()">
 			<view class="input-view">
 				<view class="moneyNum">
 					<view>提现金额</view>
-					<input type="number" placeholder="请输入提现金额" />
+					<input type="number" placeholder="请输入提现金额" v-model="form.cashMoney" />
 				</view>
 			</view>
 		</neil-modal>
@@ -77,45 +78,92 @@
 </template>
 
 <script>
+import uniSection from '../../components/uni-section/uni-section.vue';
 export default {
+	components: { uniSection },
 	data() {
 		return {
 			// 微信昵称
-			nickname: '陌上花',
+			nickname: '',
+			center: {},
 			// 主播数
-			num: 3,
+			num: '',
 			// 总收益
-			all: 120,
+			all: '',
 			// 可提现金额
-			could: 120.02,
+			ablemoney: '',
 			// 提现模态框的显示隐藏
 			showMonmodal: false,
 			// 用户信息
-			userinfo:{}
+			userinfo: {},
+			token: '',
+			form: {
+				cashMoney:''
+			}
 		};
 	},
 	onLoad() {
-		this.getuserInfo()
+		this.getToken();
+		this.getuserInfo();
+	},
+	onShow() {
+		this.getMineinfo();
 	},
 	methods: {
-		getuserInfo(){
+		getToken() {
+			this.token = uni.getStorageSync('token');
+		},
+		getMineinfo() {
+			const that = this;
+			uni.request({
+				url: 'http://www.vzoyo.com/api/user/userCenter',
+				header: { token: this.token },
+				success(res) {
+					// if(res.data.data.code == 1){
+					that.ablemoney = res.data.data.able_money.toString();
+					console.log(typeof res.data.data.anchor_num);
+					that.num = res.data.data.anchor_num.toString();
+					that.all = res.data.data.money;
+					// }
+				}
+			});
+		},
+		getuserInfo() {
 			this.userinfo = uni.getStorageSync('userinfo');
-			console.log(this.userinfo)
 		},
 		getMoney() {
 			this.showMonmodal = true;
-			console.log(123)
 		},
 		handleContact(e) {
 			console.log(e.detail.path);
 			console.log(e.detail.query);
 		},
-		closeModal(){
-			this.showMonmodal = false
+		closeModal() {
+			this.showMonmodal = false;
 		},
-		getRmb(){
-			// 提现 点击提现 验证提现金额是否合法 发送请求 关闭模态框
-			this.showMonmodal = false
+		// 关于模态框的函数
+		withdraw() {
+			console.log(12313123132313123131312)
+			const that = this;
+			uni.request({
+				url: 'http://www.vzoyo.com/api/user/applyWithdraw',
+				method: 'POST',
+				header: {
+					token: this.token,
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				data: {
+					money: that.form.cashMoney
+				},
+				success(res) {
+					if (res.code !== 1) {
+						console.log(res.data.msg);
+					} else {
+						console.log(res.data.msg);
+						this.getWithdrawList();
+					}
+				}
+			});
 		}
 	}
 };
@@ -126,7 +174,7 @@ export default {
 	.ownInfo {
 		width: 100%;
 		height: 180px;
-		background: url(../../static/widthdraw/bg.png)  fixed no-repeat ;
+		background: url(../../static/widthdraw/bg.png) fixed no-repeat;
 		background-size: contain;
 		display: flex;
 		flex-direction: row;
@@ -232,7 +280,7 @@ export default {
 				.rig {
 					float: right;
 				}
-				text{
+				text {
 					font-weight: normal;
 				}
 			}

@@ -240,6 +240,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
   components: {
     segmentedControl: segmentedControl,
     neilModal: neilModal,
@@ -308,9 +311,7 @@ __webpack_require__.r(__webpack_exports__);
     this.token = uni.getStorageSync('token');
   },
   setNoticebar: function setNoticebar() {
-    console.log(this.$refs.noticebar.text);
     this.$refs.noticebar.text = this.rank_string;
-    console.log(this.$refs.noticebar.text);
   },
   // 获取主播列表信息
   getZblist: function getZblist() {
@@ -333,11 +334,14 @@ __webpack_require__.r(__webpack_exports__);
   // 获取主播收益数据
   getZbdata: function getZbdata() {
     // console.log('获取主播收益信息');
+    var that = this;
     uni.request({
       url: 'http://www.vzoyo.com/api/anchor/AnchorData',
-      data: { date: this.date, page: this.page },
+      data: { date: this.time, page: this.page },
       header: { token: this.token },
       success: function success(res) {
+        console.log(res);
+        that.zbdata = res.data.data;
       } });
 
   },
@@ -385,6 +389,7 @@ __webpack_require__.r(__webpack_exports__);
     // 发请求提交主播信息
     console.log('提交');
     // 先做表单校验，再发请求提交
+    var that = this;
     uni.request({
       url: 'http://www.vzoyo.com/api/anchor/create',
       method: 'POST',
@@ -394,16 +399,16 @@ __webpack_require__.r(__webpack_exports__);
         token: this.token },
 
       success: function success(res) {
-        this.anchorInfo = {};
-        this.getZblist();
-        this.show4 = false;
+        that.anchorInfo = {};
+        that.getZblist();
+        // this.show4 = false;
       } });
 
     // 提交后重新获取主播列表数据
   },
   // 时间选择器相关函数
   btnConfirm: function btnConfirm(e) {
-    // console.log('确定时间为：', e);
+    console.log('确定时间为：', e);
     this.time = e.value;
     this.title = '当前选择时间';
   },

@@ -2,6 +2,7 @@
   "navigationBarTitleText": "个人中心",
   "usingComponents": {
     "uni-icons": "/components/uni-icons/uni-icons",
-    "neil-modal": "/components/neil-modal/neil-modal"
+    "neil-modal": "/components/neil-modal/neil-modal",
+    "uni-section": "/components/uni-section/uni-section"
   }
 }

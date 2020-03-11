@@ -96,6 +96,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
+  "uni-tag": () =>
+    __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 76)),
   "neil-modal": () =>
     __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 98))
 }
@@ -136,59 +138,83 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var unitag = function unitag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 76));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 112));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
+  components: { unitag: unitag, uniSection: uniSection },
   data: function data() {
     return {
       // 总收益
@@ -201,22 +227,68 @@ var _default =
       wimoney: '0',
       // 提现模态框显示隐藏
       showMonmodal: false,
-      // 有无提现记录
+      // 有无提现记录 0有 1无
       haslist: 1,
       // token
       token: '',
       // 要体现的金额
       form: {
-        cashMoney: '' } };
+        cashMoney: '' },
 
+      // 提现记录
+      widthdrawList: [],
+      // 提现记录页码
+      page: 1,
+      // 是否有上一页
+      hasprepage: true,
+      // 是否有下一页
+      hasNextpage: true };
 
   },
-  onLoad: function onLoad() {
+  onShow: function onShow() {
     this.getToken();
     // 调用获取收益信息的函数
     this.getWithdraw();
+    // 获取经纪人提现记录
+    this.getWithdrawList();
   },
   methods: {
+    // 获取经纪人提现记录
+    getWithdrawList: function getWithdrawList() {
+      var that = this;
+      uni.request({
+        url: 'http://www.vzoyo.com/api/user/withdrawList',
+        header: { token: this.token },
+        data: { page: that.page },
+        success: function success(res) {
+          if (res.data.data.lists) {
+            that.haslist = 0;
+          }
+          console.log(res.data.data);
+          that.widthdrawList = res.data.data.lists;
+          if (res.data.data.has_next == 0) {
+            this.hasNextpage = true;
+          } else {
+            this.hasNextpage = false;
+          }
+          if (this.page > 1) {
+            this.hasprepage = false;
+          } else {
+            this.hasprepage = true;
+          }
+        } });
+
+    },
+    // 上一页列表
+    getPrepage: function getPrepage() {
+      this.page = this.page - 1;
+      this.getWithdrawList();
+    },
+    // 下一页列表
+    getNextpage: function getNextpage() {
+      this.page = this.page + 1;
+      this.getWithdrawList();
+    },
     // 获取token
     getToken: function getToken() {
       this.token = uni.getStorageSync('token');
@@ -229,7 +301,6 @@ var _default =
         method: 'POST',
         header: { token: this.token },
         success: function success(res) {
-          console.log(res);
           that.all = res.data.data.total_money;
           that.lasmo = res.data.data.before_yester_money;
           that.yester = res.data.data.yester_money;
@@ -241,9 +312,6 @@ var _default =
       this.showMonmodal = true;
     },
     closeModal: function closeModal() {
-      this.showMonmodal = false;
-    },
-    bindBtn: function bindBtn(type) {
       this.showMonmodal = false;
     },
     // 关于模态框的函数
@@ -260,7 +328,12 @@ var _default =
           money: that.form.cashMoney },
 
         success: function success(res) {
-          console.log(res);
+          if (res.code !== 1) {
+            console.log(res.data.msg);
+          } else {
+            console.log(res.data.msg);
+            this.getWithdrawList();
+          }
         } });
 
     } } };exports.default = _default;

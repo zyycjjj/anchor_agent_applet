@@ -47,24 +47,27 @@
 
 			<!-- 添加主播信息模态框 -->
 			<neil-modal :show="show4" :autoClose="true" :showCancel="false" @close="closeModal" title="新主播信息" @cancel="bindBtn('cancel')" @confirm="addzbinfo()">
-				<view class="input-view">
-					<view class="mtk-input input-name">
-						<view>抖音账号</view>
-						<input type="text" placeholder="请输入抖音号" v-model="anchorInfo.third_user_id" />
+				<form>
+					<view class="input-view">
+						<view class="mtk-input input-name">
+							<view>抖音账号</view>
+							<input type="text" placeholder="请输入抖音号" v-model="anchorInfo.third_user_id" />
+						</view>
+						<view class="mtk-input input-password">
+							<view>真实姓名</view>
+							<input type="text" placeholder="请输入真实姓名" v-model="anchorInfo.real_name" />
+						</view>
+						<view class="mtk-input input-password">
+							<view>手机号码</view>
+							<input type="text" number placeholder="请输入手机号码" v-model="anchorInfo.mobile" />
+						</view>
+						<view class="mtk-input input-password">
+							<view>分账比例</view>
+							<input type="text" placeholder="45%+5%" disabled />
+						</view>
 					</view>
-					<view class="mtk-input input-password">
-						<view>真实姓名</view>
-						<input type="text" placeholder="请输入真实姓名" v-model="anchorInfo.real_name" />
-					</view>
-					<view class="mtk-input input-password">
-						<view>手机号码</view>
-						<input type="text" number placeholder="请输入手机号码" v-model="anchorInfo.mobile" />
-					</view>
-					<view class="mtk-input input-password">
-						<view>分账比例</view>
-						<input type="text" placeholder="45%+5%" disabled />
-					</view>
-				</view>
+				</form>
+				
 			</neil-modal>
 		</view>
 	</view>
@@ -146,9 +149,7 @@ export default {
 			this.token = uni.getStorageSync('token');
 		},
 		setNoticebar() {
-			console.log(this.$refs.noticebar.text)
 			this.$refs.noticebar.text = this.rank_string
-			console.log(this.$refs.noticebar.text)
 		},
 		// 获取主播列表信息
 		getZblist() {
@@ -171,11 +172,14 @@ export default {
 		// 获取主播收益数据
 		getZbdata() {
 			// console.log('获取主播收益信息');
+			const that = this
 			uni.request({
 				url:'http://www.vzoyo.com/api/anchor/AnchorData',
-				data:{date:this.date,page:this.page},
+				data:{date:this.time,page:this.page},
 				header: { token: this.token },
 				success(res) {
+					console.log(res)
+					that.zbdata = res.data.data
 				}
 			})
 		},
@@ -223,6 +227,7 @@ export default {
 			// 发请求提交主播信息
 			console.log('提交');
 			// 先做表单校验，再发请求提交
+			const that = this
 			uni.request({
 				url: 'http://www.vzoyo.com/api/anchor/create',
 				method: 'POST',
@@ -232,16 +237,16 @@ export default {
 					token: this.token
 				},
 				success(res) {
-					this.anchorInfo = {};
-					this.getZblist();
-					this.show4 = false;
+					that.anchorInfo = {};
+					that.getZblist();
+					// this.show4 = false;
 				}
 			});
 			// 提交后重新获取主播列表数据
 		},
 		// 时间选择器相关函数
 		btnConfirm(e) {
-			// console.log('确定时间为：', e);
+			console.log('确定时间为：', e);
 			this.time = e.value;
 			this.title = '当前选择时间';
 		},

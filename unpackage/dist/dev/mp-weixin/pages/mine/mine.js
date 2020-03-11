@@ -138,113 +138,141 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 112));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {
+  components: { uniSection: uniSection },
   data: function data() {
     return {
       // 微信昵称
-      nickname: '陌上花',
+      nickname: '',
+      center: {},
       // 主播数
-      num: 3,
+      num: '',
       // 总收益
-      all: 120,
+      all: '',
       // 可提现金额
-      could: 120.02,
+      ablemoney: '',
       // 提现模态框的显示隐藏
       showMonmodal: false,
       // 用户信息
-      userinfo: {} };
+      userinfo: {},
+      token: '',
+      form: {
+        cashMoney: '' } };
+
 
   },
   onLoad: function onLoad() {
+    this.getToken();
     this.getuserInfo();
   },
+  onShow: function onShow() {
+    this.getMineinfo();
+  },
   methods: {
+    getToken: function getToken() {
+      this.token = uni.getStorageSync('token');
+    },
+    getMineinfo: function getMineinfo() {
+      var that = this;
+      uni.request({
+        url: 'http://www.vzoyo.com/api/user/userCenter',
+        header: { token: this.token },
+        success: function success(res) {
+          // if(res.data.data.code == 1){
+          that.ablemoney = res.data.data.able_money.toString();
+          console.log(typeof res.data.data.anchor_num);
+          that.num = res.data.data.anchor_num.toString();
+          that.all = res.data.data.money;
+          // }
+        } });
+
+    },
     getuserInfo: function getuserInfo() {
       this.userinfo = uni.getStorageSync('userinfo');
-      console.log(this.userinfo);
     },
     getMoney: function getMoney() {
       this.showMonmodal = true;
-      console.log(123);
     },
     handleContact: function handleContact(e) {
       console.log(e.detail.path);
@@ -253,9 +281,29 @@ var _default =
     closeModal: function closeModal() {
       this.showMonmodal = false;
     },
-    getRmb: function getRmb() {
-      // 提现 点击提现 验证提现金额是否合法 发送请求 关闭模态框
-      this.showMonmodal = false;
+    // 关于模态框的函数
+    withdraw: function withdraw() {
+      console.log(12313123132313123131312);
+      var that = this;
+      uni.request({
+        url: 'http://www.vzoyo.com/api/user/applyWithdraw',
+        method: 'POST',
+        header: {
+          token: this.token,
+          'Content-Type': 'application/x-www-form-urlencoded' },
+
+        data: {
+          money: that.form.cashMoney },
+
+        success: function success(res) {
+          if (res.code !== 1) {
+            console.log(res.data.msg);
+          } else {
+            console.log(res.data.msg);
+            this.getWithdrawList();
+          }
+        } });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

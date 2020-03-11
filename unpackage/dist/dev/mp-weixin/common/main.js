@@ -102,7 +102,6 @@ __webpack_require__.r(__webpack_exports__);
   onShow: function onShow() {
     wx.getSetting({
       success: function success(res) {
-        console.log(res);
         if (!res.authSetting['scope.userInfo']) {
           uni.navigateTo({
             url: '/pages/authorise/authorise' });
