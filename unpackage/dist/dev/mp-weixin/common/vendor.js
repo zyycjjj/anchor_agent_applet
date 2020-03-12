@@ -8633,6 +8633,41 @@ main();
 
 /***/ }),
 
+/***/ 53:
+/*!******************************************!*\
+  !*** G:/uni-app/jjr-wx/utils/request.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.request = void 0;function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var request = function request(params) {
+  // 写一个baseUrl，好看
+  var baseUrl = "http://www.vzoyo.com";
+  // 自动添加请求头
+  var head = {};
+  if (!params.url.includes("/MiniProgramLogin")) {
+    head["token"] = uni.getStorageSync('token');
+  }
+  head['Content-Type'] = 'application/x-www-form-urlencoded';
+  return new Promise(function (resolve, reject) {
+    uni.request(_objectSpread({},
+    params, {
+      url: baseUrl + params.url,
+      header: head,
+      success: function success(res) {
+        resolve(res);
+      },
+      fail: function fail(err) {
+        reject(err);
+      } }));
+
+  });
+};exports.request = request;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
 /***/ 6:
 /*!******************************************************!*\
   !*** ./node_modules/@dcloudio/uni-stat/package.json ***!
@@ -8668,7 +8703,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 
-/***/ 95:
+/***/ 96:
 /*!*******************************************************!*\
   !*** G:/uni-app/jjr-wx/components/uni-icons/icons.js ***!
   \*******************************************************/

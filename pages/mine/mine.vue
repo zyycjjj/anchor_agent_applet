@@ -79,6 +79,7 @@
 
 <script>
 import uniSection from '../../components/uni-section/uni-section.vue';
+import { request } from '../../utils/request.js';
 export default {
 	components: { uniSection },
 	data() {
@@ -98,7 +99,7 @@ export default {
 			userinfo: {},
 			token: '',
 			form: {
-				cashMoney:''
+				cashMoney: ''
 			}
 		};
 	},
@@ -115,17 +116,14 @@ export default {
 		},
 		getMineinfo() {
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/user/userCenter',
-				header: { token: this.token },
-				success(res) {
-					// if(res.data.data.code == 1){
-					that.ablemoney = res.data.data.able_money.toString();
-					console.log(typeof res.data.data.anchor_num);
-					that.num = res.data.data.anchor_num.toString();
-					that.all = res.data.data.money;
-					// }
-				}
+			request({
+				url: '/api/user/userCenter'
+			}).then(res => {
+				// if(res.data.data.code == 1){
+				that.ablemoney = res.data.data.able_money.toString();
+				that.num = res.data.data.anchor_num.toString();
+				that.all = res.data.data.money;
+				// }
 			});
 		},
 		getuserInfo() {
@@ -143,26 +141,21 @@ export default {
 		},
 		// 关于模态框的函数
 		withdraw() {
-			console.log(12313123132313123131312)
+			console.log(12313123132313123131312);
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/user/applyWithdraw',
+			request({
+				url: '/api/user/applyWithdraw',
 				method: 'POST',
-				header: {
-					token: this.token,
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
 				data: {
 					money: that.form.cashMoney
-				},
-				success(res) {
-					if (res.code !== 1) {
-						console.log(res.data.msg);
-					} else {
-						console.log(res.data.msg);
-						this.getMineinfo();
-						this.getWithdrawList();
-					}
+				}
+			}).then(res => {
+				if (res.code !== 1) {
+					console.log(res.data.msg);
+				} else {
+					console.log(res.data.msg);
+					this.getMineinfo();
+					this.getWithdrawList();
 				}
 			});
 		}

@@ -108,13 +108,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-tag": () =>
-    __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 76)),
+    __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 77)),
   "uni-notice-bar": () =>
-    __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 83)),
+    __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! @/components/uni-notice-bar/uni-notice-bar.vue */ 84)),
   "uni-icons": () =>
-    Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 90)),
+    Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 91)),
   "neil-modal": () =>
-    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 98))
+    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 99))
 }
 var render = function() {
   var _vm = this
@@ -160,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _components$beforeCre;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 105));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 98));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 76));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 112));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 83));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 119));};var _default = (_components$beforeCre = {
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -255,6 +255,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+var _request = __webpack_require__(/*! ../../utils/request.js */ 53);var _components$beforeCre;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 106));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 84));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 120));};var _default = (_components$beforeCre = {
 
   components: {
     segmentedControl: segmentedControl,
@@ -336,49 +347,44 @@ __webpack_require__.r(__webpack_exports__);
   // 获取主播列表信息
   getZblist: function getZblist() {
     var that = this;
-    uni.request({
-      url: 'http://www.vzoyo.com/api/anchor/lists',
-      header: { token: this.token },
-      success: function success(res) {
-        if (res.data.data.list) {
-          that.zblist = res.data.data.list;
-          that.rank_string = res.data.data.rank_string;
-          that.haszblist = 1;
-        } else {
-          that.haszblist = 0;
-        }
-      } });
-
+    (0, _request.request)({
+      url: '/api/anchor/lists',
+      method: 'GET' }).
+    then(function (res) {
+      if (res.data.data.list) {
+        that.zblist = res.data.data.list;
+        that.rank_string = res.data.data.rank_string;
+        that.haszblist = 1;
+      } else {
+        that.haszblist = 0;
+      }
+    });
     // 获取的返回值如果有 就把haszblist赋值为1，否则赋值为0
   },
   // 获取主播收益数据
   getZbdata: function getZbdata() {
     // console.log('获取主播收益信息');
     var that = this;
-    uni.request({
-      url: 'http://www.vzoyo.com/api/anchor/AnchorData',
-      data: { date: this.date, page: this.page },
-      header: { token: this.token },
-      success: function success(res) {
-        if (res.data.data.length != 0) {
-          that.haszbdata = 1;
-        } else {
-          that.haszbdata = 0;
-        }
-        that.zbdata = res.data.data;
-      } });
-
+    (0, _request.request)({
+      url: '/api/anchor/AnchorData',
+      data: { date: this.date, page: this.page } }).
+    then(function (res) {
+      if (res.data.data.length != 0) {
+        that.haszbdata = 1;
+      } else {
+        that.haszbdata = 0;
+      }
+      that.zbdata = res.data.data;
+    });
   },
   // 获取排行榜数据
   getRanklist: function getRanklist() {
     var that = this;
-    uni.request({
-      url: 'http://www.vzoyo.com/api/Rank/yesterList',
-      header: { token: this.token },
-      success: function success(res) {
-        that.ranklist = res.data.data;
-      } });
-
+    (0, _request.request)({
+      url: '/api/Rank/yesterList' }).
+    then(function (res) {
+      that.ranklist = res.data.data;
+    });
   },
   // 点击跳转到排行榜列表页
   navagateto: function navagateto() {
@@ -413,20 +419,14 @@ __webpack_require__.r(__webpack_exports__);
     console.log('提交');
     // 先做表单校验，再发请求提交
     var that = this;
-    uni.request({
-      url: 'http://www.vzoyo.com/api/anchor/create',
+    (0, _request.request)({
+      url: '/api/anchor/create',
       method: 'POST',
-      data: this.anchorInfo,
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        token: this.token },
-
-      success: function success(res) {
-        that.anchorInfo = {};
-        that.getZblist();
-        // this.show4 = false;
-      } });
-
+      data: this.anchorInfo }).
+    then(function (res) {
+      that.anchorInfo = {};
+      that.getZblist();
+    });
     // 提交后重新获取主播列表数据
   },
   // 时间选择器相关函数

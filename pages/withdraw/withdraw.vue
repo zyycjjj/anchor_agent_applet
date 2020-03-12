@@ -46,14 +46,18 @@
 						</view>
 						<view class="statuscontainer">
 							<text class="status" v-if="item.status != 0">{{ item.transfertime_text }}</text>
-							<uni-tag v-else text="尚未打款" type="warning" :inverted="true" :circle="true" size="small"/>
+							<uni-tag v-else text="尚未打款" type="warning" :inverted="true" :circle="true" size="small" />
 						</view>
 					</view>
 				</view>
 				<!-- 放一个分页组件 -->
 				<view class="pagenation">
-					<button type="primary" :disabled="hasprepage" @tap='getPrepage' size="mini" plain="true" style="float: left;margin-left: 40rpx;margin-top: 20rpx;">上一页</button>
-					<button type="primary" :disabled="hasNextpage" @tap='getNextpage' size="mini" plain="true" style="float: right;margin-right: 40rpx;margin-top: 20rpx;">下一页</button>
+					<button type="primary" :disabled="hasprepage" @tap="getPrepage" size="mini" plain="true" style="float: left;margin-left: 40rpx;margin-top: 20rpx;">
+						上一页
+					</button>
+					<button type="primary" :disabled="hasNextpage" @tap="getNextpage" size="mini" plain="true" style="float: right;margin-right: 40rpx;margin-top: 20rpx;">
+						下一页
+					</button>
 				</view>
 			</view>
 		</view>
@@ -73,6 +77,7 @@
 <script>
 import unitag from '../../components/uni-tag/uni-tag.vue';
 import uniSection from '../../components/uni-section/uni-section.vue';
+import { request } from '../../utils/request.js';
 export default {
 	components: { unitag, uniSection },
 	data() {
@@ -102,7 +107,7 @@ export default {
 			// 是否有上一页
 			hasprepage: true,
 			// 是否有下一页
-			hasNextpage:true
+			hasNextpage: true
 		};
 	},
 	onShow() {
@@ -116,38 +121,36 @@ export default {
 		// 获取经纪人提现记录
 		getWithdrawList() {
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/user/withdrawList',
-				header: { token: this.token },
-				data: {page:that.page},
-				success(res) {
-					if(res.data.data.lists){
-						that.haslist = 0
-					}
-					console.log(res.data.data)
-					that.widthdrawList = res.data.data.lists;
-					if(res.data.data.has_next == 0){
-						this.hasNextpage = true
-					}else{
-						this.hasNextpage = false
-					}
-					if(this.page > 1){
-						this.hasprepage = false
-					}else{
-						this.hasprepage = true
-					}
+			request({
+				url: '/api/user/withdrawList',
+				data: { page: that.page }
+			}).then(res => {
+				if (res.data.data.lists) {
+					that.haslist = 0;
+				}
+				console.log(res.data.data);
+				that.widthdrawList = res.data.data.lists;
+				if (res.data.data.has_next == 0) {
+					this.hasNextpage = true;
+				} else {
+					this.hasNextpage = false;
+				}
+				if (this.page > 1) {
+					this.hasprepage = false;
+				} else {
+					this.hasprepage = true;
 				}
 			});
 		},
 		// 上一页列表
-		getPrepage (){
-			this.page = this.page - 1
-			this.getWithdrawList()
+		getPrepage() {
+			this.page = this.page - 1;
+			this.getWithdrawList();
 		},
 		// 下一页列表
-		getNextpage (){
-			this.page = this.page +1
-			this.getWithdrawList()
+		getNextpage() {
+			this.page = this.page + 1;
+			this.getWithdrawList();
 		},
 		// 获取token
 		getToken() {
@@ -156,16 +159,14 @@ export default {
 		getWithdraw() {
 			// 获取收益信息，更新数据，绑定数据
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/user/cashShow',
-				method: 'POST',
-				header: { token: this.token },
-				success(res) {
-					that.all = res.data.data.total_money;
-					that.lasmo = res.data.data.before_yester_money;
-					that.yester = res.data.data.yester_money;
-					that.wimoney = res.data.data.able_money;
-				}
+			request({
+				url: '/api/user/cashShow',
+				method: 'POST'
+			}).then(res => {
+				that.all = res.data.data.total_money;
+				that.lasmo = res.data.data.before_yester_money;
+				that.yester = res.data.data.yester_money;
+				that.wimoney = res.data.data.able_money;
 			});
 		},
 		getMoney() {
@@ -177,24 +178,21 @@ export default {
 		// 关于模态框的函数
 		withdraw() {
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/user/applyWithdraw',
+			request({
+				url: '/api/user/applyWithdraw',
 				method: 'POST',
-				header: {
-					token: this.token,
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
 				data: {
 					money: that.form.cashMoney
-				},
-				success(res) {
-					if (res.code !== 1) {
-						console.log(res.data.msg);
-					} else {
-						console.log(res.data.msg);
-						this.getWithdraw()
-						this.getWithdrawList()
-					}
+				}
+			}).then(res => {
+				if (res.code !== 1) {
+					console.log(res.data.msg);
+					this.getWithdraw();
+					this.getWithdrawList();
+				} else {
+					console.log(res.data.msg);
+					this.getWithdraw();
+					this.getWithdrawList();
 				}
 			});
 		}
@@ -310,7 +308,7 @@ export default {
 			float: left;
 			font-size: 27rpx;
 			position: relative;
-			.uni-tag{
+			.uni-tag {
 				text-indent: 0;
 				position: absolute;
 				left: 30%;
@@ -320,15 +318,15 @@ export default {
 		.moneycontainer {
 			width: 20%;
 		}
-		.statuscontainer{
+		.statuscontainer {
 			height: 33px;
 		}
 	}
-	.pagenation{
+	.pagenation {
 		// display: flex;
 		// flex-direction: row;
 		// justify-content: space-between;
-		button{
+		button {
 			text-indent: 0;
 		}
 	}

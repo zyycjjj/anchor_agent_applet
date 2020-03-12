@@ -6,18 +6,14 @@ export default {
 		wx.getSetting({
 			success(res) {
 				if (!res.authSetting['scope.userInfo']) {
-					uni.navigateTo({
-						url: '/pages/authorise/authorise'
+					uni.reLaunch({
+						url:'/pages/authorise/authorise'
 					})
-					// ({
-					// 	url: '/pages/authorise/authorise'
-					// });
 				}
 			}
 		});
 	},
 	onHide: function() {
-		console.log('App Hide');
 	}
 };
 </script>

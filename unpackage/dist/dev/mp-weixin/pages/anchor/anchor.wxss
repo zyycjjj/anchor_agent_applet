@@ -187,7 +187,7 @@ timeSelector {
 .zbdata .zbdataItem view {
   width: 25%;
   float: left;
-  color: #8B8BA9;
+  color: #8b8ba9;
   height: 30px;
   line-height: 30px;
 }

@@ -97,9 +97,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-icons": () =>
-    Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 90)),
+    Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 91)),
   "neil-modal": () =>
-    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 98))
+    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 99))
 }
 var render = function() {
   var _vm = this
@@ -138,7 +138,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 112));};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -219,6 +219,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var _request = __webpack_require__(/*! ../../utils/request.js */ 53);var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { uniSection: uniSection },
   data: function data() {
@@ -255,18 +256,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     getMineinfo: function getMineinfo() {
       var that = this;
-      uni.request({
-        url: 'http://www.vzoyo.com/api/user/userCenter',
-        header: { token: this.token },
-        success: function success(res) {
-          // if(res.data.data.code == 1){
-          that.ablemoney = res.data.data.able_money.toString();
-          console.log(typeof res.data.data.anchor_num);
-          that.num = res.data.data.anchor_num.toString();
-          that.all = res.data.data.money;
-          // }
-        } });
-
+      (0, _request.request)({
+        url: '/api/user/userCenter' }).
+      then(function (res) {
+        // if(res.data.data.code == 1){
+        that.ablemoney = res.data.data.able_money.toString();
+        that.num = res.data.data.anchor_num.toString();
+        that.all = res.data.data.money;
+        // }
+      });
     },
     getuserInfo: function getuserInfo() {
       this.userinfo = uni.getStorageSync('userinfo');
@@ -282,29 +280,24 @@ __webpack_require__.r(__webpack_exports__);
       this.showMonmodal = false;
     },
     // 关于模态框的函数
-    withdraw: function withdraw() {
+    withdraw: function withdraw() {var _this = this;
       console.log(12313123132313123131312);
       var that = this;
-      uni.request({
-        url: 'http://www.vzoyo.com/api/user/applyWithdraw',
+      (0, _request.request)({
+        url: '/api/user/applyWithdraw',
         method: 'POST',
-        header: {
-          token: this.token,
-          'Content-Type': 'application/x-www-form-urlencoded' },
-
         data: {
-          money: that.form.cashMoney },
+          money: that.form.cashMoney } }).
 
-        success: function success(res) {
-          if (res.code !== 1) {
-            console.log(res.data.msg);
-          } else {
-            console.log(res.data.msg);
-            this.getMineinfo();
-            this.getWithdrawList();
-          }
-        } });
-
+      then(function (res) {
+        if (res.code !== 1) {
+          console.log(res.data.msg);
+        } else {
+          console.log(res.data.msg);
+          _this.getMineinfo();
+          _this.getWithdrawList();
+        }
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

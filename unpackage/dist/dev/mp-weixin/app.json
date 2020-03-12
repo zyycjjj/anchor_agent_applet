@@ -47,8 +47,8 @@
       }
     ]
   },
+  "permission": {},
   "usingComponents": {
     "uni-pop": "/components/uni-popup/uni-popup"
-  },
-  "sitemapLocation": "sitemap38.json"
+  }
 }

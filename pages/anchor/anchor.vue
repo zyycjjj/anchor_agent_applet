@@ -39,22 +39,32 @@
 					</view>
 				</timeSelector>
 				<!-- 根据主播数据是否为空来判断是否居中显示添加新主播按钮 -->
-				<view class="addzb" @tap="bindClick()"  v-if="haszbdata == 0">
+				<view class="addzb" @tap="bindClick()" v-if="haszbdata == 0">
 					<i class="iconfont icon-tianjia"></i>
 					<text style="color:grey">添加新主播</text>
 				</view>
-				<view class="zbdata" v-else v-for="item in zbdata" :key='item.createtime'>
+				<view class="zbdata" v-else>
 					<view class="tit">
 						<view><text>抖音账号</text></view>
 						<view><text>真实姓名</text></view>
 						<view><text>收益金额</text></view>
 						<view><text>印票</text></view>
 					</view>
-					<view class="zbdataItem">
-						<view><text class="third_anchorId">{{item.third_anchorId}}</text></view>
-						<view><text class="anchor_name">{{item.anchor_name}}</text></view>
-						<view><text class="money">{{item.money}}</text></view>
-						<view><text class="ticket">{{item.ticket}}</text></view>
+					<view v-for="item in zbdata" :key="item.createtime">
+						<view class="zbdataItem">
+							<view>
+								<text class="third_anchorId">{{ item.third_anchorId }}</text>
+							</view>
+							<view>
+								<text class="anchor_name">{{ item.anchor_name }}</text>
+							</view>
+							<view>
+								<text class="money">{{ item.money }}</text>
+							</view>
+							<view>
+								<text class="ticket">{{ item.ticket }}</text>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -93,6 +103,7 @@ import uniTag from '../../components/uni-tag/uni-tag.vue';
 import uniSection from '../../components/uni-section/uni-section.vue';
 import uniNoticebar from '../../components/uni-notice-bar/uni-notice-bar.vue';
 import timeSelector from '../../components/wing-time-selector/wing-time-selector.vue';
+import { request } from '../../utils/request.js';
 export default {
 	components: {
 		segmentedControl,
@@ -159,11 +170,11 @@ export default {
 		this.getZbdata();
 	},
 	methods: {
-		setEnddate(){
-			let endtimeYear = new Date().getFullYear()
-			let endtimeMonth = new Date().getMonth()+1
-			let endtimeDay = new Date().getDate()-1
-			this.endDate = `${endtimeYear}-${endtimeMonth}-${endtimeDay}`
+		setEnddate() {
+			let endtimeYear = new Date().getFullYear();
+			let endtimeMonth = new Date().getMonth() + 1;
+			let endtimeDay = new Date().getDate() - 1;
+			this.endDate = `${endtimeYear}-${endtimeMonth}-${endtimeDay}`;
 		},
 		getToken() {
 			this.token = uni.getStorageSync('token');
@@ -174,17 +185,16 @@ export default {
 		// 获取主播列表信息
 		getZblist() {
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/anchor/lists',
-				header: { token: this.token },
-				success(res) {
-					if (res.data.data.list) {
-						that.zblist = res.data.data.list;
-						that.rank_string = res.data.data.rank_string;
-						that.haszblist = 1;
-					} else {
-						that.haszblist = 0;
-					}
+			request({
+				url: '/api/anchor/lists',
+				method: 'GET'
+			}).then(res => {
+				if (res.data.data.list) {
+					that.zblist = res.data.data.list;
+					that.rank_string = res.data.data.rank_string;
+					that.haszblist = 1;
+				} else {
+					that.haszblist = 0;
 				}
 			});
 			// 获取的返回值如果有 就把haszblist赋值为1，否则赋值为0
@@ -193,29 +203,25 @@ export default {
 		getZbdata() {
 			// console.log('获取主播收益信息');
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/anchor/AnchorData',
-				data: { date: this.date, page: this.page },
-				header: { token: this.token },
-				success(res) {
-					if(res.data.data.length != 0){
-						that.haszbdata = 1
-					}else{
-						that.haszbdata = 0
-					}
-					that.zbdata = res.data.data;
+			request({
+				url: '/api/anchor/AnchorData',
+				data: { date: this.date, page: this.page }
+			}).then(res => {
+				if (res.data.data.length != 0) {
+					that.haszbdata = 1;
+				} else {
+					that.haszbdata = 0;
 				}
+				that.zbdata = res.data.data;
 			});
 		},
 		// 获取排行榜数据
 		getRanklist() {
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/Rank/yesterList',
-				header: { token: this.token },
-				success(res) {
-					that.ranklist = res.data.data;
-				}
+			request({
+				url: '/api/Rank/yesterList'
+			}).then(res => {
+				that.ranklist = res.data.data;
 			});
 		},
 		// 点击跳转到排行榜列表页
@@ -251,19 +257,13 @@ export default {
 			console.log('提交');
 			// 先做表单校验，再发请求提交
 			const that = this;
-			uni.request({
-				url: 'http://www.vzoyo.com/api/anchor/create',
+			request({
+				url: '/api/anchor/create',
 				method: 'POST',
-				data: this.anchorInfo,
-				header: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-					token: this.token
-				},
-				success(res) {
-					that.anchorInfo = {};
-					that.getZblist();
-					// this.show4 = false;
-				}
+				data: this.anchorInfo
+			}).then(res => {
+				that.anchorInfo = {};
+				that.getZblist();
 			});
 			// 提交后重新获取主播列表数据
 		},
@@ -271,7 +271,7 @@ export default {
 		btnConfirm(e) {
 			this.time = e.key;
 			this.date = e.key;
-			this.getZbdata()
+			this.getZbdata();
 		},
 		btnCancel() {
 			// console.log('取消时间：');
@@ -437,26 +437,26 @@ timeSelector {
 	background-color: #ffffff;
 	z-index: 4;
 }
-.zbdata{
+.zbdata {
 	width: 100%;
-	.tit{
+	.tit {
 		width: 100%;
 		text-align: center;
-		view{
+		view {
 			width: 25%;
 			float: left;
 			height: 60px;
-		    line-height: 60px;
+			line-height: 60px;
 		}
 	}
-	.zbdataItem{
+	.zbdataItem {
 		width: 100%;
 		text-align: center;
-		
-		view{
+
+		view {
 			width: 25%;
 			float: left;
-			color: #8B8BA9;
+			color: #8b8ba9;
 			height: 30px;
 			line-height: 30px;
 		}

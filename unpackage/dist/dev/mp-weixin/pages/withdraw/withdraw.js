@@ -97,9 +97,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-tag": () =>
-    __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 76)),
+    __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! @/components/uni-tag/uni-tag.vue */ 77)),
   "neil-modal": () =>
-    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 98))
+    __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! @/components/neil-modal/neil-modal.vue */ 99))
 }
 var render = function() {
   var _vm = this
@@ -138,7 +138,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var unitag = function unitag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 76));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 112));};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -213,6 +213,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+var _request = __webpack_require__(/*! ../../utils/request.js */ 53);var unitag = function unitag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { unitag: unitag, uniSection: uniSection },
   data: function data() {
@@ -254,30 +259,28 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     // 获取经纪人提现记录
-    getWithdrawList: function getWithdrawList() {
+    getWithdrawList: function getWithdrawList() {var _this = this;
       var that = this;
-      uni.request({
-        url: 'http://www.vzoyo.com/api/user/withdrawList',
-        header: { token: this.token },
-        data: { page: that.page },
-        success: function success(res) {
-          if (res.data.data.lists) {
-            that.haslist = 0;
-          }
-          console.log(res.data.data);
-          that.widthdrawList = res.data.data.lists;
-          if (res.data.data.has_next == 0) {
-            this.hasNextpage = true;
-          } else {
-            this.hasNextpage = false;
-          }
-          if (this.page > 1) {
-            this.hasprepage = false;
-          } else {
-            this.hasprepage = true;
-          }
-        } });
-
+      (0, _request.request)({
+        url: '/api/user/withdrawList',
+        data: { page: that.page } }).
+      then(function (res) {
+        if (res.data.data.lists) {
+          that.haslist = 0;
+        }
+        console.log(res.data.data);
+        that.widthdrawList = res.data.data.lists;
+        if (res.data.data.has_next == 0) {
+          _this.hasNextpage = true;
+        } else {
+          _this.hasNextpage = false;
+        }
+        if (_this.page > 1) {
+          _this.hasprepage = false;
+        } else {
+          _this.hasprepage = true;
+        }
+      });
     },
     // 上一页列表
     getPrepage: function getPrepage() {
@@ -296,17 +299,15 @@ __webpack_require__.r(__webpack_exports__);
     getWithdraw: function getWithdraw() {
       // 获取收益信息，更新数据，绑定数据
       var that = this;
-      uni.request({
-        url: 'http://www.vzoyo.com/api/user/cashShow',
-        method: 'POST',
-        header: { token: this.token },
-        success: function success(res) {
-          that.all = res.data.data.total_money;
-          that.lasmo = res.data.data.before_yester_money;
-          that.yester = res.data.data.yester_money;
-          that.wimoney = res.data.data.able_money;
-        } });
-
+      (0, _request.request)({
+        url: '/api/user/cashShow',
+        method: 'POST' }).
+      then(function (res) {
+        that.all = res.data.data.total_money;
+        that.lasmo = res.data.data.before_yester_money;
+        that.yester = res.data.data.yester_money;
+        that.wimoney = res.data.data.able_money;
+      });
     },
     getMoney: function getMoney() {
       this.showMonmodal = true;
@@ -315,28 +316,25 @@ __webpack_require__.r(__webpack_exports__);
       this.showMonmodal = false;
     },
     // 关于模态框的函数
-    withdraw: function withdraw() {
+    withdraw: function withdraw() {var _this2 = this;
       var that = this;
-      uni.request({
-        url: 'http://www.vzoyo.com/api/user/applyWithdraw',
+      (0, _request.request)({
+        url: '/api/user/applyWithdraw',
         method: 'POST',
-        header: {
-          token: this.token,
-          'Content-Type': 'application/x-www-form-urlencoded' },
-
         data: {
-          money: that.form.cashMoney },
+          money: that.form.cashMoney } }).
 
-        success: function success(res) {
-          if (res.code !== 1) {
-            console.log(res.data.msg);
-          } else {
-            console.log(res.data.msg);
-            this.getWithdraw();
-            this.getWithdrawList();
-          }
-        } });
-
+      then(function (res) {
+        if (res.code !== 1) {
+          console.log(res.data.msg);
+          _this2.getWithdraw();
+          _this2.getWithdrawList();
+        } else {
+          console.log(res.data.msg);
+          _this2.getWithdraw();
+          _this2.getWithdrawList();
+        }
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
