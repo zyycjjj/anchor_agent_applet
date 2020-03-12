@@ -160,7 +160,13 @@ export default {
 			page: ''
 		};
 	},
-	onLoad() {},
+	onLoad (option) {
+	  console.log(option)
+	  if (option.scene) {
+	    let qrId = decodeURIComponent(option.scene)
+	     // 这里就是你拿着参数qrId进行操作
+	  }
+	},
 	onShow() {
 		this.getToken();
 		this.setEnddate();

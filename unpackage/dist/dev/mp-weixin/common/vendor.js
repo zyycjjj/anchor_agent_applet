@@ -7703,6 +7703,41 @@ internalMixin(Vue);
 
 /***/ }),
 
+/***/ 21:
+/*!******************************************!*\
+  !*** G:/uni-app/jjr-wx/utils/request.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.request = void 0;function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var request = function request(params) {
+  // 写一个baseUrl，好看
+  var baseUrl = "https://www.vzoyo.com";
+  // 自动添加请求头
+  var head = {};
+  if (!params.url.includes("/MiniProgramLogin")) {
+    head["token"] = uni.getStorageSync('token');
+  }
+  head['Content-Type'] = 'application/x-www-form-urlencoded';
+  return new Promise(function (resolve, reject) {
+    uni.request(_objectSpread({},
+    params, {
+      url: baseUrl + params.url,
+      header: head,
+      success: function success(res) {
+        resolve(res);
+      },
+      fail: function fail(err) {
+        reject(err);
+      } }));
+
+  });
+};exports.request = request;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
 /***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -8633,41 +8668,6 @@ main();
 
 /***/ }),
 
-/***/ 53:
-/*!******************************************!*\
-  !*** G:/uni-app/jjr-wx/utils/request.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.request = void 0;function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var request = function request(params) {
-  // 写一个baseUrl，好看
-  var baseUrl = "http://www.vzoyo.com";
-  // 自动添加请求头
-  var head = {};
-  if (!params.url.includes("/MiniProgramLogin")) {
-    head["token"] = uni.getStorageSync('token');
-  }
-  head['Content-Type'] = 'application/x-www-form-urlencoded';
-  return new Promise(function (resolve, reject) {
-    uni.request(_objectSpread({},
-    params, {
-      url: baseUrl + params.url,
-      header: head,
-      success: function success(res) {
-        resolve(res);
-      },
-      fail: function fail(err) {
-        reject(err);
-      } }));
-
-  });
-};exports.request = request;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-
 /***/ 6:
 /*!******************************************************!*\
   !*** ./node_modules/@dcloudio/uni-stat/package.json ***!
@@ -8687,7 +8687,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@alpha","_id":"@dcloudio/uni-stat@2
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/anchor/anchor": { "navigationBarTitleText": "我的主播", "usingComponents": { "segmented-control": "/pages/components/tabbar-own/tabbar-own", "neil-modal": "/components/neil-modal/neil-modal", "uni-tag": "/components/uni-tag/uni-tag", "uni-section": "/components/uni-section/uni-section", "uni-noticebar": "/components/uni-notice-bar/uni-notice-bar", "time-selector": "/components/wing-time-selector/wing-time-selector" }, "usingAutoImportComponents": { "uni-tag": "/components/uni-tag/uni-tag", "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar", "uni-icons": "/components/uni-icons/uni-icons", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/withdraw/withdraw": { "navigationBarTitleText": "提现", "usingComponents": { "unitag": "/components/uni-tag/uni-tag", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-tag": "/components/uni-tag/uni-tag", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/invite/invite": { "navigationBarTitleText": "邀请", "usingComponents": { "uni-icons": "/components/uni-icons/uni-icons", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-icons": "/components/uni-icons/uni-icons" } }, "pages/mine/mine": { "navigationBarTitleText": "个人中心", "usingComponents": { "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-icons": "/components/uni-icons/uni-icons", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/authorise/authorise": { "navigationBarTitleText": "授权", "usingComponents": { "neil-modal": "/components/neil-modal/neil-modal" }, "usingAutoImportComponents": {} }, "pages/anchor/ranklist/ranklist": { "navigationBarTitleText": "提现排行榜", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/mine/help/help": { "usingComponents": {}, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "经纪人云系统", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/anchor/anchor": { "navigationBarTitleText": "我的主播" }, "pages/withdraw/withdraw": { "navigationBarTitleText": "提现" }, "pages/invite/invite": { "navigationBarTitleText": "邀请" }, "pages/mine/mine": { "navigationBarTitleText": "个人中心" }, "pages/authorise/authorise": { "navigationBarTitleText": "授权" }, "pages/anchor/ranklist/ranklist": { "navigationBarTitleText": "提现排行榜" }, "pages/mine/help/help": {} }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "经纪人云系统", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 

@@ -1,6 +1,6 @@
 export const request = (params) => {
 	// 写一个baseUrl，好看
-	const baseUrl = "http://www.vzoyo.com"
+	const baseUrl = "https://www.vzoyo.com"
 	// 自动添加请求头
 	let head = {}
 	if (!params.url.includes("/MiniProgramLogin")) {

@@ -55,6 +55,9 @@ export default {
 			userInfo: {}
 		};
 	},
+	onLoad(option) {
+		console.log(option)
+	},
 	methods: {
 		modalTap: function(e) {
 			//   展示用户协议框
@@ -128,39 +131,6 @@ export default {
 					uni.setStorageSync('code', loginRes.code);
 					that.userInfo.code = loginRes.code;
 					uni.setStorageSync('userinfo', result.detail.userInfo);
-					// uni.request({
-					// 	url: 'http://www.vzoyo.com/api/user/MiniProgramLogin',
-					// 	data: {
-					// 		code: that.userInfo.code,
-					// 		nickname: that.userInfo.nickName,
-					// 		headimage: that.userInfo.avatarUrl,
-					// 		gender: that.userInfo.gender,
-					// 		province: that.userInfo.province,
-					// 		city: that.userInfo.city,
-					// 		country: that.userInfo.country
-					// 	},
-					// 	method: 'POST',
-					// 	header: {
-					// 		'Content-Type': 'application/x-www-form-urlencoded'
-					// 	},
-					// 	success: res => {
-					// 		console.log(res);
-					// 		if (res.data.code != 1) {
-					// 			uni.showModal({
-					// 				title: '登录失败',
-					// 				showCancel: false
-					// 			});
-					// 		} else {
-					// 			// uni.setStorageSync('token', res.data.userinfo.token)
-					// 			uni.setStorageSync('token', res.data.data.userinfo.token);
-					// 			uni.setStorageSync('login', res.data.data.userinfo);
-					// 			// 登陆成功 跳转到tab首页
-					// 			uni.switchTab({
-					// 				url: '/pages/anchor/anchor'
-					// 			});
-					// 		}
-					// 	}
-					// });
 					// 优化过得代码
 					request({
 						url: '/api/user/MiniProgramLogin',
