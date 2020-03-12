@@ -55,7 +55,7 @@
 					<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
 				</li>
 				<li>
-					<navigator url="./help/help" hover-class="navigator-hover">
+					<navigator url="" hover-class="navigator-hover">
 						<uni-icons class="tit iconfont icon-bangzhuzhongxin"></uni-icons>
 						<text>帮助中心</text>
 						<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
@@ -160,6 +160,7 @@ export default {
 						console.log(res.data.msg);
 					} else {
 						console.log(res.data.msg);
+						this.getMineinfo();
 						this.getWithdrawList();
 					}
 				}

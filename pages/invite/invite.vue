@@ -5,14 +5,14 @@
 			<view class="line"></view>
 		</view>
 		<!-- 邀请广告图 -->
-		<view class="img" @tap='getImg'></view>
+		<view class="img" @tap="getImg"></view>
 		<!-- 图片显示邀请码 -->
 		<view class="mask" v-show="imageVis">
-			<uni-icons @tap='closeimg' type="close" size="25"></uni-icons>
-			<image src="../../static/invite/yqimg.jpg" mode=""></image>
+			<uni-icons @tap="closeimg" type="close" size="25"></uni-icons>
+			<image :src="imgUrl" mode="" @tap="preview"></image>
 			<view class="btn-group">
-				<button type="primary" size="mini" @tap='save'>保存相册</button>
-				<button type="primary" size="mini">分享</button>
+				<button type="primary" size="mini" @tap="save">保存相册</button>
+				<button type="primary" size="mini" open-type="share">分享</button>
 			</view>
 		</view>
 	</view>
@@ -26,74 +26,148 @@ export default {
 	data() {
 		return {
 			// 图片显示隐藏
-			imageVis: false
+			imageVis: false,
+			// 邀请二维码的地址
+			imgUrl: '',
+			providerList: []
 		};
 	},
-	methods:{
-		closeimg(){
-			this.imageVis = false
+	onShareAppMessage(res) {
+		if (res.from === 'button') {
+			// 来自页面内分享按钮
+			console.log(res.target);
+		}
+		return {
+			imgUrl: this.imgUrl
+		};
+	},
+	onLoad() {
+		uni.getProvider({
+			service: 'share',
+			success: e => {
+				let data = [];
+				for (let i = 0; i < e.provider.length; i++) {
+					switch (e.provider[i]) {
+						case 'weixin':
+							data.push({
+								name: '分享到微信好友',
+								id: 'weixin'
+							});
+							data.push({
+								name: '分享到微信朋友圈',
+								id: 'weixin',
+								type: 'WXSenceTimeline'
+							});
+							break;
+						case 'qq':
+							data.push({
+								name: '分享到QQ',
+								id: 'qq'
+							});
+							break;
+						default:
+							break;
+					}
+				}
+				this.providerList = data;
+			},
+			fail: e => {
+				console.log('获取分享通道失败', e);
+			}
+		});
+	},
+	methods: {
+		preview() {
+			wx.previewImage({
+				current: this.imgUrl, // 当前显示图片的http链接
+				urls: [this.imgUrl] // 需要预览的图片http链接列表
+			});
 		},
-		getImg(){
+		share(e) {
+			uni.share({
+				provider: 'weixin',
+				scene: 'WXSceneSession',
+				type: 2,
+				imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png',
+				success: function(res) {
+					console.log('success:' + JSON.stringify(res));
+				},
+				fail: function(err) {
+					console.log(err);
+				}
+			});
+		},
+		closeimg() {
+			this.imageVis = false;
+		},
+		getImg() {
 			// 检测二维码地址是否存在，如果不存在，就发请求拿，如果存在，就赋值改地址
-			this.imageVis = true
+			this.imgUrl = uni.getStorageSync('login').spread_code;
+			console.log(uni.getStorageSync('login'));
+			this.imageVis = true;
 		},
 		//点击保存图片
-		 save () {
-		  let that = this
-		  //若二维码未加载完毕，加个动画提高用户体验
-		  wx.showToast({
-		   icon: 'loading',
-		   title: '正在保存图片',
-		   duration: 1000
-		  })
-		  //判断用户是否授权"保存到相册"
-		  wx.getSetting({
-		   success (res) {
-		    //没有权限，发起授权
-		    if (!res.authSetting['scope.writePhotosAlbum']) {
-		     wx.authorize({
-		      scope: 'scope.writePhotosAlbum',
-		      success () {//用户允许授权，保存图片到相册
-		       that.savePhoto();
-		      },
-		      fail () {//用户点击拒绝授权，跳转到设置页，引导用户授权
-		       wx.openSetting({
-		        success () {
-		         wx.authorize({
-		          scope: 'scope.writePhotosAlbum',
-		          success() {
-		           that.savePhoto();
-		          }
-		         })
-		        }
-		       })
-		      }
-		     })
-		    } else {//用户已授权，保存到相册
-		     that.savePhoto()
-		    }
-		   }
-		  })
-		 },
+		save() {
+			let that = this;
+			//若二维码未加载完毕，加个动画提高用户体验
+			wx.showToast({
+				icon: 'loading',
+				title: '正在保存图片',
+				duration: 1000
+			});
+			//判断用户是否授权"保存到相册"
+			wx.getSetting({
+				success(res) {
+					//没有权限，发起授权
+					if (!res.authSetting['scope.writePhotosAlbum']) {
+						wx.authorize({
+							scope: 'scope.writePhotosAlbum',
+							success() {
+								//用户允许授权，保存图片到相册
+								that.savePhoto();
+							},
+							fail() {
+								//用户点击拒绝授权，跳转到设置页，引导用户授权
+								wx.openSetting({
+									success() {
+										wx.authorize({
+											scope: 'scope.writePhotosAlbum',
+											success() {
+												that.savePhoto();
+											}
+										});
+									}
+								});
+							}
+						});
+					} else {
+						//用户已授权，保存到相册
+						that.savePhoto();
+					}
+				}
+			});
+		},
 		//保存图片到相册，提示保存成功
-		 savePhoto() {
-		  let that = this
-		  wx.downloadFile({
-		   url: that.data.imgUrl,
-		   success: function (res) {
-		    wx.saveImageToPhotosAlbum({
-		     filePath: res.tempFilePath,
-		     success(res) {
-		      wx.showToast({
-		       title: '保存成功',
-		       icon: "success",
-		       duration: 1000
-		      })
-		     }
-		    })
-		   }
-		  })
-		 }
+		savePhoto() {
+			let that = this;
+			wx.downloadFile({
+				url: that.imgUrl,
+				success: function(res) {
+					wx.saveImageToPhotosAlbum({
+						filePath: res.tempFilePath,
+						success(res) {
+							console.log(res);
+							wx.showToast({
+								title: '保存成功',
+								icon: 'success',
+								duration: 1000
+							});
+							that.imageVis = false;
+						}
+					});
+				}
+			});
+		}
 	}
 };
 </script>
@@ -122,7 +196,7 @@ export default {
 		height: 300rpx;
 		margin: 30rpx auto;
 		border-radius: 40rpx;
-		background: url(../../static/widthdraw/bg.png)  fixed no-repeat ;
+		background: url(../../static/widthdraw/bg.png) fixed no-repeat;
 		background-size: contain;
 	}
 	.mask {
@@ -132,13 +206,13 @@ export default {
 		padding-top: 18%;
 		text-align: center;
 		top: 0;
-		color: #FFFFFF;
+		color: #ffffff;
 		background-color: rgba(0, 0, 0, 0.5);
 		image {
-			width: 67%;
-			height: 70%;
+			width: 200px;
+			height: 200px;
 		}
-		uni-icons{
+		uni-icons {
 			position: absolute;
 			top: 145rpx;
 			right: 145rpx;

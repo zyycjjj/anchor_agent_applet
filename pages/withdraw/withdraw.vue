@@ -192,6 +192,7 @@ export default {
 						console.log(res.data.msg);
 					} else {
 						console.log(res.data.msg);
+						this.getWithdraw()
 						this.getWithdrawList()
 					}
 				}

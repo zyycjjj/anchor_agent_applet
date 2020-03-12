@@ -170,6 +170,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 {
   components: {
     neilModal: neilModal },
@@ -257,7 +261,6 @@ __webpack_require__.r(__webpack_exports__);
         success: function success(loginRes) {
           uni.setStorageSync('code', loginRes.code);
           that.userInfo.code = loginRes.code;
-          console.log(that.userInfo);
           uni.setStorageSync('userinfo', result.detail.userInfo);
           uni.request({
             url: 'http://www.vzoyo.com/api/user/MiniProgramLogin',
@@ -281,13 +284,16 @@ __webpack_require__.r(__webpack_exports__);
                   showCancel: false });
 
               } else {
-                console.log(res);
                 // uni.setStorageSync('token', res.data.userinfo.token)
                 uni.setStorageSync("token", res.data.data.userinfo.token);
+                uni.setStorageSync("login", res.data.data.userinfo);
                 // 登陆成功 跳转到tab首页
                 uni.navigateBack({
-                  delta: 1 });
+                  delta: 2 });
 
+                // uni.switchTab({
+                // 	url:'/pages/anchor/anchor'
+                // })
               }
 
             } });

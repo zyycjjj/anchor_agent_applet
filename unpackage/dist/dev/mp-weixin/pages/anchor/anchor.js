@@ -243,6 +243,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   components: {
     segmentedControl: segmentedControl,
     neilModal: neilModal,
@@ -271,7 +284,7 @@ __webpack_require__.r(__webpack_exports__);
       // 主播收入数据信息
       zbdata: [],
       // 是否有主播收益数据
-      haszbdata: 1,
+      haszbdata: 0,
       // 排行榜信息
       ranklist: [],
       title: '当前选择器',
@@ -301,12 +314,19 @@ __webpack_require__.r(__webpack_exports__);
 {}), _defineProperty(_components$beforeCre, "onShow", function onShow()
 {
   this.getToken();
+  this.setEnddate();
   this.getZblist();
   this.getRanklist();
   this.setNoticebar();
   this.getZbdata();
 }), _defineProperty(_components$beforeCre, "methods",
 {
+  setEnddate: function setEnddate() {
+    var endtimeYear = new Date().getFullYear();
+    var endtimeMonth = new Date().getMonth() + 1;
+    var endtimeDay = new Date().getDate() - 1;
+    this.endDate = "".concat(endtimeYear, "-").concat(endtimeMonth, "-").concat(endtimeDay);
+  },
   getToken: function getToken() {
     this.token = uni.getStorageSync('token');
   },
@@ -337,10 +357,14 @@ __webpack_require__.r(__webpack_exports__);
     var that = this;
     uni.request({
       url: 'http://www.vzoyo.com/api/anchor/AnchorData',
-      data: { date: this.time, page: this.page },
+      data: { date: this.date, page: this.page },
       header: { token: this.token },
       success: function success(res) {
-        console.log(res);
+        if (res.data.data.length != 0) {
+          that.haszbdata = 1;
+        } else {
+          that.haszbdata = 0;
+        }
         that.zbdata = res.data.data;
       } });
 
@@ -380,7 +404,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   closeModal: function closeModal() {
     this.show4 = false;
-    console.log(this.show4);
   },
   bindBtn: function bindBtn(type) {
     this.show4 = false;
@@ -408,9 +431,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   // 时间选择器相关函数
   btnConfirm: function btnConfirm(e) {
-    console.log('确定时间为：', e);
-    this.time = e.value;
-    this.title = '当前选择时间';
+    this.time = e.key;
+    this.date = e.key;
+    this.getZbdata();
   },
   btnCancel: function btnCancel() {
     // console.log('取消时间：');

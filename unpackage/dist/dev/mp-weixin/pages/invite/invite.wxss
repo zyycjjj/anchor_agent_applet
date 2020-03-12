@@ -31,12 +31,12 @@
   padding-top: 18%;
   text-align: center;
   top: 0;
-  color: #FFFFFF;
+  color: #ffffff;
   background-color: rgba(0, 0, 0, 0.5);
 }
 .invite .mask image {
-  width: 67%;
-  height: 70%;
+  width: 200px;
+  height: 200px;
 }
 .invite .mask uni-icons {
   position: absolute;

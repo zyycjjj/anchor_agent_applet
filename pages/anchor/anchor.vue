@@ -32,16 +32,30 @@
 			<!-- 主播数据 -->
 			<view class="zblist" v-else>
 				<!-- 时间选择器 -->
-				<timeSelector class="picktime" showType="date" @btnConfirm="btnConfirm" @btnCancel="btnCancel" beginDate="2019-12-01" endDate="2020-03-05">
+				<timeSelector class="picktime" showType="date" @btnConfirm="btnConfirm" @btnCancel="btnCancel" beginDate="2019-12-01" :endDate="endDate">
 					<view class="box-time">
 						{{ time }}
 						<uni-icons class="iconfont icon-rili" style="color: red;margin-left: 5rpx;"></uni-icons>
 					</view>
 				</timeSelector>
 				<!-- 根据主播数据是否为空来判断是否居中显示添加新主播按钮 -->
-				<view class="addzb" @tap="bindClick()">
+				<view class="addzb" @tap="bindClick()"  v-if="haszbdata == 0">
 					<i class="iconfont icon-tianjia"></i>
 					<text style="color:grey">添加新主播</text>
+				</view>
+				<view class="zbdata" v-else v-for="item in zbdata" :key='item.createtime'>
+					<view class="tit">
+						<view><text>抖音账号</text></view>
+						<view><text>真实姓名</text></view>
+						<view><text>收益金额</text></view>
+						<view><text>印票</text></view>
+					</view>
+					<view class="zbdataItem">
+						<view><text class="third_anchorId">{{item.third_anchorId}}</text></view>
+						<view><text class="anchor_name">{{item.anchor_name}}</text></view>
+						<view><text class="money">{{item.money}}</text></view>
+						<view><text class="ticket">{{item.ticket}}</text></view>
+					</view>
 				</view>
 			</view>
 
@@ -67,7 +81,6 @@
 						</view>
 					</view>
 				</form>
-				
 			</neil-modal>
 		</view>
 	</view>
@@ -109,7 +122,7 @@ export default {
 			// 主播收入数据信息
 			zbdata: [],
 			// 是否有主播收益数据
-			haszbdata: 1,
+			haszbdata: 0,
 			// 排行榜信息
 			ranklist: [],
 			title: '当前选择器',
@@ -131,25 +144,32 @@ export default {
 			// noticebar文字信息
 			rank_string: '',
 			// 查询时间
-			date:'',
+			date: '',
 			// 查询页码
-			page:''
+			page: ''
 		};
 	},
 	onLoad() {},
 	onShow() {
 		this.getToken();
+		this.setEnddate();
 		this.getZblist();
 		this.getRanklist();
 		this.setNoticebar();
 		this.getZbdata();
 	},
 	methods: {
+		setEnddate(){
+			let endtimeYear = new Date().getFullYear()
+			let endtimeMonth = new Date().getMonth()+1
+			let endtimeDay = new Date().getDate()-1
+			this.endDate = `${endtimeYear}-${endtimeMonth}-${endtimeDay}`
+		},
 		getToken() {
 			this.token = uni.getStorageSync('token');
 		},
 		setNoticebar() {
-			this.$refs.noticebar.text = this.rank_string
+			this.$refs.noticebar.text = this.rank_string;
 		},
 		// 获取主播列表信息
 		getZblist() {
@@ -172,16 +192,20 @@ export default {
 		// 获取主播收益数据
 		getZbdata() {
 			// console.log('获取主播收益信息');
-			const that = this
+			const that = this;
 			uni.request({
-				url:'http://www.vzoyo.com/api/anchor/AnchorData',
-				data:{date:this.time,page:this.page},
+				url: 'http://www.vzoyo.com/api/anchor/AnchorData',
+				data: { date: this.date, page: this.page },
 				header: { token: this.token },
 				success(res) {
-					console.log(res)
-					that.zbdata = res.data.data
+					if(res.data.data.length != 0){
+						that.haszbdata = 1
+					}else{
+						that.haszbdata = 0
+					}
+					that.zbdata = res.data.data;
 				}
-			})
+			});
 		},
 		// 获取排行榜数据
 		getRanklist() {
@@ -218,7 +242,6 @@ export default {
 		},
 		closeModal() {
 			this.show4 = false;
-			console.log(this.show4);
 		},
 		bindBtn(type) {
 			this.show4 = false;
@@ -227,7 +250,7 @@ export default {
 			// 发请求提交主播信息
 			console.log('提交');
 			// 先做表单校验，再发请求提交
-			const that = this
+			const that = this;
 			uni.request({
 				url: 'http://www.vzoyo.com/api/anchor/create',
 				method: 'POST',
@@ -246,9 +269,9 @@ export default {
 		},
 		// 时间选择器相关函数
 		btnConfirm(e) {
-			console.log('确定时间为：', e);
-			this.time = e.value;
-			this.title = '当前选择时间';
+			this.time = e.key;
+			this.date = e.key;
+			this.getZbdata()
 		},
 		btnCancel() {
 			// console.log('取消时间：');
@@ -413,5 +436,30 @@ timeSelector {
 	right: 0;
 	background-color: #ffffff;
 	z-index: 4;
+}
+.zbdata{
+	width: 100%;
+	.tit{
+		width: 100%;
+		text-align: center;
+		view{
+			width: 25%;
+			float: left;
+			height: 60px;
+		    line-height: 60px;
+		}
+	}
+	.zbdataItem{
+		width: 100%;
+		text-align: center;
+		
+		view{
+			width: 25%;
+			float: left;
+			color: #8B8BA9;
+			height: 30px;
+			line-height: 30px;
+		}
+	}
 }
 </style>

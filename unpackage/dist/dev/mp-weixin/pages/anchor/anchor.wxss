@@ -167,4 +167,28 @@ timeSelector {
   background-color: #ffffff;
   z-index: 4;
 }
+.zbdata {
+  width: 100%;
+}
+.zbdata .tit {
+  width: 100%;
+  text-align: center;
+}
+.zbdata .tit view {
+  width: 25%;
+  float: left;
+  height: 60px;
+  line-height: 60px;
+}
+.zbdata .zbdataItem {
+  width: 100%;
+  text-align: center;
+}
+.zbdata .zbdataItem view {
+  width: 25%;
+  float: left;
+  color: #8B8BA9;
+  height: 30px;
+  line-height: 30px;
+}
 

@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "提现",
+  "usingComponents": {
+    "uni-tag": "/components/uni-tag/uni-tag",
+    "neil-modal": "/components/neil-modal/neil-modal",
+    "unitag": "/components/uni-tag/uni-tag",
+    "uni-section": "/components/uni-section/uni-section"
+  }
+}

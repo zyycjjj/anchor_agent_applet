@@ -24,7 +24,11 @@
 					<view class="modal" v-show="show2">
 						<view class="modal_tit">服务协议</view>
 						<view class="mod_info">
-							这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议
+							本协议为您与本小程序管理者质检所订立的契约，请您仔细阅读。
+							本协议内容包括协议正文及已经发布的活将来可能发布的各类规则，所有规则为本协议不可分割的组成部分，与协议正文具有同等法律效力。如您对协议有任何疑问，影响客服咨询。您在同意本协议条款并完成注册程序后，成为本站的正式用户，您点击“同意并继续”按钮后，本协议及生效，对双方阐释约束力，只要您使用本小程序平台服务，本协议既对您产生约束。
+							您确认：<br/>
+							本协议条款是处理双方权利义务的根据。
+							您承诺
 						</view>
 						<view class="btn"><button type="primary" size="mini" open-type="getUserInfo" @getuserinfo="mpGetUserInfo">同意并继续</button></view>
 					</view>
@@ -122,7 +126,6 @@ export default {
 				success: function(loginRes) {
 					uni.setStorageSync('code', loginRes.code);
 					that.userInfo.code = loginRes.code;
-					console.log(that.userInfo);
 					uni.setStorageSync('userinfo', result.detail.userInfo);
 					uni.request({
 						url: 'http://www.vzoyo.com/api/user/MiniProgramLogin',
@@ -146,13 +149,16 @@ export default {
 									showCancel: false
 								});
 							}else{
-								console.log(res);
 								// uni.setStorageSync('token', res.data.userinfo.token)
 								uni.setStorageSync("token", res.data.data.userinfo.token)
+								uni.setStorageSync("login", res.data.data.userinfo)
 								// 登陆成功 跳转到tab首页
 								uni.navigateBack({
-									delta:1
+									delta:2
 								})
+								// uni.switchTab({
+								// 	url:'/pages/anchor/anchor'
+								// })
 							}
 							
 						}

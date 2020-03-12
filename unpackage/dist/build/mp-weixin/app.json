@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/anchor/anchor",
+    "pages/withdraw/withdraw",
+    "pages/invite/invite",
+    "pages/mine/mine",
+    "pages/authorise/authorise",
+    "pages/anchor/ranklist/ranklist",
+    "pages/mine/help/help"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "经纪人云系统",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "red",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/anchor/anchor",
+        "text": "我的主播",
+        "iconPath": "./static/tabbar/1.png",
+        "selectedIconPath": "./static/tabbar/1-1.png"
+      },
+      {
+        "pagePath": "pages/withdraw/withdraw",
+        "text": "提现",
+        "iconPath": "./static/tabbar/2.png",
+        "selectedIconPath": "./static/tabbar/2-2.png"
+      },
+      {
+        "pagePath": "pages/invite/invite",
+        "text": "邀请",
+        "iconPath": "./static/tabbar/3.png",
+        "selectedIconPath": "./static/tabbar/3-1.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "个人中心",
+        "iconPath": "./static/tabbar/4.png",
+        "selectedIconPath": "./static/tabbar/4-1.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "uni-pop": "/components/uni-popup/uni-popup"
+  }
+}

@@ -300,6 +300,7 @@ __webpack_require__.r(__webpack_exports__);
             console.log(res.data.msg);
           } else {
             console.log(res.data.msg);
+            this.getMineinfo();
             this.getWithdrawList();
           }
         } });
