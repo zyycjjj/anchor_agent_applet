@@ -210,7 +210,6 @@ timeSelector {
   -webkit-flex-direction: row;
           flex-direction: row;
   white-space: nowrap;
-  padding-left: 10px;
   /* flex-wrap: nowrap; */
   /* border-color: #cccccc;
 		border-bottom-style: solid;
@@ -224,8 +223,18 @@ timeSelector {
   display: inline-block;
   -webkit-flex-wrap: nowrap;
           flex-wrap: nowrap;
-  padding-left: 34rpx;
-  padding-right: 34rpx;
+  padding-left: 15rpx;
+  padding-right: 15rpx;
+}
+.uni-tab-item text {
+  border: 1px solid #CCCCCC;
+  padding: 2rpx 15px;
+  border-radius: 100px;
+}
+.uni-tab-item .uni-tab-item-title-active {
+  color: #FFFFFF;
+  background-color: #ED9F26;
+  border: 1px solid #ED9F26;
 }
 .uni-tab-item-title {
   color: #555;
@@ -235,9 +244,6 @@ timeSelector {
   -webkit-flex-wrap: nowrap;
           flex-wrap: nowrap;
   white-space: nowrap;
-}
-.uni-tab-item-title-active {
-  color: #007AFF;
 }
 .swiper-box {
   -webkit-box-flex: 1;

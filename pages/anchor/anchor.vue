@@ -6,8 +6,10 @@
 				<text class="addanch" @tap="bindClick()">添加主播</text>
 				<!-- 根据主播列表数据是否为空来判断是否居中显示添加新主播按钮 -->
 				<view>
-					<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
-						<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">全部</text>
+					<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto" style="overflow: auto hidden;">
+						<view class="uni-tab-item" id="1" data-current="all" @click="ontabtap">
+								<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">全部</text>
+						</view>
 						<view v-for="(tab, index) in tabBars" :key="tab.platform_id" class="uni-tab-item" :id="tab.platform_id" :data-current="index" @click="ontabtap">
 							<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">{{ tab.platform_name }}</text>
 						</view>
@@ -127,7 +129,7 @@ export default {
 		// console.log(页面创建前);
 	},
 	onLoad(e) {
-		// console.log(e);
+		console.log(e);
 	},
 	data() {
 		return {
@@ -544,7 +546,6 @@ timeSelector {
         /* #ifndef APP-PLUS */
         white-space: nowrap;
         /* #endif */
-		padding-left: 10px;
         /* flex-wrap: nowrap; */
         /* border-color: #cccccc;
 		border-bottom-style: solid;
@@ -561,8 +562,18 @@ timeSelector {
         display: inline-block;
         /* #endif */
         flex-wrap: nowrap;
-        padding-left: 34rpx;
-        padding-right: 34rpx;
+        padding-left: 15rpx;
+        padding-right: 15rpx;
+		text{
+			border: 1px solid #CCCCCC;
+			padding: 2rpx 15px;
+			border-radius: 100px;
+		}
+		.uni-tab-item-title-active {
+		    color: #FFFFFF;
+			background-color:#ED9F26 ;
+			border: 1px solid #ED9F26;
+		}
     }
 
     .uni-tab-item-title {
@@ -576,9 +587,7 @@ timeSelector {
         /* #endif */
     }
 
-    .uni-tab-item-title-active {
-        color: #007AFF;
-    }
+   
 
     .swiper-box {
         flex: 1;
