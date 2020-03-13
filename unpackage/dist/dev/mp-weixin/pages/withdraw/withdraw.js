@@ -318,23 +318,34 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
     // 关于模态框的函数
     withdraw: function withdraw() {var _this2 = this;
       var that = this;
-      (0, _request.request)({
-        url: '/api/user/applyWithdraw',
-        method: 'POST',
-        data: {
-          money: that.form.cashMoney } }).
+      if (that.form.cashMoney <= that.wimoney) {
+        (0, _request.request)({
+          url: '/api/user/applyWithdraw',
+          method: 'POST',
+          data: {
+            money: that.form.cashMoney } }).
 
-      then(function (res) {
-        if (res.code !== 1) {
-          console.log(res.data.msg);
-          _this2.getWithdraw();
-          _this2.getWithdrawList();
-        } else {
-          console.log(res.data.msg);
-          _this2.getWithdraw();
-          _this2.getWithdrawList();
-        }
-      });
+        then(function (res) {
+          if (res.code !== 1) {
+            console.log(res.data.msg);
+            _this2.getWithdraw();
+            _this2.getWithdrawList();
+          } else {
+            console.log(res.data.msg);
+            _this2.getWithdraw();
+            _this2.getWithdrawList();
+          }
+        });
+      } else {
+        uni.showToast({
+          title: "超出可提现金额，请重新填写",
+          icon: "none" });
+
+        setTimeout(function () {
+          _this2.showMonmodal = true;
+        }, 2000);
+      }
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

@@ -17,7 +17,7 @@
   },
   "tabBar": {
     "color": "#8a8a8a",
-    "selectedColor": "red",
+    "selectedColor": "#ff0000",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
@@ -50,5 +50,6 @@
   "permission": {},
   "usingComponents": {
     "uni-pop": "/components/uni-popup/uni-popup"
-  }
+  },
+  "sitemapLocation": "sitemap9.json"
 }

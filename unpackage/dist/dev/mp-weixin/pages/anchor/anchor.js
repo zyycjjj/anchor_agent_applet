@@ -265,7 +265,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _components$beforeCre;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 134));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 84));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 142));};var _default = (_components$beforeCre = {
+
+
+
+
+
+
+
+
+var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _components$beforeCre;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 106));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 84));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 120));};var mediaItem = function mediaItem() {return __webpack_require__.e(/*! import() | pages/anchor/news-item */ "pages/anchor/news-item").then(__webpack_require__.bind(null, /*! ./news-item.nvue */ 147));};var _default = (_components$beforeCre = {
+
 
   components: {
     segmentedControl: segmentedControl,
@@ -273,7 +282,8 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _compon
     uniTag: uniTag,
     uniSection: uniSection,
     uniNoticebar: uniNoticebar,
-    timeSelector: timeSelector },
+    timeSelector: timeSelector,
+    mediaItem: mediaItem },
 
   beforeCreate: function beforeCreate() {
     // console.log(页面创建前);
@@ -291,7 +301,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _compon
       // 主播列表信息
       zblist: [],
       // 是否有主播列表
-      haszblist: 1,
+      haszblist: 0,
       // 主播收入数据信息
       zbdata: [],
       // 是否有主播收益数据
@@ -319,11 +329,13 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _compon
       // 查询时间
       date: '',
       // 查询页码
-      page: '' };
+      page: '',
+      // 直播平台
+      tabBars: [] };
 
   } }, _defineProperty(_components$beforeCre, "onLoad", function onLoad(
 option) {
-  console.log(option);
+  this.getPlat();
   if (option.scene) {
     var qrId = decodeURIComponent(option.scene);
     // 这里就是你拿着参数qrId进行操作
@@ -338,6 +350,14 @@ option) {
   this.getZbdata();
 }), _defineProperty(_components$beforeCre, "methods",
 {
+  getPlat: function getPlat() {var _this = this;
+    (0, _request.request)({
+      url: '/api/platform/lists' }).
+    then(function (res) {
+      console.log(res.data.data);
+      _this.tabBars = res.data.data;
+    });
+  },
   setEnddate: function setEnddate() {
     var endtimeYear = new Date().getFullYear();
     var endtimeMonth = new Date().getMonth() + 1;
@@ -424,14 +444,52 @@ option) {
     // 发请求提交主播信息
     console.log('提交');
     // 先做表单校验，再发请求提交
+    var regMob = /^[1][3,4,5,7,8,4][0-9]{9}$/;
+    if (!this.anchorInfo.third_user_id) {
+      uni.showToast({
+        title: '抖音账号不能为空',
+        icon: 'none' });
+
+      this.show4 = true;
+      return;
+    }
+    if (!this.anchorInfo.real_name) {
+      uni.showToast({
+        title: '真实姓名不能为空',
+        icon: 'none' });
+
+      this.show4 = true;
+      return;
+    }
+    console.log(regMob.test(this.anchorInfo.mobile));
+    if (!regMob.test(this.anchorInfo.mobile)) {
+      uni.showToast({
+        title: '请输入正确格式手机号',
+        icon: 'none' });
+
+      this.show4 = true;
+      return;
+    }
     var that = this;
     (0, _request.request)({
       url: '/api/anchor/create',
       method: 'POST',
       data: this.anchorInfo }).
     then(function (res) {
-      that.anchorInfo = {};
-      that.getZblist();
+      if (res.data.code == 1) {
+        that.anchorInfo = {};
+        uni.showToast({
+          title: '添加成功' });
+
+        that.getZblist();
+      } else {
+        console.log('添加失败');
+        console.log(res.data.msg);
+        uni.showToast({
+          title: res.data.msg,
+          icon: 'none' });
+
+      }
     });
     // 提交后重新获取主播列表数据
   },

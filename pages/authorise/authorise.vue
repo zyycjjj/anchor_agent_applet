@@ -30,7 +30,11 @@
 							<br />
 							本协议条款是处理双方权利义务的根据。 您承诺
 						</view>
-						<view class="btn"><button type="primary" size="mini" open-type="getUserInfo" @getuserinfo="mpGetUserInfo">同意并继续</button></view>
+						<view class="btn">
+							<button type="primary" size="mini" open-type="getUserInfo" @getuserinfo="mpGetUserInfo" v-if="show1">同意并继续</button>
+							<button type="primary" size="mini" open-type="openSetting" bindopensetting="callback" v-else>重新授权</button>
+						</view>
+						
 					</view>
 				</view>
 			</swiper-item>
@@ -52,7 +56,8 @@ export default {
 			//  用户协议框的显示隐藏
 			show2: false,
 			// 获取到的用户信息
-			userInfo: {}
+			userInfo: {},
+			show1: true
 		};
 	},
 	onLoad(option) {
@@ -116,10 +121,22 @@ export default {
 		},
 		mpGetUserInfo(result) {
 			if (result.detail.errMsg !== 'getUserInfo:ok') {
-				uni.showModal({
-					title: '获取用户信息失败',
-					content: '错误原因' + result.detail.errMsg,
-					showCancel: false
+				// uni.showModal({
+				// 	title: '获取用户信息失败',
+				// 	content: '错误原因' + result.detail.errMsg,
+				// 	showCancel: false
+				// });
+				//用户点击拒绝授权，跳转到设置页，引导用户授权
+				this.show1 = false
+				wx.openSetting({
+					success() {
+						wx.authorize({
+							scope: 'scope.userinfo',
+							success() {
+								that.getUserInfo();
+							}
+						});
+					}
 				});
 				return;
 			}

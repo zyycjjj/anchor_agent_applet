@@ -28,7 +28,7 @@
 			<text @tap="getMoney" class="getMoney">提现</text>
 		</view>
 		<view class="wDlist">
-			<text class="tit">提现记录</text>
+			<view class="tit">提现记录</view>
 			<view class="" v-if="haslist === 1"><text>暂无提现记录</text></view>
 			<view class="widthdrawlist" v-else>
 				<view class="tit">
@@ -178,23 +178,34 @@ export default {
 		// 关于模态框的函数
 		withdraw() {
 			const that = this;
-			request({
-				url: '/api/user/applyWithdraw',
-				method: 'POST',
-				data: {
-					money: that.form.cashMoney
-				}
-			}).then(res => {
-				if (res.code !== 1) {
-					console.log(res.data.msg);
-					this.getWithdraw();
-					this.getWithdrawList();
-				} else {
-					console.log(res.data.msg);
-					this.getWithdraw();
-					this.getWithdrawList();
-				}
-			});
+			if(that.form.cashMoney <= that.wimoney){
+				request({
+					url: '/api/user/applyWithdraw',
+					method: 'POST',
+					data: {
+						money: that.form.cashMoney
+					}
+				}).then(res => {
+					if (res.code !== 1) {
+						console.log(res.data.msg);
+						this.getWithdraw();
+						this.getWithdrawList();
+					} else {
+						console.log(res.data.msg);
+						this.getWithdraw();
+						this.getWithdrawList();
+					}
+				});
+			}else{
+				uni.showToast({
+					title:"超出可提现金额，请重新填写",
+					icon:"none"
+				})
+				setTimeout(()=>{
+					this.showMonmodal = true
+				},2000)
+			}
+			
 		}
 	}
 };
@@ -206,13 +217,13 @@ export default {
 		width: 100%;
 		height: 200px;
 		background: url(../../static/widthdraw/bg.png) fixed no-repeat;
+		border: 0px solid #000000;
 		background-size: contain;
-		// background-image: url(../../static/widthdraw/bg.png);
 		display: flex;
 		flex-direction: column;
 		view {
 			.tit {
-				font-size: 20rpx;
+				font-size: 22rpx;
 				margin-bottom: 10rpx;
 			}
 		}
@@ -265,6 +276,9 @@ export default {
 		text-indent: 40rpx;
 		height: 60rpx;
 		line-height: 60rpx;
+		.tit{
+			text-align: left;
+		}
 		view {
 			text-align: center;
 			text {
@@ -319,6 +333,7 @@ export default {
 			width: 20%;
 		}
 		.statuscontainer {
+			text-indent: 0;
 			height: 33px;
 		}
 	}
@@ -333,13 +348,17 @@ export default {
 	.tit {
 		width: 100%;
 		text-align: left;
+		height: 60rpx;
 		view {
-			width: 40%;
+			width: 35%;
 			float: left;
 		}
 		.money {
-			width: 20%;
+			width: 30%;
 		}
 	}
+}
+.neil-modal__footer-right{
+	height: 60px;
 }
 </style>

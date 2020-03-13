@@ -11,7 +11,8 @@
 			<uni-icons @tap="closeimg" type="close" size="25"></uni-icons>
 			<image :src="imgUrl" mode="" @tap="preview"></image>
 			<view class="btn-group">
-				<button type="primary" size="mini" @tap="save">保存相册</button>
+				<button type="primary" size="mini" open-type="openSetting" v-if="show1">保存相册</button>
+				<button type="primary" size="mini" @tap="save" v-else>保存相册</button>
 				<button type="primary" size="mini" open-type="share">分享</button>
 			</view>
 		</view>
@@ -29,7 +30,8 @@ export default {
 			imageVis: false,
 			// 邀请二维码的地址
 			imgUrl: '',
-			providerList: []
+			providerList: [],
+			show1:false
 		};
 	},
 	onShareAppMessage(res) {
@@ -127,17 +129,19 @@ export default {
 								that.savePhoto();
 							},
 							fail() {
+								console.log("用户拒绝授权，跳转到设置页面")
 								//用户点击拒绝授权，跳转到设置页，引导用户授权
-								wx.openSetting({
-									success() {
-										wx.authorize({
-											scope: 'scope.writePhotosAlbum',
-											success() {
-												that.savePhoto();
-											}
-										});
-									}
-								});
+								that.show1 = true
+								// wx.openSetting({
+								// 	success() {
+								// 		wx.authorize({
+								// 			scope: 'scope.writePhotosAlbum',
+								// 			success() {
+								// 				that.savePhoto();
+								// 			}
+								// 		});
+								// 	}
+								// });
 							}
 						});
 					} else {
@@ -153,11 +157,12 @@ export default {
 			wx.downloadFile({
 				url: that.imgUrl,
 				success: function(res) {
+					console.log(res)
 					wx.saveImageToPhotosAlbum({
 						filePath: res.tempFilePath,
 						success(res) {
 							console.log(res);
-							wx.showToast({
+							uni.showToast({
 								title: '保存成功',
 								icon: 'success',
 								duration: 1000
@@ -165,6 +170,14 @@ export default {
 							that.imageVis = false;
 						}
 					});
+				},
+				fail(res) {
+					console.log(that.imgUrl)
+					console.log(res)
+					uni.showToast({
+						title:'保存失败',
+						icon:'none'
+					})
 				}
 			});
 		}

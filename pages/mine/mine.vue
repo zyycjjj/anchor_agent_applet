@@ -141,23 +141,34 @@ export default {
 		},
 		// 关于模态框的函数
 		withdraw() {
-			console.log(12313123132313123131312);
 			const that = this;
-			request({
-				url: '/api/user/applyWithdraw',
-				method: 'POST',
-				data: {
-					money: that.form.cashMoney
-				}
-			}).then(res => {
-				if (res.code !== 1) {
-					console.log(res.data.msg);
-				} else {
-					console.log(res.data.msg);
-					this.getMineinfo();
-					this.getWithdrawList();
-				}
-			});
+			if(that.form.cashMoney <= that.wimoney){
+				request({
+					url: '/api/user/applyWithdraw',
+					method: 'POST',
+					data: {
+						money: that.form.cashMoney
+					}
+				}).then(res => {
+					if (res.code !== 1) {
+						console.log(res.data.msg);
+						this.getWithdraw();
+						this.getWithdrawList();
+					} else {
+						console.log(res.data.msg);
+						this.getWithdraw();
+						this.getWithdrawList();
+					}
+				});
+			}else{
+				uni.showToast({
+					title:"超出可提现金额，请重新填写",
+					icon:"none"
+				})
+				setTimeout(()=>{
+					this.showMonmodal = true
+				},2000)
+			}
 		}
 	}
 };
@@ -251,9 +262,13 @@ export default {
 				position: relative;
 				.iconfont {
 					vertical-align: text-bottom;
-					margin-right: 10px;
-					font-size: 25px;
+					// margin-right: 10px;
+					font-size: 12px;
 					// font-weight: bold;
+				}
+				navigator{
+					height: 22px;
+					line-height: 22px;
 				}
 				button {
 					width: 100%;
@@ -273,9 +288,11 @@ export default {
 				}
 				.rig {
 					float: right;
+					margin-right: 20px;
 				}
 				text {
 					font-weight: normal;
+					font-size: 12px;
 				}
 			}
 		}
@@ -303,5 +320,8 @@ export default {
 	flex: 1;
 	height: 50upx;
 	line-height: 50upx;
+}
+.neil-modal__footer-right{
+	height: 60px;
 }
 </style>

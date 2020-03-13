@@ -1,11 +1,17 @@
 <template>
 	<view class="anchor">
-		<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem"></segmented-control>
+		<segmented-control id="tabbar" :values="items" :stickyTop="108" :current="current" @clickItem="onClickItem" style="width: 100%;"></segmented-control>
 		<view class="list" id="list">
 			<view class="zblist" v-if="current == 0">
 				<text class="addanch" @tap="bindClick()">添加主播</text>
 				<!-- 根据主播列表数据是否为空来判断是否居中显示添加新主播按钮 -->
 				<view>
+					<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+						<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">全部</text>
+						<view v-for="(tab, index) in tabBars" :key="tab.platform_id" class="uni-tab-item" :id="tab.platform_id" :data-current="index" @click="ontabtap">
+							<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">{{ tab.platform_name }}</text>
+						</view>
+					</scroll-view>
 					<view class="addzb" v-if="haszblist == 0" @tap="bindClick()">
 						<i class="iconfont icon-tianjia"></i>
 						<text style="color:grey">添加新主播</text>
@@ -25,7 +31,9 @@
 					<navigator :url="`./ranklist/ranklist?data=` + encodeURIComponent(JSON.stringify(ranklist))">
 						<view class="phbtag"><uni-tag class="phbut" text="排行榜" type="warning" size="small"></uni-tag></view>
 					</navigator>
-					<view class="notice"><uni-notice-bar ref="noticebar" :show-icon="true" :scrollable="true" :single="true" text=" " id="noticebar" /></view>
+					<view class="notice">
+						<uni-notice-bar ref="noticebar" :show-icon="true" :scrollable="true" :single="true" :text="rank_string" id="noticebar" background-color="#ffffff" />
+					</view>
 				</view>
 			</view>
 
@@ -104,6 +112,7 @@ import uniSection from '../../components/uni-section/uni-section.vue';
 import uniNoticebar from '../../components/uni-notice-bar/uni-notice-bar.vue';
 import timeSelector from '../../components/wing-time-selector/wing-time-selector.vue';
 import { request } from '../../utils/request.js';
+import mediaItem from './news-item.nvue';
 export default {
 	components: {
 		segmentedControl,
@@ -111,7 +120,8 @@ export default {
 		uniTag,
 		uniSection,
 		uniNoticebar,
-		timeSelector
+		timeSelector,
+		mediaItem
 	},
 	beforeCreate() {
 		// console.log(页面创建前);
@@ -129,7 +139,7 @@ export default {
 			// 主播列表信息
 			zblist: [],
 			// 是否有主播列表
-			haszblist: 1,
+			haszblist: 0,
 			// 主播收入数据信息
 			zbdata: [],
 			// 是否有主播收益数据
@@ -157,15 +167,17 @@ export default {
 			// 查询时间
 			date: '',
 			// 查询页码
-			page: ''
+			page: '',
+			// 直播平台
+			tabBars: []
 		};
 	},
-	onLoad (option) {
-	  console.log(option)
-	  if (option.scene) {
-	    let qrId = decodeURIComponent(option.scene)
-	     // 这里就是你拿着参数qrId进行操作
-	  }
+	onLoad(option) {
+		this.getPlat();
+		if (option.scene) {
+			let qrId = decodeURIComponent(option.scene);
+			// 这里就是你拿着参数qrId进行操作
+		}
 	},
 	onShow() {
 		this.getToken();
@@ -176,6 +188,14 @@ export default {
 		this.getZbdata();
 	},
 	methods: {
+		getPlat() {
+			request({
+				url: '/api/platform/lists'
+			}).then(res => {
+				console.log(res.data.data);
+				this.tabBars = res.data.data
+			});
+		},
 		setEnddate() {
 			let endtimeYear = new Date().getFullYear();
 			let endtimeMonth = new Date().getMonth() + 1;
@@ -262,14 +282,52 @@ export default {
 			// 发请求提交主播信息
 			console.log('提交');
 			// 先做表单校验，再发请求提交
+			let regMob = /^[1][3,4,5,7,8,4][0-9]{9}$/;
+			if (!this.anchorInfo.third_user_id) {
+				uni.showToast({
+					title: '抖音账号不能为空',
+					icon: 'none'
+				});
+				this.show4 = true;
+				return;
+			}
+			if (!this.anchorInfo.real_name) {
+				uni.showToast({
+					title: '真实姓名不能为空',
+					icon: 'none'
+				});
+				this.show4 = true;
+				return;
+			}
+			console.log(regMob.test(this.anchorInfo.mobile));
+			if (!regMob.test(this.anchorInfo.mobile)) {
+				uni.showToast({
+					title: '请输入正确格式手机号',
+					icon: 'none'
+				});
+				this.show4 = true;
+				return;
+			}
 			const that = this;
 			request({
 				url: '/api/anchor/create',
 				method: 'POST',
 				data: this.anchorInfo
 			}).then(res => {
-				that.anchorInfo = {};
-				that.getZblist();
+				if (res.data.code == 1) {
+					that.anchorInfo = {};
+					uni.showToast({
+						title: '添加成功'
+					});
+					that.getZblist();
+				} else {
+					console.log('添加失败');
+					console.log(res.data.msg);
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+				}
 			});
 			// 提交后重新获取主播列表数据
 		},
@@ -468,4 +526,144 @@ timeSelector {
 		}
 	}
 }
+
+ .tabs {
+        flex: 1;
+        flex-direction: column;
+        overflow: hidden;
+        background-color: #ffffff;
+        /* #ifdef MP-ALIPAY || MP-BAIDU */
+        height: 100vh;
+        /* #endif */
+    }
+
+    .scroll-h {
+        width: 750rpx;
+        height: 80rpx;
+        flex-direction: row;
+        /* #ifndef APP-PLUS */
+        white-space: nowrap;
+        /* #endif */
+		padding-left: 10px;
+        /* flex-wrap: nowrap; */
+        /* border-color: #cccccc;
+		border-bottom-style: solid;
+		border-bottom-width: 1px; */
+    }
+
+    .line-h {
+        height: 1rpx;
+        background-color: #cccccc;
+    }
+
+    .uni-tab-item {
+        /* #ifndef APP-PLUS */
+        display: inline-block;
+        /* #endif */
+        flex-wrap: nowrap;
+        padding-left: 34rpx;
+        padding-right: 34rpx;
+    }
+
+    .uni-tab-item-title {
+        color: #555;
+        font-size: 30rpx;
+        height: 80rpx;
+        line-height: 80rpx;
+        flex-wrap: nowrap;
+        /* #ifndef APP-PLUS */
+        white-space: nowrap;
+        /* #endif */
+    }
+
+    .uni-tab-item-title-active {
+        color: #007AFF;
+    }
+
+    .swiper-box {
+        flex: 1;
+    }
+
+    .swiper-item {
+        flex: 1;
+        flex-direction: row;
+    }
+
+    .scroll-v {
+        flex: 1;
+        /* #ifndef MP-ALIPAY */
+        flex-direction: column;
+        /* #endif */
+        width: 750rpx;
+    }
+
+    .update-tips {
+        position: absolute;
+        left: 0;
+        top: 41px;
+        right: 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        background-color: #FDDD9B;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .update-tips-text {
+        font-size: 14px;
+        color: #ffffff;
+    }
+
+    .refresh {
+        width: 750rpx;
+        height: 64px;
+        justify-content: center;
+    }
+
+    .refresh-view {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+	.refresh-icon {
+		width: 30px;
+		height: 30px;
+		transition-duration: .5s;
+		transition-property: transform;
+		transform: rotate(0deg);
+		transform-origin: 15px 15px;
+	}
+
+	.refresh-icon-active {
+		transform: rotate(180deg);
+	}
+
+	.loading-icon {
+		width: 20px;
+		height: 20px;
+		margin-right: 5px;
+		color: #999999;
+	}
+
+    .loading-text {
+        margin-left: 2px;
+        font-size: 16px;
+        color: #999999;
+    }
+
+    .loading-more {
+        align-items: center;
+        justify-content: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+
+    .loading-more-text {
+        font-size: 28rpx;
+        color: #999;
+    }
 </style>

@@ -174,6 +174,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var _default =
 {
   components: {
@@ -187,7 +191,8 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
       //  用户协议框的显示隐藏
       show2: false,
       // 获取到的用户信息
-      userInfo: {} };
+      userInfo: {},
+      show1: true };
 
   },
   onLoad: function onLoad(option) {
@@ -251,10 +256,22 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
     },
     mpGetUserInfo: function mpGetUserInfo(result) {
       if (result.detail.errMsg !== 'getUserInfo:ok') {
-        uni.showModal({
-          title: '获取用户信息失败',
-          content: '错误原因' + result.detail.errMsg,
-          showCancel: false });
+        // uni.showModal({
+        // 	title: '获取用户信息失败',
+        // 	content: '错误原因' + result.detail.errMsg,
+        // 	showCancel: false
+        // });
+        //用户点击拒绝授权，跳转到设置页，引导用户授权
+        this.show1 = false;
+        wx.openSetting({
+          success: function success() {
+            wx.authorize({
+              scope: 'scope.userinfo',
+              success: function success() {
+                that.getUserInfo();
+              } });
+
+          } });
 
         return;
       }

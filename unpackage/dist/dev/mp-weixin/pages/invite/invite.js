@@ -159,6 +159,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: { uniIcons: uniIcons, uniSection: uniSection },
   data: function data() {
@@ -167,7 +168,8 @@ __webpack_require__.r(__webpack_exports__);
       imageVis: false,
       // 邀请二维码的地址
       imgUrl: '',
-      providerList: [] };
+      providerList: [],
+      show1: false };
 
   },
   onShareAppMessage: function onShareAppMessage(res) {
@@ -265,17 +267,19 @@ __webpack_require__.r(__webpack_exports__);
                 that.savePhoto();
               },
               fail: function fail() {
+                console.log("用户拒绝授权，跳转到设置页面");
                 //用户点击拒绝授权，跳转到设置页，引导用户授权
-                wx.openSetting({
-                  success: function success() {
-                    wx.authorize({
-                      scope: 'scope.writePhotosAlbum',
-                      success: function success() {
-                        that.savePhoto();
-                      } });
-
-                  } });
-
+                that.show1 = true;
+                // wx.openSetting({
+                // 	success() {
+                // 		wx.authorize({
+                // 			scope: 'scope.writePhotosAlbum',
+                // 			success() {
+                // 				that.savePhoto();
+                // 			}
+                // 		});
+                // 	}
+                // });
               } });
 
           } else {
@@ -291,17 +295,26 @@ __webpack_require__.r(__webpack_exports__);
       wx.downloadFile({
         url: that.imgUrl,
         success: function success(res) {
+          console.log(res);
           wx.saveImageToPhotosAlbum({
             filePath: res.tempFilePath,
             success: function success(res) {
               console.log(res);
-              wx.showToast({
+              uni.showToast({
                 title: '保存成功',
                 icon: 'success',
                 duration: 1000 });
 
               that.imageVis = false;
             } });
+
+        },
+        fail: function fail(res) {
+          console.log(that.imgUrl);
+          console.log(res);
+          uni.showToast({
+            title: '保存失败',
+            icon: 'none' });
 
         } });
 

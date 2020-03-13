@@ -105,8 +105,11 @@
 }
 .mine .list ._ul ._li .iconfont {
   vertical-align: text-bottom;
-  margin-right: 10px;
-  font-size: 25px;
+  font-size: 12px;
+}
+.mine .list ._ul ._li navigator {
+  height: 22px;
+  line-height: 22px;
 }
 .mine .list ._ul ._li button {
   width: 100%;
@@ -124,9 +127,11 @@
 }
 .mine .list ._ul ._li .rig {
   float: right;
+  margin-right: 20px;
 }
 .mine .list ._ul ._li text {
   font-weight: normal;
+  font-size: 12px;
 }
 .moneyNum {
   height: 80rpx;
@@ -161,5 +166,8 @@
           flex: 1;
   height: 50rpx;
   line-height: 50rpx;
+}
+.neil-modal__footer-right {
+  height: 60px;
 }
 
