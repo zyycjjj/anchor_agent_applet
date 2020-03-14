@@ -21,17 +21,17 @@
 		</view>
 		<!-- 可提现金额以及提现按钮 -->
 		<view class="getPay">
-			<text style="color: #5C5C5C;">
+			<view style="color: #5C5C5C;float: left;">
 				可提现 （元）
 				<text style="font-weight: bold;color: #0E0E0E;">{{ wimoney }}</text>
-			</text>
+			</view>
 			<text @tap="getMoney" class="getMoney">提现</text>
 		</view>
 		<view class="wDlist">
 			<view class="tit">提现记录</view>
 			<view class="" v-if="haslist === 1"><text>暂无提现记录</text></view>
 			<view class="widthdrawlist" v-else>
-				<view class="tit">
+				<view class="title">
 					<view class="createtime">提现时间</view>
 					<view class="money">提现金额</view>
 					<view class="status">打款时间</view>
@@ -51,14 +51,14 @@
 					</view>
 				</view>
 				<!-- 放一个分页组件 -->
-				<view class="pagenation">
+				<!-- <view class="pagenation">
 					<button type="primary" :disabled="hasprepage" @tap="getPrepage" size="mini" plain="true" style="float: left;margin-left: 40rpx;margin-top: 20rpx;">
 						上一页
 					</button>
 					<button type="primary" :disabled="hasNextpage" @tap="getNextpage" size="mini" plain="true" style="float: right;margin-right: 40rpx;margin-top: 20rpx;">
 						下一页
 					</button>
-				</view>
+				</view> -->
 			</view>
 		</view>
 
@@ -188,10 +188,20 @@ export default {
 				}).then(res => {
 					if (res.code !== 1) {
 						console.log(res.data.msg);
+						uni.showToast({
+							title:res.data.msg,
+							icon:"none"
+						})
+						that.form.cashMoney = ''
 						this.getWithdraw();
 						this.getWithdrawList();
 					} else {
 						console.log(res.data.msg);
+						that.form.cashMoney = ''
+						uni.showToast({
+							title:res.data.msg,
+							icon:'success'
+						})
 						this.getWithdraw();
 						this.getWithdrawList();
 					}
@@ -213,9 +223,10 @@ export default {
 
 <style lang="less">
 .widthdraw {
+	height: 100%;
 	.withdrawData {
 		width: 100%;
-		height: 200px;
+		height: 25%;
 		background: url(../../static/widthdraw/bg.png) fixed no-repeat;
 		border: 0px solid #000000;
 		background-size: contain;
@@ -231,12 +242,12 @@ export default {
 			height: 40%;
 			display: flex;
 			flex-direction: column;
-			padding: 40rpx;
+			padding:20rpx 40rpx;
 		}
 		.moneyEd {
 			display: flex;
 			justify-content: space-between;
-			padding: 40rpx;
+			padding:0 40rpx;
 			padding-top: 0;
 			view {
 				display: flex;
@@ -247,7 +258,7 @@ export default {
 
 	// 可提现部分
 	.getPay {
-		height: 100rpx;
+		height: 7%;
 		width: 100%;
 		text-indent: 40rpx;
 		display: flex;
@@ -255,6 +266,11 @@ export default {
 		position: relative;
 		text {
 			line-height: 100rpx;
+		}
+		view{
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
 		}
 		.getMoney {
 			margin-right: 40rpx;
@@ -269,20 +285,25 @@ export default {
 			top: 50%;
 			right: 30rpx;
 			transform: translateY(-50%);
+			
 		}
 	}
 	.wDlist {
-		background-color: #f5f5f5;
+		// background-color: #f5f5f5;
 		text-indent: 40rpx;
-		height: 60rpx;
+		height: 68%;
 		line-height: 60rpx;
 		.tit{
 			text-align: left;
+			background-color: #f5f5f5;
 		}
 		view {
-			text-align: center;
-			text {
-				color: #8b8b8b;
+			view{
+				text-align: center;
+				height: 60rpx;
+				text {
+					color: #8b8b8b;
+				}
 			}
 		}
 	}
@@ -326,7 +347,7 @@ export default {
 				text-indent: 0;
 				position: absolute;
 				left: 30%;
-				margin-top: 10rpx;
+				// margin-top: 10rpx;
 			}
 		}
 		.moneycontainer {
@@ -334,7 +355,11 @@ export default {
 		}
 		.statuscontainer {
 			text-indent: 0;
-			height: 33px;
+			height: 40rpx;
+			padding: 10rpx 0;
+			.uni-tag{
+				height: 45rpx;
+			}
 		}
 	}
 	.pagenation {
@@ -345,7 +370,7 @@ export default {
 			text-indent: 0;
 		}
 	}
-	.tit {
+	.title {
 		width: 100%;
 		text-align: left;
 		height: 60rpx;

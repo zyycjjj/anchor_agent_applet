@@ -275,9 +275,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _components$beforeCre;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 106));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 84));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 120));};var mediaItem = function mediaItem() {return __webpack_require__.e(/*! import() | pages/anchor/news-item */ "pages/anchor/news-item").then(__webpack_require__.bind(null, /*! ./news-item.nvue */ 125));};var _default = (_components$beforeCre = {
+var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 106));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 84));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 120));};var mediaItem = function mediaItem() {return __webpack_require__.e(/*! import() | pages/anchor/news-item */ "pages/anchor/news-item").then(__webpack_require__.bind(null, /*! ./news-item.nvue */ 125));};var _default =
 
-
+{
   components: {
     segmentedControl: segmentedControl,
     neilModal: neilModal,
@@ -289,9 +289,6 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _compon
 
   beforeCreate: function beforeCreate() {
     // console.log(页面创建前);
-  },
-  onLoad: function onLoad(e) {
-    console.log(e);
   },
   data: function data() {
     return {
@@ -335,175 +332,175 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var _compon
       // 直播平台
       tabBars: [] };
 
-  } }, _defineProperty(_components$beforeCre, "onLoad", function onLoad(
-option) {
-  this.getPlat();
-  if (option.scene) {
-    var qrId = decodeURIComponent(option.scene);
-    // 这里就是你拿着参数qrId进行操作
-  }
-}), _defineProperty(_components$beforeCre, "onShow", function onShow()
-{
-  this.getToken();
-  this.setEnddate();
-  this.getZblist();
-  this.getRanklist();
-  this.setNoticebar();
-  this.getZbdata();
-}), _defineProperty(_components$beforeCre, "methods",
-{
-  getPlat: function getPlat() {var _this = this;
-    (0, _request.request)({
-      url: '/api/platform/lists' }).
-    then(function (res) {
-      console.log(res.data.data);
-      _this.tabBars = res.data.data;
-    });
   },
-  setEnddate: function setEnddate() {
-    var endtimeYear = new Date().getFullYear();
-    var endtimeMonth = new Date().getMonth() + 1;
-    var endtimeDay = new Date().getDate() - 1;
-    this.endDate = "".concat(endtimeYear, "-").concat(endtimeMonth, "-").concat(endtimeDay);
-  },
-  getToken: function getToken() {
-    this.token = uni.getStorageSync('token');
-  },
-  setNoticebar: function setNoticebar() {
-    this.$refs.noticebar.text = this.rank_string;
-  },
-  // 获取主播列表信息
-  getZblist: function getZblist() {
-    var that = this;
-    (0, _request.request)({
-      url: '/api/anchor/lists',
-      method: 'GET' }).
-    then(function (res) {
-      if (res.data.data.list) {
-        that.zblist = res.data.data.list;
-        that.rank_string = res.data.data.rank_string;
-        that.haszblist = 1;
-      } else {
-        that.haszblist = 0;
-      }
-    });
-    // 获取的返回值如果有 就把haszblist赋值为1，否则赋值为0
-  },
-  // 获取主播收益数据
-  getZbdata: function getZbdata() {
-    // console.log('获取主播收益信息');
-    var that = this;
-    (0, _request.request)({
-      url: '/api/anchor/AnchorData',
-      data: { date: this.date, page: this.page } }).
-    then(function (res) {
-      if (res.data.data.length != 0) {
-        that.haszbdata = 1;
-      } else {
-        that.haszbdata = 0;
-      }
-      that.zbdata = res.data.data;
-    });
-  },
-  // 获取排行榜数据
-  getRanklist: function getRanklist() {
-    var that = this;
-    (0, _request.request)({
-      url: '/api/Rank/yesterList' }).
-    then(function (res) {
-      that.ranklist = res.data.data;
-    });
-  },
-  // 点击跳转到排行榜列表页
-  navagateto: function navagateto() {
-    uni.navigateTo({
-      url: '`./ranklist/ranklist?`+encodeURIComponent(JSON.stringify(this.ranklist))' });
-
-  },
-  /**
-      * 点击segmentedControl 事件回调
-      */
-  onClickItem: function onClickItem(index) {
-    if (this.current !== index) {
-      this.current = index;
+  onLoad: function onLoad(option) {
+    this.getPlat();
+    if (option.scene) {
+      var qrId = decodeURIComponent(option.scene);
+      // 这里就是你拿着参数qrId进行操作
     }
+    console.log(option);
   },
-  // 点击添加新主播，调出模态框
-  addzb: function addzb() {
-    this.iShow = true;
-  },
-  // 关于模态框的函数
-  bindClick: function bindClick() {
-    this.show4 = true;
-  },
-  closeModal: function closeModal() {
-    this.show4 = false;
-  },
-  bindBtn: function bindBtn(type) {
-    this.show4 = false;
-  },
-  addzbinfo: function addzbinfo() {
-    // 发请求提交主播信息
-    console.log('提交');
-    // 先做表单校验，再发请求提交
-    var regMob = /^[1][3,4,5,7,8,4][0-9]{9}$/;
-    if (!this.anchorInfo.third_user_id) {
-      uni.showToast({
-        title: '抖音账号不能为空',
-        icon: 'none' });
-
-      this.show4 = true;
-      return;
-    }
-    if (!this.anchorInfo.real_name) {
-      uni.showToast({
-        title: '真实姓名不能为空',
-        icon: 'none' });
-
-      this.show4 = true;
-      return;
-    }
-    console.log(regMob.test(this.anchorInfo.mobile));
-    if (!regMob.test(this.anchorInfo.mobile)) {
-      uni.showToast({
-        title: '请输入正确格式手机号',
-        icon: 'none' });
-
-      this.show4 = true;
-      return;
-    }
-    var that = this;
-    (0, _request.request)({
-      url: '/api/anchor/create',
-      method: 'POST',
-      data: this.anchorInfo }).
-    then(function (res) {
-      if (res.data.code == 1) {
-        that.anchorInfo = {};
-        uni.showToast({
-          title: '添加成功' });
-
-        that.getZblist();
-      } else {
-        console.log('添加失败');
-        console.log(res.data.msg);
-        uni.showToast({
-          title: res.data.msg,
-          icon: 'none' });
-
-      }
-    });
-    // 提交后重新获取主播列表数据
-  },
-  // 时间选择器相关函数
-  btnConfirm: function btnConfirm(e) {
-    this.time = e.key;
-    this.date = e.key;
+  onShow: function onShow() {
+    this.getToken();
+    this.setEnddate();
+    this.getZblist();
+    this.getRanklist();
+    this.setNoticebar();
     this.getZbdata();
   },
-  btnCancel: function btnCancel() {
-    // console.log('取消时间：');
-  } }), _components$beforeCre);exports.default = _default;
+  methods: {
+    getPlat: function getPlat() {var _this = this;
+      (0, _request.request)({
+        url: '/api/platform/lists' }).
+      then(function (res) {
+        _this.tabBars = res.data.data;
+      });
+    },
+    setEnddate: function setEnddate() {
+      var endtimeYear = new Date().getFullYear();
+      var endtimeMonth = new Date().getMonth() + 1;
+      var endtimeDay = new Date().getDate();
+      this.endDate = "".concat(endtimeYear, "-").concat(endtimeMonth, "-").concat(endtimeDay);
+    },
+    getToken: function getToken() {
+      this.token = uni.getStorageSync('token');
+    },
+    setNoticebar: function setNoticebar() {
+      this.$refs.noticebar.text = this.rank_string;
+    },
+    // 获取主播列表信息
+    getZblist: function getZblist() {
+      var that = this;
+      (0, _request.request)({
+        url: '/api/anchor/lists',
+        method: 'GET' }).
+      then(function (res) {
+        if (res.data.data.list) {
+          that.zblist = res.data.data.list;
+          that.rank_string = res.data.data.rank_string;
+          that.haszblist = 1;
+        } else {
+          that.haszblist = 0;
+        }
+      });
+      // 获取的返回值如果有 就把haszblist赋值为1，否则赋值为0
+    },
+    // 获取主播收益数据
+    getZbdata: function getZbdata() {
+      // console.log('获取主播收益信息');
+      var that = this;
+      (0, _request.request)({
+        url: '/api/anchor/AnchorData',
+        data: { date: this.date, page: this.page } }).
+      then(function (res) {
+        if (res.data.data.length != 0) {
+          that.haszbdata = 1;
+        } else {
+          that.haszbdata = 0;
+        }
+        that.zbdata = res.data.data;
+      });
+    },
+    // 获取排行榜数据
+    getRanklist: function getRanklist() {
+      var that = this;
+      (0, _request.request)({
+        url: '/api/Rank/yesterList' }).
+      then(function (res) {
+        that.ranklist = res.data.data;
+      });
+    },
+    // 点击跳转到排行榜列表页
+    navagateto: function navagateto() {
+      uni.navigateTo({
+        url: '`./ranklist/ranklist?`+encodeURIComponent(JSON.stringify(this.ranklist))' });
+
+    },
+    /**
+        * 点击segmentedControl 事件回调
+        */
+    onClickItem: function onClickItem(index) {
+      if (this.current !== index) {
+        this.current = index;
+      }
+    },
+    // 点击添加新主播，调出模态框
+    addzb: function addzb() {
+      this.iShow = true;
+    },
+    // 关于模态框的函数
+    bindClick: function bindClick() {
+      this.show4 = true;
+    },
+    closeModal: function closeModal() {
+      this.show4 = false;
+    },
+    bindBtn: function bindBtn(type) {
+      this.show4 = false;
+    },
+    addzbinfo: function addzbinfo() {
+      // 发请求提交主播信息
+      console.log('提交');
+      // 先做表单校验，再发请求提交
+      var regMob = /^[1][3,4,5,7,8,4][0-9]{9}$/;
+      if (!this.anchorInfo.third_user_id) {
+        uni.showToast({
+          title: '抖音账号不能为空',
+          icon: 'none' });
+
+        this.show4 = true;
+        return;
+      }
+      if (!this.anchorInfo.real_name) {
+        uni.showToast({
+          title: '真实姓名不能为空',
+          icon: 'none' });
+
+        this.show4 = true;
+        return;
+      }
+      console.log(regMob.test(this.anchorInfo.mobile));
+      if (!regMob.test(this.anchorInfo.mobile)) {
+        uni.showToast({
+          title: '请输入正确格式手机号',
+          icon: 'none' });
+
+        this.show4 = true;
+        return;
+      }
+      var that = this;
+      (0, _request.request)({
+        url: '/api/anchor/create',
+        method: 'POST',
+        data: this.anchorInfo }).
+      then(function (res) {
+        if (res.data.code == 1) {
+          that.anchorInfo = {};
+          uni.showToast({
+            title: '添加成功' });
+
+          that.getZblist();
+        } else {
+          console.log('添加失败');
+          console.log(res.data.msg);
+          uni.showToast({
+            title: res.data.msg,
+            icon: 'none' });
+
+        }
+      });
+      // 提交后重新获取主播列表数据
+    },
+    // 时间选择器相关函数
+    btnConfirm: function btnConfirm(e) {
+      this.time = e.key;
+      this.date = e.key;
+      this.getZbdata();
+    },
+    btnCancel: function btnCancel() {
+      // console.log('取消时间：');
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

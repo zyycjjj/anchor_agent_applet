@@ -195,8 +195,9 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
       show1: true };
 
   },
-  onLoad: function onLoad(option) {
-    console.log(option);
+  onLoad: function onLoad(e) {
+    console.log(e);
+    console.log("獲取了掃碼的參數");
   },
   methods: {
     modalTap: function modalTap(e) {

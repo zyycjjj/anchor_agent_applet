@@ -142,7 +142,10 @@ export default {
 		// 关于模态框的函数
 		withdraw() {
 			const that = this;
-			if(that.form.cashMoney <= that.wimoney){
+			console.log(that.form.cashMoney)
+			console.log(that.ablemoney)
+			console.log(that.form.cashMoney <= that.ablemoney)
+			if(that.form.cashMoney <= that.ablemoney){
 				request({
 					url: '/api/user/applyWithdraw',
 					method: 'POST',
@@ -150,15 +153,18 @@ export default {
 						money: that.form.cashMoney
 					}
 				}).then(res => {
-					if (res.code !== 1) {
-						console.log(res.data.msg);
-						this.getWithdraw();
-						this.getWithdrawList();
-					} else {
-						console.log(res.data.msg);
-						this.getWithdraw();
-						this.getWithdrawList();
+					if(res.code == 1){
+						uni.showToast({
+							title:res.data.msg,
+							icon:"success"
+						})
+					}else{
+						uni.showToast({
+							title:res.data.msg
+						})
 					}
+					that.getMineinfo()
+					that.form.cashMoney = ""
 				});
 			}else{
 				uni.showToast({

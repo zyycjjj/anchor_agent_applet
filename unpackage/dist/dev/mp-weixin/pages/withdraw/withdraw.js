@@ -328,10 +328,20 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
         then(function (res) {
           if (res.code !== 1) {
             console.log(res.data.msg);
+            uni.showToast({
+              title: res.data.msg,
+              icon: "none" });
+
+            that.form.cashMoney = '';
             _this2.getWithdraw();
             _this2.getWithdrawList();
           } else {
             console.log(res.data.msg);
+            that.form.cashMoney = '';
+            uni.showToast({
+              title: res.data.msg,
+              icon: 'success' });
+
             _this2.getWithdraw();
             _this2.getWithdrawList();
           }

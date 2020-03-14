@@ -282,7 +282,10 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
     // 关于模态框的函数
     withdraw: function withdraw() {var _this = this;
       var that = this;
-      if (that.form.cashMoney <= that.wimoney) {
+      console.log(that.form.cashMoney);
+      console.log(that.ablemoney);
+      console.log(that.form.cashMoney <= that.ablemoney);
+      if (that.form.cashMoney <= that.ablemoney) {
         (0, _request.request)({
           url: '/api/user/applyWithdraw',
           method: 'POST',
@@ -290,15 +293,18 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
             money: that.form.cashMoney } }).
 
         then(function (res) {
-          if (res.code !== 1) {
-            console.log(res.data.msg);
-            _this.getWithdraw();
-            _this.getWithdrawList();
+          if (res.code == 1) {
+            uni.showToast({
+              title: res.data.msg,
+              icon: "success" });
+
           } else {
-            console.log(res.data.msg);
-            _this.getWithdraw();
-            _this.getWithdrawList();
+            uni.showToast({
+              title: res.data.msg });
+
           }
+          that.getMineinfo();
+          that.form.cashMoney = "";
         });
       } else {
         uni.showToast({

@@ -60,8 +60,9 @@ export default {
 			show1: true
 		};
 	},
-	onLoad(option) {
-		console.log(option)
+	onLoad(e) {
+		console.log(e);
+		console.log("獲取了掃碼的參數")
 	},
 	methods: {
 		modalTap: function(e) {

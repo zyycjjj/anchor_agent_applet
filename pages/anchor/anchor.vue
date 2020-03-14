@@ -34,7 +34,7 @@
 						<view class="phbtag"><uni-tag class="phbut" text="排行榜" type="warning" size="small"></uni-tag></view>
 					</navigator>
 					<view class="notice">
-						<uni-notice-bar ref="noticebar" :show-icon="true" :scrollable="true" :single="true" :text="rank_string" id="noticebar" background-color="#ffffff" />
+						<uni-notice-bar speed=10 ref="noticebar" :show-icon="true" :scrollable="true" :single="true" :text="rank_string" id="noticebar" background-color="#ffffff" />
 					</view>
 				</view>
 			</view>
@@ -128,9 +128,6 @@ export default {
 	beforeCreate() {
 		// console.log(页面创建前);
 	},
-	onLoad(e) {
-		console.log(e);
-	},
 	data() {
 		return {
 			// tab选项卡信息
@@ -180,6 +177,7 @@ export default {
 			let qrId = decodeURIComponent(option.scene);
 			// 这里就是你拿着参数qrId进行操作
 		}
+		console.log(option)
 	},
 	onShow() {
 		this.getToken();
@@ -194,14 +192,13 @@ export default {
 			request({
 				url: '/api/platform/lists'
 			}).then(res => {
-				console.log(res.data.data);
 				this.tabBars = res.data.data
 			});
 		},
 		setEnddate() {
 			let endtimeYear = new Date().getFullYear();
 			let endtimeMonth = new Date().getMonth() + 1;
-			let endtimeDay = new Date().getDate() - 1;
+			let endtimeDay = new Date().getDate() ;
 			this.endDate = `${endtimeYear}-${endtimeMonth}-${endtimeDay}`;
 		},
 		getToken() {
