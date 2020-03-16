@@ -217,6 +217,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag = function unitag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { unitag: unitag, uniSection: uniSection },
@@ -247,7 +261,11 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
       // 是否有上一页
       hasprepage: true,
       // 是否有下一页
-      hasNextpage: true };
+      hasNextpage: true,
+      // 添加银行卡信息模态框的显示隐藏
+      enroll: false,
+      // 待添加的银行卡相关真实信息
+      enrollForm: {} };
 
   },
   onShow: function onShow() {
@@ -258,8 +276,47 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
     this.getWithdrawList();
   },
   methods: {
+    getdate: function getdate(now) {
+      y = now.getFullYear(),
+      m = now.getMonth() + 1,
+      d = now.getDate();
+      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d);
+    },
+    // 登记信息模态框的显示
+    enrollCard: function enrollCard() {
+      this.enroll = true;
+    },
+    // 提交银行卡信息
+    enrollInfo: function enrollInfo() {var _this = this;
+      var that = this;
+      (0, _request.request)({
+        url: '/api/user/withdrawInfo',
+        data: this.enrollForm,
+        method: 'POST' }).
+
+      then(function (res) {
+        if (res.data.code == 1) {
+          uni.showToast({
+            title: '信息登记成功，您可以继续提现',
+            icon: 'success' });
+
+          _this.enrollForm = {};
+          _this.enroll = false;
+        } else {
+          uni.showToast({
+            title: res.data.msg,
+            icon: 'none' });
+
+          _this.enrollForm = {};
+          _this.enroll = false;
+        }
+      }).
+      catch(function (err) {
+        console.log(err);
+      });
+    },
     // 获取经纪人提现记录
-    getWithdrawList: function getWithdrawList() {var _this = this;
+    getWithdrawList: function getWithdrawList() {var _this2 = this;
       var that = this;
       (0, _request.request)({
         url: '/api/user/withdrawList',
@@ -268,17 +325,19 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
         if (res.data.data.lists) {
           that.haslist = 0;
         }
-        console.log(res.data.data);
+        res.data.data.lists.map(function (item) {
+          item.createtime_text = item.createtime_text.slice(0, 10);
+        });
         that.widthdrawList = res.data.data.lists;
         if (res.data.data.has_next == 0) {
-          _this.hasNextpage = true;
+          _this2.hasNextpage = true;
         } else {
-          _this.hasNextpage = false;
+          _this2.hasNextpage = false;
         }
-        if (_this.page > 1) {
-          _this.hasprepage = false;
+        if (_this2.page > 1) {
+          _this2.hasprepage = false;
         } else {
-          _this.hasprepage = true;
+          _this2.hasprepage = true;
         }
       });
     },
@@ -315,8 +374,11 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
     closeModal: function closeModal() {
       this.showMonmodal = false;
     },
+    closeModal1: function closeModal1() {
+      this.enroll = false;
+    },
     // 关于模态框的函数
-    withdraw: function withdraw() {var _this2 = this;
+    withdraw: function withdraw() {var _this3 = this;
       var that = this;
       if (that.form.cashMoney <= that.wimoney) {
         (0, _request.request)({
@@ -330,11 +392,11 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
             console.log(res.data.msg);
             uni.showToast({
               title: res.data.msg,
-              icon: "none" });
+              icon: 'none' });
 
             that.form.cashMoney = '';
-            _this2.getWithdraw();
-            _this2.getWithdrawList();
+            _this3.getWithdraw();
+            _this3.getWithdrawList();
           } else {
             console.log(res.data.msg);
             that.form.cashMoney = '';
@@ -342,20 +404,19 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
               title: res.data.msg,
               icon: 'success' });
 
-            _this2.getWithdraw();
-            _this2.getWithdrawList();
+            _this3.getWithdraw();
+            _this3.getWithdrawList();
           }
         });
       } else {
         uni.showToast({
-          title: "超出可提现金额，请重新填写",
-          icon: "none" });
+          title: '超出可提现金额，请重新填写',
+          icon: 'none' });
 
         setTimeout(function () {
-          _this2.showMonmodal = true;
+          _this3.showMonmodal = true;
         }, 2000);
       }
-
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

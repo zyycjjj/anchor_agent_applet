@@ -125,9 +125,6 @@ export default {
 		timeSelector,
 		mediaItem
 	},
-	beforeCreate() {
-		// console.log(页面创建前);
-	},
 	data() {
 		return {
 			// tab选项卡信息
@@ -172,16 +169,15 @@ export default {
 		};
 	},
 	onLoad(option) {
+		this.getToken();
+		this.setEnddate();
 		this.getPlat();
 		if (option.scene) {
 			let qrId = decodeURIComponent(option.scene);
 			// 这里就是你拿着参数qrId进行操作
 		}
-		console.log(option)
 	},
 	onShow() {
-		this.getToken();
-		this.setEnddate();
 		this.getZblist();
 		this.getRanklist();
 		this.setNoticebar();

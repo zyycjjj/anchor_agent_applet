@@ -219,6 +219,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { uniSection: uniSection },
@@ -300,7 +305,8 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
 
           } else {
             uni.showToast({
-              title: res.data.msg });
+              title: res.data.msg,
+              icon: "none" });
 
           }
           that.getMineinfo();

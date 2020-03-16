@@ -11,6 +11,23 @@
   /* text-align: center; */
   position: relative;
 }
+.swiper-item .bg.data-v-03d45c9c {
+  height: 100%;
+  width: 100%;
+}
+.swiper-item .bg image.data-v-03d45c9c {
+  width: 80%;
+  height: 110%;
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  top: -10%;
+}
+.swiper-item .bg1.data-v-03d45c9c {
+  background-image: url(https://imgchr.com/i/8JigC4);
+}
 text.data-v-03d45c9c {
   font-size: 22px;
   text-align: center;
@@ -36,6 +53,7 @@ text.data-v-03d45c9c {
   width: 60%;
   height: 200px;
   background-color: #ffffff;
+  border: 1rpx solid red;
   border-radius: 30px;
   padding: 20px;
   position: absolute;

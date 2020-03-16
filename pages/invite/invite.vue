@@ -8,12 +8,15 @@
 		<view class="img" @tap="getImg"></view>
 		<!-- 图片显示邀请码 -->
 		<view class="mask" v-show="imageVis">
-			<uni-icons @tap="closeimg" type="close" size="25"></uni-icons>
-			<image :src="imgUrl" mode="" @tap="preview"></image>
-			<view class="btn-group">
-				<button type="primary" size="mini" open-type="openSetting" v-if="show1">保存相册</button>
-				<button type="primary" size="mini" @tap="save" v-else>保存相册</button>
-				<button type="primary" size="mini" open-type="share">分享</button>
+			<view class="image">
+				<uni-icons @tap="closeimg" type="close" size="25"></uni-icons>
+				<image src="../../static/invite/4.png" mode="" @tap="preview"></image>
+				<image class="qrcode" :src="imgUrl" mode=""></image>
+				<view class="btn-group">
+					<button type="primary" size="mini" open-type="openSetting" v-if="show1">保存相册</button>
+					<button type="primary" size="mini" @tap="save" v-else>保存相册</button>
+					<button type="primary" size="mini" open-type="share">分享</button>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -31,7 +34,9 @@ export default {
 			// 邀请二维码的地址
 			imgUrl: '',
 			providerList: [],
-			show1:false
+			show1: false,
+			isDom: true,
+			canvasUrl: ''
 		};
 	},
 	onShareAppMessage(res) {
@@ -81,31 +86,29 @@ export default {
 	methods: {
 		preview() {
 			wx.previewImage({
-				current: this.imgUrl, // 当前显示图片的http链接
-				urls: [this.imgUrl] // 需要预览的图片http链接列表
+				current: this.canvasUrl, // 当前显示图片的http链接
+				urls: [this.canvasUrl] // 需要预览的图片http链接列表
 			});
 		},
-		share(e) {
-			uni.share({
-				provider: 'weixin',
-				scene: 'WXSceneSession',
-				type: 2,
-				imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png',
-				success: function(res) {
-					console.log('success:' + JSON.stringify(res));
-				},
-				fail: function(err) {
-					console.log(err);
-				}
-			});
-		},
+		// share(e) {
+		// 	uni.share({
+		// 		provider: 'weixin',
+		// 		scene: 'WXSceneSession',
+		// 		type: 2,
+		// 		imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png',
+		// 		success: function(res) {
+		// 			console.log('success:' + JSON.stringify(res));
+		// 		},
+		// 		fail: function(err) {
+		// 			console.log(err);
+		// 		}
+		// 	});
+		// },
 		closeimg() {
 			this.imageVis = false;
 		},
 		getImg() {
-			// 检测二维码地址是否存在，如果不存在，就发请求拿，如果存在，就赋值改地址
 			this.imgUrl = uni.getStorageSync('login').spread_code;
-			console.log(uni.getStorageSync('login'));
 			this.imageVis = true;
 		},
 		//点击保存图片
@@ -126,12 +129,14 @@ export default {
 							scope: 'scope.writePhotosAlbum',
 							success() {
 								//用户允许授权，保存图片到相册
+								// 生成动态图片保存到相册
+
 								that.savePhoto();
 							},
 							fail() {
-								console.log("用户拒绝授权，跳转到设置页面")
+								console.log('用户拒绝授权，跳转到设置页面');
 								//用户点击拒绝授权，跳转到设置页，引导用户授权
-								that.show1 = true
+								that.show1 = true;
 								// wx.openSetting({
 								// 	success() {
 								// 		wx.authorize({
@@ -157,7 +162,7 @@ export default {
 			wx.downloadFile({
 				url: that.imgUrl,
 				success: function(res) {
-					console.log(res)
+					console.log(res);
 					wx.saveImageToPhotosAlbum({
 						filePath: res.tempFilePath,
 						success(res) {
@@ -172,12 +177,12 @@ export default {
 					});
 				},
 				fail(res) {
-					console.log(that.imgUrl)
-					console.log(res)
+					console.log(that.imgUrl);
+					console.log(res);
 					uni.showToast({
-						title:'保存失败',
-						icon:'none'
-					})
+						title: '保存失败',
+						icon: 'none'
+					});
 				}
 			});
 		}
@@ -206,29 +211,43 @@ export default {
 	}
 	.img {
 		width: 90%;
-		height: 300rpx;
+		height: 370rpx;
 		margin: 30rpx auto;
 		border-radius: 40rpx;
-		background: url(../../static/widthdraw/bg.png) fixed no-repeat;
-		background-size: contain;
+		background: url(https://s1.ax1x.com/2020/03/16/8JudF1.png) no-repeat;
+		// background: url(../../static/widthdraw/bg.png) fixed no-repeat;
+		background-size: cover;
 	}
 	.mask {
 		width: 100%;
 		height: 100%;
 		position: absolute;
-		padding-top: 18%;
 		text-align: center;
 		top: 0;
 		color: #ffffff;
 		background-color: rgba(0, 0, 0, 0.5);
-		image {
-			width: 200px;
-			height: 200px;
-		}
-		uni-icons {
-			position: absolute;
-			top: 145rpx;
-			right: 145rpx;
+		.image {
+			width: 100%;
+			height: 100%;
+			padding-top: 10%;
+			position: relative;
+			image {
+				width: 496rpx;
+				height: 878rpx;
+			}
+			.qrcode {
+				width: 200rpx;
+				height: 200rpx;
+				position: absolute;
+				bottom: 20%;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+			uni-icons {
+				position: absolute;
+				top: 2%;
+				right: 8%;
+			}
 		}
 		.btn-group {
 			display: flex;

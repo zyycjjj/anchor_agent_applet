@@ -7,21 +7,7 @@
 		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
-		"minified": false,
-		"newFeature": true,
-		"coverView": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		},
-		"uglifyFileName": true
+		"minified": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.9.2",

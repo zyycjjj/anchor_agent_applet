@@ -2,17 +2,24 @@
 	<view class="sq-container">
 		<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval">
 			<swiper-item>
-				<view class="swiper-item uni-bg-red">
-					<!-- <image src="../../static/sq/sqbg_1.jpg" mode=""></image> -->
-					<text>快速录入主播信息</text>
+				<view class="swiper-item">
+					<view class="bg1 bg">
+						<image src="../../static/sq/1.png" mode=""></image>
+					</view>
 				</view>
 			</swiper-item>
 			<swiper-item>
-				<view class="swiper-item uni-bg-green"><text>经纪人联系更便捷</text></view>
+				<view class="swiper-item">
+					<view class="bg2 bg">
+						<image src="../../static/sq/2.png" mode=""></image>
+					</view>
+				</view>
 			</swiper-item>
 			<swiper-item>
-				<view class="swiper-item uni-bg-blue">
-					<text>实时查看主播数据</text>
+				<view class="swiper-item">
+					<view class="bg3 bg">
+						<image src="../../static/sq/3.png" mode=""></image>
+					</view>
 					<button class="authorize" type="primary" size="mini" @tap="modalTap">授权</button>
 					<!-- <neil-modal
             :show="show2"
@@ -198,6 +205,23 @@ export default {
 	height: 100%;
 	/* text-align: center; */
 	position: relative;
+	.bg{
+		height: 100%;
+		width: 100%;
+		// background-color: red;
+		image{
+			width: 80%;
+			height: 110%;
+			margin: 0 auto;
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			top: -10%;
+		}
+	}
+	.bg1{
+		background-image: url(https://imgchr.com/i/8JigC4);
+	}
 }
 text {
 	font-size: 22px;
@@ -222,6 +246,7 @@ text {
 	width: 60%;
 	height: 200px;
 	background-color: #ffffff;
+	border: 1rpx solid red;
 	border-radius: 30px;
 	padding: 20px;
 	position: absolute;

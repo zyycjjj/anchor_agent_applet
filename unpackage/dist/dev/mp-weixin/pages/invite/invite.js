@@ -160,6 +160,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
 {
   components: { uniIcons: uniIcons, uniSection: uniSection },
   data: function data() {
@@ -169,7 +172,9 @@ __webpack_require__.r(__webpack_exports__);
       // 邀请二维码的地址
       imgUrl: '',
       providerList: [],
-      show1: false };
+      show1: false,
+      isDom: true,
+      canvasUrl: '' };
 
   },
   onShareAppMessage: function onShareAppMessage(res) {
@@ -219,31 +224,29 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     preview: function preview() {
       wx.previewImage({
-        current: this.imgUrl, // 当前显示图片的http链接
-        urls: [this.imgUrl] // 需要预览的图片http链接列表
+        current: this.canvasUrl, // 当前显示图片的http链接
+        urls: [this.canvasUrl] // 需要预览的图片http链接列表
       });
     },
-    share: function share(e) {
-      uni.share({
-        provider: 'weixin',
-        scene: 'WXSceneSession',
-        type: 2,
-        imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png',
-        success: function success(res) {
-          console.log('success:' + JSON.stringify(res));
-        },
-        fail: function fail(err) {
-          console.log(err);
-        } });
-
-    },
+    // share(e) {
+    // 	uni.share({
+    // 		provider: 'weixin',
+    // 		scene: 'WXSceneSession',
+    // 		type: 2,
+    // 		imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png',
+    // 		success: function(res) {
+    // 			console.log('success:' + JSON.stringify(res));
+    // 		},
+    // 		fail: function(err) {
+    // 			console.log(err);
+    // 		}
+    // 	});
+    // },
     closeimg: function closeimg() {
       this.imageVis = false;
     },
     getImg: function getImg() {
-      // 检测二维码地址是否存在，如果不存在，就发请求拿，如果存在，就赋值改地址
       this.imgUrl = uni.getStorageSync('login').spread_code;
-      console.log(uni.getStorageSync('login'));
       this.imageVis = true;
     },
     //点击保存图片
@@ -264,10 +267,12 @@ __webpack_require__.r(__webpack_exports__);
               scope: 'scope.writePhotosAlbum',
               success: function success() {
                 //用户允许授权，保存图片到相册
+                // 生成动态图片保存到相册
+
                 that.savePhoto();
               },
               fail: function fail() {
-                console.log("用户拒绝授权，跳转到设置页面");
+                console.log('用户拒绝授权，跳转到设置页面');
                 //用户点击拒绝授权，跳转到设置页，引导用户授权
                 that.show1 = true;
                 // wx.openSetting({

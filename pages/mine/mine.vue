@@ -68,6 +68,11 @@
 		<!-- 提现模态框 -->
 		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入提现金额" @cancel="bindBtn('cancel')" @confirm="withdraw()">
 			<view class="input-view">
+				<view class="" style="border-bottom: 0.1px solid #CCCCCC;padding:10rpx">
+					<text>
+						如您的提现金额超过100元，请先点击提现记录页面登记转账信息
+					</text>
+				</view>
 				<view class="moneyNum">
 					<view>提现金额</view>
 					<input type="number" placeholder="请输入提现金额" v-model="form.cashMoney" />
@@ -160,7 +165,8 @@ export default {
 						})
 					}else{
 						uni.showToast({
-							title:res.data.msg
+							title:res.data.msg,
+							icon:"none"
 						})
 					}
 					that.getMineinfo()
@@ -185,8 +191,8 @@ export default {
 	.ownInfo {
 		width: 100%;
 		height: 180px;
-		background: url(../../static/widthdraw/bg.png) fixed no-repeat;
-		background-size: contain;
+		background: url(../../static/widthdraw/bg.png)  no-repeat;
+		background-size: cover;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
@@ -269,7 +275,7 @@ export default {
 				.iconfont {
 					vertical-align: text-bottom;
 					// margin-right: 10px;
-					font-size: 12px;
+					font-size: 14px;
 					// font-weight: bold;
 				}
 				navigator{
@@ -298,7 +304,8 @@ export default {
 				}
 				text {
 					font-weight: normal;
-					font-size: 12px;
+					font-size: 14px;
+					font-weight: bolder;
 				}
 			}
 		}

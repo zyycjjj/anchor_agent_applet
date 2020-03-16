@@ -287,9 +287,6 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
     timeSelector: timeSelector,
     mediaItem: mediaItem },
 
-  beforeCreate: function beforeCreate() {
-    // console.log(页面创建前);
-  },
   data: function data() {
     return {
       // tab选项卡信息
@@ -334,16 +331,15 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
 
   },
   onLoad: function onLoad(option) {
+    this.getToken();
+    this.setEnddate();
     this.getPlat();
     if (option.scene) {
       var qrId = decodeURIComponent(option.scene);
       // 这里就是你拿着参数qrId进行操作
     }
-    console.log(option);
   },
   onShow: function onShow() {
-    this.getToken();
-    this.setEnddate();
     this.getZblist();
     this.getRanklist();
     this.setNoticebar();

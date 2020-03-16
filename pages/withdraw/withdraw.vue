@@ -26,6 +26,7 @@
 				<text style="font-weight: bold;color: #0E0E0E;">{{ wimoney }}</text>
 			</view>
 			<text @tap="getMoney" class="getMoney">提现</text>
+			<text @tap="enrollCard" class="enrollCard">登记信息</text>
 		</view>
 		<view class="wDlist">
 			<view class="tit">提现记录</view>
@@ -51,23 +52,36 @@
 					</view>
 				</view>
 				<!-- 放一个分页组件 -->
-				<!-- <view class="pagenation">
-					<button type="primary" :disabled="hasprepage" @tap="getPrepage" size="mini" plain="true" style="float: left;margin-left: 40rpx;margin-top: 20rpx;">
+				<view class="pagenation">
+					<button type="primary" :disabled="hasprepage" @tap="getPrepage" size="mini" plain="true" style="float: left;margin-left: 50rpx;margin-top: 20rpx;font-size: 10px;">
 						上一页
 					</button>
-					<button type="primary" :disabled="hasNextpage" @tap="getNextpage" size="mini" plain="true" style="float: right;margin-right: 40rpx;margin-top: 20rpx;">
-						下一页
+					<button type="primary" :disabled="hasNextpage" @tap="getNextpage" size="mini" plain="true" style="float: right;margin-right: 50rpx;margin-top: 16rpx;font-size:10px;">
+						下一页	
 					</button>
-				</view> -->
+				</view>
 			</view>
 		</view>
 
 		<!-- 提现模态框 -->
-		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入提现金额" @cancel="bindBtn('cancel')" @confirm="withdraw()">
+		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入提现金额" @confirm="withdraw()">
 			<view class="input-view">
 				<view class="moneyNum">
 					<view>提现金额</view>
 					<input type="number" placeholder="请输入提现金额" v-model="form.cashMoney" />
+				</view>
+			</view>
+		</neil-modal>
+
+		<neil-modal :autoClose="true" :showCancel="false" :show="enroll" @close="closeModal1()" title="请输入真实信息"  @confirm="enrollInfo()">
+			<view class="input-view">
+				<view class="moneyNum">
+					<view>真实姓名</view>
+					<input type="number" placeholder="请输入真实姓名" v-model="enrollForm.real_name" />
+				</view>
+				<view class="moneyNum">
+					<view>银行卡号</view>
+					<input type="number" placeholder="请输入银行卡号" v-model="enrollForm.bank_card_number" />
 				</view>
 			</view>
 		</neil-modal>
@@ -107,7 +121,11 @@ export default {
 			// 是否有上一页
 			hasprepage: true,
 			// 是否有下一页
-			hasNextpage: true
+			hasNextpage: true,
+			// 添加银行卡信息模态框的显示隐藏
+			enroll: false,
+			// 待添加的银行卡相关真实信息
+			enrollForm: {}
 		};
 	},
 	onShow() {
@@ -118,6 +136,45 @@ export default {
 		this.getWithdrawList();
 	},
 	methods: {
+		getdate(now) {
+		　　y = now.getFullYear(),
+		　　m = now.getMonth() + 1,
+		　　d = now.getDate();
+		　　return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) ;
+		},
+		// 登记信息模态框的显示
+		enrollCard() {
+			this.enroll = true;
+		},
+		// 提交银行卡信息
+		enrollInfo() {
+			const that = this;
+			request({
+				url: '/api/user/withdrawInfo',
+				data: this.enrollForm,
+				method: 'POST'
+			})
+				.then(res => {
+					if (res.data.code == 1) {
+						uni.showToast({
+							title: '信息登记成功，您可以继续提现',
+							icon: 'success'
+						});
+						this.enrollForm = {}
+						this.enroll = false
+					} else {
+						uni.showToast({
+							title: res.data.msg,
+							icon: 'none'
+						});
+						this.enrollForm = {}
+						this.enroll = false
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 		// 获取经纪人提现记录
 		getWithdrawList() {
 			const that = this;
@@ -128,8 +185,10 @@ export default {
 				if (res.data.data.lists) {
 					that.haslist = 0;
 				}
-				console.log(res.data.data);
-				that.widthdrawList = res.data.data.lists;
+				res.data.data.lists.map(item => {
+					item.createtime_text = item.createtime_text.slice(0,10)
+				})
+				that.widthdrawList = res.data.data.lists
 				if (res.data.data.has_next == 0) {
 					this.hasNextpage = true;
 				} else {
@@ -175,10 +234,13 @@ export default {
 		closeModal() {
 			this.showMonmodal = false;
 		},
+		closeModal1(){
+			this.enroll = false
+		},
 		// 关于模态框的函数
 		withdraw() {
 			const that = this;
-			if(that.form.cashMoney <= that.wimoney){
+			if (that.form.cashMoney <= that.wimoney) {
 				request({
 					url: '/api/user/applyWithdraw',
 					method: 'POST',
@@ -189,33 +251,32 @@ export default {
 					if (res.code !== 1) {
 						console.log(res.data.msg);
 						uni.showToast({
-							title:res.data.msg,
-							icon:"none"
-						})
-						that.form.cashMoney = ''
+							title: res.data.msg,
+							icon: 'none'
+						});
+						that.form.cashMoney = '';
 						this.getWithdraw();
 						this.getWithdrawList();
 					} else {
 						console.log(res.data.msg);
-						that.form.cashMoney = ''
+						that.form.cashMoney = '';
 						uni.showToast({
-							title:res.data.msg,
-							icon:'success'
-						})
+							title: res.data.msg,
+							icon: 'success'
+						});
 						this.getWithdraw();
 						this.getWithdrawList();
 					}
 				});
-			}else{
+			} else {
 				uni.showToast({
-					title:"超出可提现金额，请重新填写",
-					icon:"none"
-				})
-				setTimeout(()=>{
-					this.showMonmodal = true
-				},2000)
+					title: '超出可提现金额，请重新填写',
+					icon: 'none'
+				});
+				setTimeout(() => {
+					this.showMonmodal = true;
+				}, 2000);
 			}
-			
 		}
 	}
 };
@@ -227,9 +288,8 @@ export default {
 	.withdrawData {
 		width: 100%;
 		height: 25%;
-		background: url(../../static/widthdraw/bg.png) fixed no-repeat;
-		border: 0px solid #000000;
-		background-size: contain;
+		background: url(../../static/widthdraw/bg.png);
+		background-size: cover;
 		display: flex;
 		flex-direction: column;
 		view {
@@ -242,12 +302,12 @@ export default {
 			height: 40%;
 			display: flex;
 			flex-direction: column;
-			padding:20rpx 40rpx;
+			padding: 20rpx 40rpx;
 		}
 		.moneyEd {
 			display: flex;
 			justify-content: space-between;
-			padding:0 40rpx;
+			padding: 0 40rpx;
 			padding-top: 0;
 			view {
 				display: flex;
@@ -258,7 +318,7 @@ export default {
 
 	// 可提现部分
 	.getPay {
-		height: 7%;
+		height: 5%;
 		width: 100%;
 		text-indent: 40rpx;
 		display: flex;
@@ -267,7 +327,7 @@ export default {
 		text {
 			line-height: 100rpx;
 		}
-		view{
+		view {
 			position: absolute;
 			top: 50%;
 			transform: translateY(-50%);
@@ -285,7 +345,18 @@ export default {
 			top: 50%;
 			right: 30rpx;
 			transform: translateY(-50%);
-			
+		}
+		.enrollCard {
+			height: 40rpx;
+			line-height: 40rpx;
+			text-indent: 0;
+			padding: 0 10rpx;
+			border: 1px solid red;
+			border-radius: 10000rpx;
+			position: absolute;
+			top: 50%;
+			right: 200rpx;
+			transform: translateY(-50%);
 		}
 	}
 	.wDlist {
@@ -293,14 +364,14 @@ export default {
 		text-indent: 40rpx;
 		height: 68%;
 		line-height: 60rpx;
-		.tit{
+		.tit {
 			text-align: left;
 			background-color: #f5f5f5;
 		}
 		view {
-			view{
+			view {
 				text-align: center;
-				height: 60rpx;
+				height: 40rpx;
 				text {
 					color: #8b8b8b;
 				}
@@ -343,11 +414,11 @@ export default {
 			float: left;
 			font-size: 27rpx;
 			position: relative;
+			padding: 10rpx 0;
 			.uni-tag {
-				text-indent: 0;
 				position: absolute;
-				left: 30%;
-				// margin-top: 10rpx;
+				left: 40%;
+				margin-top: 10rpx;
 			}
 		}
 		.moneycontainer {
@@ -357,9 +428,11 @@ export default {
 			text-indent: 0;
 			height: 40rpx;
 			padding: 10rpx 0;
-			.uni-tag{
-				height: 45rpx;
-			}
+			.uni-tag {
+				height: 10rpx;
+				text-indent: 0;
+				line-height: 10rpx;
+			}	
 		}
 	}
 	.pagenation {
@@ -383,7 +456,7 @@ export default {
 		}
 	}
 }
-.neil-modal__footer-right{
+.neil-modal__footer-right {
 	height: 60px;
 }
 </style>

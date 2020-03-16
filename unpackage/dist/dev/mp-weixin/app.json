@@ -24,26 +24,26 @@
       {
         "pagePath": "pages/anchor/anchor",
         "text": "我的主播",
-        "iconPath": "./static/tabbar/1.png",
-        "selectedIconPath": "./static/tabbar/1-1.png"
+        "iconPath": "./static/tabbar/1-1.png",
+        "selectedIconPath": "./static/tabbar/1.png"
       },
       {
         "pagePath": "pages/withdraw/withdraw",
         "text": "提现",
-        "iconPath": "./static/tabbar/2.png",
-        "selectedIconPath": "./static/tabbar/2-2.png"
+        "iconPath": "./static/tabbar/2-1.png",
+        "selectedIconPath": "./static/tabbar/2.png"
       },
       {
         "pagePath": "pages/invite/invite",
         "text": "邀请",
-        "iconPath": "./static/tabbar/3.png",
-        "selectedIconPath": "./static/tabbar/3-1.png"
+        "iconPath": "./static/tabbar/3-1.png",
+        "selectedIconPath": "./static/tabbar/3.png"
       },
       {
         "pagePath": "pages/mine/mine",
         "text": "个人中心",
-        "iconPath": "./static/tabbar/4.png",
-        "selectedIconPath": "./static/tabbar/4-1.png"
+        "iconPath": "./static/tabbar/4-1.png",
+        "selectedIconPath": "./static/tabbar/4.png"
       }
     ]
   },
@@ -51,5 +51,5 @@
   "usingComponents": {
     "uni-pop": "/components/uni-popup/uni-popup"
   },
-  "sitemapLocation": "sitemap72.json"
+  "sitemapLocation": "sitemap92.json"
 }
