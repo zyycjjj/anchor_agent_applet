@@ -163,6 +163,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 {
   components: { uniIcons: uniIcons, uniSection: uniSection },
   data: function data() {
@@ -174,7 +179,10 @@ __webpack_require__.r(__webpack_exports__);
       providerList: [],
       show1: false,
       isDom: true,
-      canvasUrl: '' };
+      canvasUrl: '',
+      // 海报背景图片地址
+      cover: 'https://www.vzoyo.com/uploads/share.png',
+      hascanvas: false };
 
   },
   onShareAppMessage: function onShareAppMessage(res) {
@@ -186,41 +194,6 @@ __webpack_require__.r(__webpack_exports__);
       imgUrl: this.imgUrl };
 
   },
-  onLoad: function onLoad() {var _this = this;
-    uni.getProvider({
-      service: 'share',
-      success: function success(e) {
-        var data = [];
-        for (var i = 0; i < e.provider.length; i++) {
-          switch (e.provider[i]) {
-            case 'weixin':
-              data.push({
-                name: '分享到微信好友',
-                id: 'weixin' });
-
-              data.push({
-                name: '分享到微信朋友圈',
-                id: 'weixin',
-                type: 'WXSenceTimeline' });
-
-              break;
-            case 'qq':
-              data.push({
-                name: '分享到QQ',
-                id: 'qq' });
-
-              break;
-            default:
-              break;}
-
-        }
-        _this.providerList = data;
-      },
-      fail: function fail(e) {
-        console.log('获取分享通道失败', e);
-      } });
-
-  },
   methods: {
     preview: function preview() {
       wx.previewImage({
@@ -228,32 +201,65 @@ __webpack_require__.r(__webpack_exports__);
         urls: [this.canvasUrl] // 需要预览的图片http链接列表
       });
     },
-    // share(e) {
-    // 	uni.share({
-    // 		provider: 'weixin',
-    // 		scene: 'WXSceneSession',
-    // 		type: 2,
-    // 		imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png',
-    // 		success: function(res) {
-    // 			console.log('success:' + JSON.stringify(res));
-    // 		},
-    // 		fail: function(err) {
-    // 			console.log(err);
-    // 		}
-    // 	});
-    // },
     closeimg: function closeimg() {
       this.imageVis = false;
     },
     getImg: function getImg() {
+      var that = this;
       this.imgUrl = uni.getStorageSync('login').spread_code;
       this.imageVis = true;
+      if (!that.hascanvas) {
+        uni.showToast({
+          icon: 'loading',
+          title: '正在生成海报中',
+          duration: 1000 });
+
+      }
+      // 绘制canvas
+      var ctx = uni.createCanvasContext('firstCanvas');
+      uni.getImageInfo({
+        src: that.cover,
+        success: function success(res) {
+          console.log(res);
+          var path = res.path;
+          ctx.drawImage(path, 0, 0, uni.upx2px(500), uni.upx2px(878));
+          ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
+          uni.getImageInfo({
+            src: that.imgUrl,
+            success: function success(res) {
+              var path1 = res.path;
+              ctx.drawImage(path1, uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
+              ctx.draw(false, function () {
+                uni.canvasToTempFilePath({
+                  x: 0,
+                  y: 0,
+                  canvasId: 'firstCanvas',
+                  success: function success(res) {
+                    that.canvasUrl = res.tempFilePath;
+                    console.log(that.canvasUrl);
+                    that.hascanvas = true;
+                  },
+                  fail: function fail(e) {
+                    uni.showToast({
+                      title: '生成海报失败',
+                      icon: 'none' });
+
+                  } });
+
+              });
+            } });
+
+        },
+        fail: function fail(error) {
+          console.log(error);
+        } });
+
     },
     //点击保存图片
     save: function save() {
       var that = this;
       //若二维码未加载完毕，加个动画提高用户体验
-      wx.showToast({
+      uni.showToast({
         icon: 'loading',
         title: '正在保存图片',
         duration: 1000 });
@@ -298,7 +304,7 @@ __webpack_require__.r(__webpack_exports__);
     savePhoto: function savePhoto() {
       var that = this;
       wx.downloadFile({
-        url: that.imgUrl,
+        url: that.canvasUrl,
         success: function success(res) {
           console.log(res);
           wx.saveImageToPhotosAlbum({

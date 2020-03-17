@@ -10,8 +10,11 @@
 		<view class="mask" v-show="imageVis">
 			<view class="image">
 				<uni-icons @tap="closeimg" type="close" size="25"></uni-icons>
-				<image src="../../static/invite/4.png" mode="" @tap="preview"></image>
-				<image class="qrcode" :src="imgUrl" mode=""></image>
+				<!-- <view>
+					<image src="../../static/invite/4.png" mode="" @tap="preview"></image>
+					<image class="qrcode" :src="imgUrl" mode=""></image>
+				</view> -->
+				<view class="wrapper"><canvas style="height: 100%;width: 100%;backgroundColor: #ffffff" canvas-id="firstCanvas"></canvas></view>
 				<view class="btn-group">
 					<button type="primary" size="mini" open-type="openSetting" v-if="show1">保存相册</button>
 					<button type="primary" size="mini" @tap="save" v-else>保存相册</button>
@@ -19,6 +22,8 @@
 				</view>
 			</view>
 		</view>
+		<image ref="bg" v-show="false" src="../../static/invite/4.png" mode="" @tap="preview"></image>
+		<image ref="code" v-show="false" class="qrcode" :src="imgUrl" mode=""></image>
 	</view>
 </template>
 
@@ -36,7 +41,10 @@ export default {
 			providerList: [],
 			show1: false,
 			isDom: true,
-			canvasUrl: ''
+			canvasUrl: '',
+			// 海报背景图片地址
+			cover: 'https://www.vzoyo.com/uploads/share.png',
+			hascanvas: false
 		};
 	},
 	onShareAppMessage(res) {
@@ -48,41 +56,6 @@ export default {
 			imgUrl: this.imgUrl
 		};
 	},
-	onLoad() {
-		uni.getProvider({
-			service: 'share',
-			success: e => {
-				let data = [];
-				for (let i = 0; i < e.provider.length; i++) {
-					switch (e.provider[i]) {
-						case 'weixin':
-							data.push({
-								name: '分享到微信好友',
-								id: 'weixin'
-							});
-							data.push({
-								name: '分享到微信朋友圈',
-								id: 'weixin',
-								type: 'WXSenceTimeline'
-							});
-							break;
-						case 'qq':
-							data.push({
-								name: '分享到QQ',
-								id: 'qq'
-							});
-							break;
-						default:
-							break;
-					}
-				}
-				this.providerList = data;
-			},
-			fail: e => {
-				console.log('获取分享通道失败', e);
-			}
-		});
-	},
 	methods: {
 		preview() {
 			wx.previewImage({
@@ -90,32 +63,65 @@ export default {
 				urls: [this.canvasUrl] // 需要预览的图片http链接列表
 			});
 		},
-		// share(e) {
-		// 	uni.share({
-		// 		provider: 'weixin',
-		// 		scene: 'WXSceneSession',
-		// 		type: 2,
-		// 		imageUrl: 'https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png',
-		// 		success: function(res) {
-		// 			console.log('success:' + JSON.stringify(res));
-		// 		},
-		// 		fail: function(err) {
-		// 			console.log(err);
-		// 		}
-		// 	});
-		// },
 		closeimg() {
 			this.imageVis = false;
 		},
 		getImg() {
+			const that = this;
 			this.imgUrl = uni.getStorageSync('login').spread_code;
 			this.imageVis = true;
+			if(!that.hascanvas){
+				uni.showToast({
+					icon: 'loading',
+					title: '正在生成海报中',
+					duration: 1000
+				});
+			}
+			// 绘制canvas
+			let ctx = uni.createCanvasContext('firstCanvas');
+			uni.getImageInfo({
+				src: that.cover,
+				success(res) {
+					console.log(res);
+					const path = res.path;
+					ctx.drawImage(path, 0, 0, uni.upx2px(500), uni.upx2px(878));
+					ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
+					uni.getImageInfo({
+						src: that.imgUrl,
+						success(res) {
+							const path1 = res.path;
+							ctx.drawImage(path1, uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
+							ctx.draw(false, () => {
+								uni.canvasToTempFilePath({
+									x: 0,
+									y: 0,
+									canvasId: 'firstCanvas',
+									success: function(res) {
+										that.canvasUrl = res.tempFilePath;
+										console.log(that.canvasUrl)
+										that.hascanvas = true
+									},
+									fail(e) {
+										uni.showToast({
+											title: '生成海报失败',
+											icon: 'none'
+										});
+									}
+								});
+							});
+						}
+					});
+				},
+				fail(error) {
+					console.log(error);
+				}
+			});
 		},
 		//点击保存图片
 		save() {
 			let that = this;
 			//若二维码未加载完毕，加个动画提高用户体验
-			wx.showToast({
+			uni.showToast({
 				icon: 'loading',
 				title: '正在保存图片',
 				duration: 1000
@@ -160,7 +166,7 @@ export default {
 		savePhoto() {
 			let that = this;
 			wx.downloadFile({
-				url: that.imgUrl,
+				url: that.canvasUrl,
 				success: function(res) {
 					console.log(res);
 					wx.saveImageToPhotosAlbum({
@@ -229,23 +235,32 @@ export default {
 		.image {
 			width: 100%;
 			height: 100%;
-			padding-top: 10%;
 			position: relative;
+			top: 10%;
 			image {
 				width: 496rpx;
 				height: 878rpx;
+			}
+			.wrapper {
+				width: 496rpx;
+				height: 878rpx;
+				display: block;
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				top: 0;
 			}
 			.qrcode {
 				width: 200rpx;
 				height: 200rpx;
 				position: absolute;
-				bottom: 20%;
+				bottom: 22%;
 				left: 50%;
 				transform: translateX(-50%);
 			}
 			uni-icons {
 				position: absolute;
-				top: 2%;
+				top: -5%;
 				right: 8%;
 			}
 		}
@@ -256,6 +271,9 @@ export default {
 			button {
 				width: 30%;
 			}
+			position: absolute;
+			width: 100%;
+			bottom: 75px;
 		}
 	}
 }

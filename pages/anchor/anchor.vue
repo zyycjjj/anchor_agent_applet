@@ -169,15 +169,17 @@ export default {
 		};
 	},
 	onLoad(option) {
+		console.log(option.pid)
+		uni.setStorageSync('pid',option.pid)
+		// if (option.scene) {
+		// 	let qrId = decodeURIComponent(option.scene);
+		// 	// 这里就是你拿着参数qrId进行操作
+		// }
+	},
+	onShow() {
 		this.getToken();
 		this.setEnddate();
 		this.getPlat();
-		if (option.scene) {
-			let qrId = decodeURIComponent(option.scene);
-			// 这里就是你拿着参数qrId进行操作
-		}
-	},
-	onShow() {
 		this.getZblist();
 		this.getRanklist();
 		this.setNoticebar();

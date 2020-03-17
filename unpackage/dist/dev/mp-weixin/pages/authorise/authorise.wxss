@@ -11,6 +11,9 @@
   /* text-align: center; */
   position: relative;
 }
+.swiper-item .uni-swiper-dots.data-v-03d45c9c {
+  bottom: 100px;
+}
 .swiper-item .bg.data-v-03d45c9c {
   height: 100%;
   width: 100%;

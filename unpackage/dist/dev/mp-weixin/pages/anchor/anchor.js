@@ -331,15 +331,17 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
 
   },
   onLoad: function onLoad(option) {
+    console.log(option.pid);
+    uni.setStorageSync('pid', option.pid);
+    // if (option.scene) {
+    // 	let qrId = decodeURIComponent(option.scene);
+    // 	// 这里就是你拿着参数qrId进行操作
+    // }
+  },
+  onShow: function onShow() {
     this.getToken();
     this.setEnddate();
     this.getPlat();
-    if (option.scene) {
-      var qrId = decodeURIComponent(option.scene);
-      // 这里就是你拿着参数qrId进行操作
-    }
-  },
-  onShow: function onShow() {
     this.getZblist();
     this.getRanklist();
     this.setNoticebar();

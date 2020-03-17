@@ -3,23 +3,17 @@
 		<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval">
 			<swiper-item>
 				<view class="swiper-item">
-					<view class="bg1 bg">
-						<image src="../../static/sq/1.png" mode=""></image>
-					</view>
+					<view class="bg1 bg"><image src="../../static/sq/1.png" mode=""></image></view>
 				</view>
 			</swiper-item>
 			<swiper-item>
 				<view class="swiper-item">
-					<view class="bg2 bg">
-						<image src="../../static/sq/2.png" mode=""></image>
-					</view>
+					<view class="bg2 bg"><image src="../../static/sq/2.png" mode=""></image></view>
 				</view>
 			</swiper-item>
 			<swiper-item>
 				<view class="swiper-item">
-					<view class="bg3 bg">
-						<image src="../../static/sq/3.png" mode=""></image>
-					</view>
+					<view class="bg3 bg"><image src="../../static/sq/3.png" mode=""></image></view>
 					<button class="authorize" type="primary" size="mini" @tap="modalTap">授权</button>
 					<!-- <neil-modal
             :show="show2"
@@ -41,7 +35,6 @@
 							<button type="primary" size="mini" open-type="getUserInfo" @getuserinfo="mpGetUserInfo" v-if="show1">同意并继续</button>
 							<button type="primary" size="mini" open-type="openSetting" bindopensetting="callback" v-else>重新授权</button>
 						</view>
-						
 					</view>
 				</view>
 			</swiper-item>
@@ -64,12 +57,15 @@ export default {
 			show2: false,
 			// 获取到的用户信息
 			userInfo: {},
-			show1: true
+			show1: true,
+			// 用户扫码传递的参数
+			pid: ''
 		};
 	},
 	onLoad(e) {
-		console.log(e);
-		console.log("獲取了掃碼的參數")
+		this.pid = Number(uni.getStorageSync('pid'));
+		console.log(typeof this.pid);
+		console.log(this.pid);
 	},
 	methods: {
 		modalTap: function(e) {
@@ -135,7 +131,7 @@ export default {
 				// 	showCancel: false
 				// });
 				//用户点击拒绝授权，跳转到设置页，引导用户授权
-				this.show1 = false
+				this.show1 = false;
 				wx.openSetting({
 					success() {
 						wx.authorize({
@@ -150,10 +146,12 @@ export default {
 			}
 			this.userInfo = result.detail.userInfo;
 			const that = this;
+
 			uni.login({
 				provider: 'weixin',
 				success: function(loginRes) {
 					uni.setStorageSync('code', loginRes.code);
+					uni.setStorageSync('pid', Number(uni.getStorageSync('pid')));
 					that.userInfo.code = loginRes.code;
 					uni.setStorageSync('userinfo', result.detail.userInfo);
 					// 优化过得代码
@@ -166,9 +164,11 @@ export default {
 							gender: that.userInfo.gender,
 							province: that.userInfo.province,
 							city: that.userInfo.city,
-							country: that.userInfo.country
+							country: that.userInfo.country,
+							// 注意this指向
+							pid: that.pid
 						},
-						method:'POST',
+						method: 'POST'
 					}).then(res => {
 						if (res.data.code != 1) {
 							uni.showModal({
@@ -205,11 +205,14 @@ export default {
 	height: 100%;
 	/* text-align: center; */
 	position: relative;
-	.bg{
+	.uni-swiper-dots {
+		bottom: 100px;
+	}
+	.bg {
 		height: 100%;
 		width: 100%;
 		// background-color: red;
-		image{
+		image {
 			width: 80%;
 			height: 110%;
 			margin: 0 auto;
@@ -219,7 +222,7 @@ export default {
 			top: -10%;
 		}
 	}
-	.bg1{
+	.bg1 {
 		background-image: url(https://imgchr.com/i/8JigC4);
 	}
 }

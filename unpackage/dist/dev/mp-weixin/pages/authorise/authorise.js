@@ -178,13 +178,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var _default =
 {
   components: {
@@ -199,12 +192,15 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
       show2: false,
       // 获取到的用户信息
       userInfo: {},
-      show1: true };
+      show1: true,
+      // 用户扫码传递的参数
+      pid: '' };
 
   },
   onLoad: function onLoad(e) {
-    console.log(e);
-    console.log("獲取了掃碼的參數");
+    this.pid = Number(uni.getStorageSync('pid'));
+    console.log(typeof this.pid);
+    console.log(this.pid);
   },
   methods: {
     modalTap: function modalTap(e) {
@@ -285,10 +281,12 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
       }
       this.userInfo = result.detail.userInfo;
       var that = this;
+
       uni.login({
         provider: 'weixin',
         success: function success(loginRes) {
           uni.setStorageSync('code', loginRes.code);
+          uni.setStorageSync('pid', Number(uni.getStorageSync('pid')));
           that.userInfo.code = loginRes.code;
           uni.setStorageSync('userinfo', result.detail.userInfo);
           // 优化过得代码
@@ -301,7 +299,9 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
               gender: that.userInfo.gender,
               province: that.userInfo.province,
               city: that.userInfo.city,
-              country: that.userInfo.country },
+              country: that.userInfo.country,
+              // 注意this指向
+              pid: that.pid },
 
             method: 'POST' }).
           then(function (res) {
