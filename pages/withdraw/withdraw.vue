@@ -77,7 +77,7 @@
 			<view class="input-view">
 				<view class="moneyNum">
 					<view>真实姓名</view>
-					<input type="number" placeholder="请输入真实姓名" v-model="enrollForm.real_name" />
+					<input placeholder="请输入真实姓名" v-model="enrollForm.real_name" />
 				</view>
 				<view class="moneyNum">
 					<view>银行卡号</view>
@@ -126,6 +126,14 @@ export default {
 			enroll: false,
 			// 待添加的银行卡相关真实信息
 			enrollForm: {}
+		};
+	},
+	onShareAppMessage(res) {
+		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
+		return {
+			title: '分享标题',
+			path: `/pages/anchor/anchor?pid=${pid}`,
+			imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
 		};
 	},
 	onShow() {

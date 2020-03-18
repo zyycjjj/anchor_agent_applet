@@ -68,11 +68,7 @@
 		<!-- 提现模态框 -->
 		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入提现金额" @cancel="bindBtn('cancel')" @confirm="withdraw()">
 			<view class="input-view">
-				<view class="" style="border-bottom: 0.1px solid #CCCCCC;padding:10rpx">
-					<text>
-						如您的提现金额超过100元，请先点击提现记录页面登记转账信息
-					</text>
-				</view>
+				<view class="" style="border-bottom: 0.1px solid #CCCCCC;padding:10rpx"><text>如您的提现金额超过100元，请先点击提现记录页面登记转账信息</text></view>
 				<view class="moneyNum">
 					<view>提现金额</view>
 					<input type="number" placeholder="请输入提现金额" v-model="form.cashMoney" />
@@ -115,6 +111,18 @@ export default {
 	onShow() {
 		this.getMineinfo();
 	},
+	onShareAppMessage(res) {
+		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
+		if (res.from === 'button') {
+			// 来自页面内分享按钮
+			console.log(res.target);
+		}
+		return {
+			title: '天天提现',
+			path: `/pages/anchor/anchor?pid=${pid}`,
+			imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
+		};
+	},
 	methods: {
 		getToken() {
 			this.token = uni.getStorageSync('token');
@@ -132,7 +140,17 @@ export default {
 			});
 		},
 		getuserInfo() {
-			this.userinfo = uni.getStorageSync('userinfo');
+			uni.getUserInfo({
+				provider: 'weixin',
+				success: result => {
+					this.userinfo = result.userInfo;
+				},
+				fail: error => {
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+				}
+			});
 		},
 		getMoney() {
 			this.showMonmodal = true;
@@ -147,10 +165,10 @@ export default {
 		// 关于模态框的函数
 		withdraw() {
 			const that = this;
-			console.log(that.form.cashMoney)
-			console.log(that.ablemoney)
-			console.log(that.form.cashMoney <= that.ablemoney)
-			if(that.form.cashMoney <= that.ablemoney){
+			console.log(that.form.cashMoney);
+			console.log(that.ablemoney);
+			console.log(that.form.cashMoney <= that.ablemoney);
+			if (that.form.cashMoney <= that.ablemoney) {
 				request({
 					url: '/api/user/applyWithdraw',
 					method: 'POST',
@@ -158,28 +176,28 @@ export default {
 						money: that.form.cashMoney
 					}
 				}).then(res => {
-					if(res.code == 1){
+					if (res.code == 1) {
 						uni.showToast({
-							title:res.data.msg,
-							icon:"success"
-						})
-					}else{
+							title: res.data.msg,
+							icon: 'success'
+						});
+					} else {
 						uni.showToast({
-							title:res.data.msg,
-							icon:"none"
-						})
+							title: res.data.msg,
+							icon: 'none'
+						});
 					}
-					that.getMineinfo()
-					that.form.cashMoney = ""
+					that.getMineinfo();
+					that.form.cashMoney = '';
 				});
-			}else{
+			} else {
 				uni.showToast({
-					title:"超出可提现金额，请重新填写",
-					icon:"none"
-				})
-				setTimeout(()=>{
-					this.showMonmodal = true
-				},2000)
+					title: '超出可提现金额，请重新填写',
+					icon: 'none'
+				});
+				setTimeout(() => {
+					this.showMonmodal = true;
+				}, 2000);
 			}
 		}
 	}
@@ -191,7 +209,7 @@ export default {
 	.ownInfo {
 		width: 100%;
 		height: 180px;
-		background: url(../../static/widthdraw/bg.png)  no-repeat;
+		background: url(../../static/widthdraw/bg.png) no-repeat;
 		background-size: cover;
 		display: flex;
 		flex-direction: row;
@@ -278,7 +296,7 @@ export default {
 					font-size: 14px;
 					// font-weight: bold;
 				}
-				navigator{
+				navigator {
 					height: 22px;
 					line-height: 22px;
 				}
@@ -334,7 +352,7 @@ export default {
 	height: 50upx;
 	line-height: 50upx;
 }
-.neil-modal__footer-right{
+.neil-modal__footer-right {
 	height: 60px;
 }
 </style>

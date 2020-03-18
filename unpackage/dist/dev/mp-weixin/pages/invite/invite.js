@@ -162,12 +162,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
 {
   components: { uniIcons: uniIcons, uniSection: uniSection },
   data: function data() {
@@ -185,16 +179,41 @@ __webpack_require__.r(__webpack_exports__);
       hascanvas: false };
 
   },
+  // onShareAppMessage(res) {
+  // 	let pid = JSON.parse(uni.getStorageSync('login')).user_id;
+  // 	if (res.from === 'button') {
+  // 		// 来自页面内分享按钮
+  // 		console.log(res.target);
+  // 		title: '弹出分享时显示的分享标题';
+  // 		desc: '分享页面的内容';
+  // 		path: `/pages/anchor/anchor?pid=${pid}`;
+  // 		imgUrl: this.imgUrl
+  // 	}
+  // 	return {
+  // 		title: '分享标题',
+  // 		path: `/pages/anchor/anchor?pid=${pid}`,
+  // 		imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
+  // 	};
+  // },
   onShareAppMessage: function onShareAppMessage(res) {
+    var pid = JSON.parse(uni.getStorageSync('login')).user_id;
     if (res.from === 'button') {
       // 来自页面内分享按钮
       console.log(res.target);
     }
     return {
-      imgUrl: this.imgUrl };
+      title: '天天来提现',
+      path: "/pages/anchor/anchor?pid=".concat(pid),
+      imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png" };
 
   },
   methods: {
+    open: function open(e) {
+      console.log(e);
+      if (e.detail.authSetting['scope.writePhotosAlbum']) {
+        this.show1 = false;
+      }
+    },
     preview: function preview() {
       wx.previewImage({
         current: this.canvasUrl, // 当前显示图片的http链接
@@ -223,7 +242,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log(res);
           var path = res.path;
           ctx.drawImage(path, 0, 0, uni.upx2px(500), uni.upx2px(878));
-          ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
+          // ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
           uni.getImageInfo({
             src: that.imgUrl,
             success: function success(res) {
@@ -236,7 +255,6 @@ __webpack_require__.r(__webpack_exports__);
                   canvasId: 'firstCanvas',
                   success: function success(res) {
                     that.canvasUrl = res.tempFilePath;
-                    console.log(that.canvasUrl);
                     that.hascanvas = true;
                   },
                   fail: function fail(e) {
@@ -281,16 +299,6 @@ __webpack_require__.r(__webpack_exports__);
                 console.log('用户拒绝授权，跳转到设置页面');
                 //用户点击拒绝授权，跳转到设置页，引导用户授权
                 that.show1 = true;
-                // wx.openSetting({
-                // 	success() {
-                // 		wx.authorize({
-                // 			scope: 'scope.writePhotosAlbum',
-                // 			success() {
-                // 				that.savePhoto();
-                // 			}
-                // 		});
-                // 	}
-                // });
               } });
 
           } else {
@@ -302,31 +310,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     //保存图片到相册，提示保存成功
     savePhoto: function savePhoto() {
-      var that = this;
-      wx.downloadFile({
-        url: that.canvasUrl,
+      wx.saveImageToPhotosAlbum({
+        filePath: this.canvasUrl,
         success: function success(res) {
           console.log(res);
-          wx.saveImageToPhotosAlbum({
-            filePath: res.tempFilePath,
-            success: function success(res) {
-              console.log(res);
-              uni.showToast({
-                title: '保存成功',
-                icon: 'success',
-                duration: 1000 });
-
-              that.imageVis = false;
-            } });
-
-        },
-        fail: function fail(res) {
-          console.log(that.imgUrl);
-          console.log(res);
           uni.showToast({
-            title: '保存失败',
-            icon: 'none' });
+            title: '保存成功',
+            icon: 'success',
+            duration: 1000 });
 
+          that.imageVis = false;
         } });
 
     } } };exports.default = _default;

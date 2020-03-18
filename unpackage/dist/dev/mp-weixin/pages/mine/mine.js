@@ -220,10 +220,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { uniSection: uniSection },
@@ -255,6 +251,18 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
   onShow: function onShow() {
     this.getMineinfo();
   },
+  onShareAppMessage: function onShareAppMessage(res) {
+    var pid = JSON.parse(uni.getStorageSync('login')).user_id;
+    if (res.from === 'button') {
+      // 来自页面内分享按钮
+      console.log(res.target);
+    }
+    return {
+      title: '天天提现',
+      path: "/pages/anchor/anchor?pid=".concat(pid),
+      imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png" };
+
+  },
   methods: {
     getToken: function getToken() {
       this.token = uni.getStorageSync('token');
@@ -271,8 +279,18 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
         // }
       });
     },
-    getuserInfo: function getuserInfo() {
-      this.userinfo = uni.getStorageSync('userinfo');
+    getuserInfo: function getuserInfo() {var _this = this;
+      uni.getUserInfo({
+        provider: 'weixin',
+        success: function success(result) {
+          _this.userinfo = result.userInfo;
+        },
+        fail: function fail(error) {
+          uni.reLaunch({
+            url: '/pages/authorise/authorise' });
+
+        } });
+
     },
     getMoney: function getMoney() {
       this.showMonmodal = true;
@@ -285,7 +303,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
       this.showMonmodal = false;
     },
     // 关于模态框的函数
-    withdraw: function withdraw() {var _this = this;
+    withdraw: function withdraw() {var _this2 = this;
       var that = this;
       console.log(that.form.cashMoney);
       console.log(that.ablemoney);
@@ -301,24 +319,24 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
           if (res.code == 1) {
             uni.showToast({
               title: res.data.msg,
-              icon: "success" });
+              icon: 'success' });
 
           } else {
             uni.showToast({
               title: res.data.msg,
-              icon: "none" });
+              icon: 'none' });
 
           }
           that.getMineinfo();
-          that.form.cashMoney = "";
+          that.form.cashMoney = '';
         });
       } else {
         uni.showToast({
-          title: "超出可提现金额，请重新填写",
-          icon: "none" });
+          title: '超出可提现金额，请重新填写',
+          icon: 'none' });
 
         setTimeout(function () {
-          _this.showMonmodal = true;
+          _this2.showMonmodal = true;
         }, 2000);
       }
     } } };exports.default = _default;

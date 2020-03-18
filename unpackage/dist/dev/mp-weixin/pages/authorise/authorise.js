@@ -171,13 +171,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var _default =
 {
   components: {
@@ -199,10 +192,14 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
   },
   onLoad: function onLoad(e) {
     this.pid = Number(uni.getStorageSync('pid'));
-    console.log(typeof this.pid);
-    console.log(this.pid);
   },
   methods: {
+    callback: function callback(e) {
+      console.log(e);
+      if (e.detail.authSetting['scope.userinfo']) {
+        this.show1 = true;
+      }
+    },
     modalTap: function modalTap(e) {
       //   展示用户协议框
       this.show2 = true;
@@ -224,64 +221,17 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
           if (~content.indexOf('uni.login')) {
             content = '请在登录页面完成登录操作';
           }
-
-          uni.getSetting({
-            success: function success(res) {
-              var authStatus = res.authSetting['scope.userInfo'];
-              if (!authStatus) {
-                uni.showModal({
-                  title: '授权失败',
-                  content: 'Hello uni-app需要获取您的用户信息，请在设置界面打开相关权限',
-                  success: function success(res) {
-                    if (res.confirm) {
-                      uni.openSetting();
-                    }
-                  } });
-
-              } else {
-                uni.showModal({
-                  title: '获取用户信息失败',
-                  content: '错误原因' + content,
-                  showCancel: false });
-
-              }
-            } });
-
-
-
-
-
-
-
-
-
         } });
 
     },
     mpGetUserInfo: function mpGetUserInfo(result) {
       if (result.detail.errMsg !== 'getUserInfo:ok') {
-        // uni.showModal({
-        // 	title: '获取用户信息失败',
-        // 	content: '错误原因' + result.detail.errMsg,
-        // 	showCancel: false
-        // });
         //用户点击拒绝授权，跳转到设置页，引导用户授权
         this.show1 = false;
-        wx.openSetting({
-          success: function success() {
-            wx.authorize({
-              scope: 'scope.userinfo',
-              success: function success() {
-                that.getUserInfo();
-              } });
-
-          } });
-
         return;
       }
       this.userInfo = result.detail.userInfo;
       var that = this;
-
       uni.login({
         provider: 'weixin',
         success: function success(loginRes) {
@@ -305,15 +255,21 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
 
             method: 'POST' }).
           then(function (res) {
+            console.log(res);
             if (res.data.code != 1) {
               uni.showModal({
-                title: '登录失败',
+                title: res.data.errMsg,
                 showCancel: false });
 
             } else {
+              uni.showModal({
+                title: res.data.errMsg,
+                showCancel: false });
+
               // uni.setStorageSync('token', res.data.userinfo.token)
               uni.setStorageSync('token', res.data.data.userinfo.token);
               uni.setStorageSync('login', res.data.data.userinfo);
+              console.log(res.data.data.userinfo);
               // 登陆成功 跳转到tab首页
               uni.switchTab({
                 url: '/pages/anchor/anchor' });

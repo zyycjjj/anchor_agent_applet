@@ -10,20 +10,14 @@
 		<view class="mask" v-show="imageVis">
 			<view class="image">
 				<uni-icons @tap="closeimg" type="close" size="25"></uni-icons>
-				<!-- <view>
-					<image src="../../static/invite/4.png" mode="" @tap="preview"></image>
-					<image class="qrcode" :src="imgUrl" mode=""></image>
-				</view> -->
 				<view class="wrapper"><canvas style="height: 100%;width: 100%;backgroundColor: #ffffff" canvas-id="firstCanvas"></canvas></view>
 				<view class="btn-group">
-					<button type="primary" size="mini" open-type="openSetting" v-if="show1">保存相册</button>
+					<button type="primary" size="mini" open-type="openSetting" @opensetting="open" v-if="show1">保存相册</button>
 					<button type="primary" size="mini" @tap="save" v-else>保存相册</button>
 					<button type="primary" size="mini" open-type="share">分享</button>
 				</view>
 			</view>
 		</view>
-		<image ref="bg" v-show="false" src="../../static/invite/4.png" mode="" @tap="preview"></image>
-		<image ref="code" v-show="false" class="qrcode" :src="imgUrl" mode=""></image>
 	</view>
 </template>
 
@@ -47,16 +41,41 @@ export default {
 			hascanvas: false
 		};
 	},
+	// onShareAppMessage(res) {
+	// 	let pid = JSON.parse(uni.getStorageSync('login')).user_id;
+	// 	if (res.from === 'button') {
+	// 		// 来自页面内分享按钮
+	// 		console.log(res.target);
+	// 		title: '弹出分享时显示的分享标题';
+	// 		desc: '分享页面的内容';
+	// 		path: `/pages/anchor/anchor?pid=${pid}`;
+	// 		imgUrl: this.imgUrl
+	// 	}
+	// 	return {
+	// 		title: '分享标题',
+	// 		path: `/pages/anchor/anchor?pid=${pid}`,
+	// 		imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
+	// 	};
+	// },
 	onShareAppMessage(res) {
+		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
 		if (res.from === 'button') {
 			// 来自页面内分享按钮
 			console.log(res.target);
 		}
 		return {
-			imgUrl: this.imgUrl
+			title: '天天来提现',
+			path: `/pages/anchor/anchor?pid=${pid}`,
+			imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
 		};
 	},
 	methods: {
+		open(e) {
+			console.log(e);
+			if (e.detail.authSetting['scope.writePhotosAlbum']) {
+				this.show1 = false;
+			}
+		},
 		preview() {
 			wx.previewImage({
 				current: this.canvasUrl, // 当前显示图片的http链接
@@ -70,7 +89,7 @@ export default {
 			const that = this;
 			this.imgUrl = uni.getStorageSync('login').spread_code;
 			this.imageVis = true;
-			if(!that.hascanvas){
+			if (!that.hascanvas) {
 				uni.showToast({
 					icon: 'loading',
 					title: '正在生成海报中',
@@ -85,7 +104,7 @@ export default {
 					console.log(res);
 					const path = res.path;
 					ctx.drawImage(path, 0, 0, uni.upx2px(500), uni.upx2px(878));
-					ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
+					// ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
 					uni.getImageInfo({
 						src: that.imgUrl,
 						success(res) {
@@ -98,8 +117,7 @@ export default {
 									canvasId: 'firstCanvas',
 									success: function(res) {
 										that.canvasUrl = res.tempFilePath;
-										console.log(that.canvasUrl)
-										that.hascanvas = true
+										that.hascanvas = true;
 									},
 									fail(e) {
 										uni.showToast({
@@ -143,16 +161,6 @@ export default {
 								console.log('用户拒绝授权，跳转到设置页面');
 								//用户点击拒绝授权，跳转到设置页，引导用户授权
 								that.show1 = true;
-								// wx.openSetting({
-								// 	success() {
-								// 		wx.authorize({
-								// 			scope: 'scope.writePhotosAlbum',
-								// 			success() {
-								// 				that.savePhoto();
-								// 			}
-								// 		});
-								// 	}
-								// });
 							}
 						});
 					} else {
@@ -164,31 +172,16 @@ export default {
 		},
 		//保存图片到相册，提示保存成功
 		savePhoto() {
-			let that = this;
-			wx.downloadFile({
-				url: that.canvasUrl,
-				success: function(res) {
-					console.log(res);
-					wx.saveImageToPhotosAlbum({
-						filePath: res.tempFilePath,
-						success(res) {
-							console.log(res);
-							uni.showToast({
-								title: '保存成功',
-								icon: 'success',
-								duration: 1000
-							});
-							that.imageVis = false;
-						}
-					});
-				},
-				fail(res) {
-					console.log(that.imgUrl);
+			wx.saveImageToPhotosAlbum({
+				filePath: this.canvasUrl,
+				success(res) {
 					console.log(res);
 					uni.showToast({
-						title: '保存失败',
-						icon: 'none'
+						title: '保存成功',
+						icon: 'success',
+						duration: 1000
 					});
+					that.imageVis = false;
 				}
 			});
 		}

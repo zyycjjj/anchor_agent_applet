@@ -7,21 +7,7 @@
 		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
-		"minified": true,
-		"newFeature": true,
-		"coverView": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"uglifyFileName": true,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		}
+		"minified": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.9.2",
@@ -36,7 +22,15 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
+			"current": -1,
+			"list": []
+		},
+		"gamePlugin": {
 			"current": -1,
 			"list": []
 		},
@@ -44,10 +38,24 @@
 			"current": 0,
 			"list": [
 				{
-					"name": "",
-					"query": "id=1",
 					"id": 0,
-					"pathName": "pages/authorise/authorise"
+					"name": "",
+					"pathName": "pages/authorise/authorise",
+					"query": "id=1"
+				},
+				{
+					"id": -1,
+					"name": "pages/anchor/anchor",
+					"pathName": "pages/anchor/anchor",
+					"query": "pid=1",
+					"scene": 1007
+				},
+				{
+					"id": -1,
+					"name": "pages/anchor/anchor",
+					"pathName": "pages/anchor/anchor",
+					"query": "pid=3",
+					"scene": 1007
 				}
 			]
 		}

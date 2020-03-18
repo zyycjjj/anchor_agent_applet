@@ -275,6 +275,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | pages/components/tabbar-own/tabbar-own */ "pages/components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../components/tabbar-own/tabbar-own.vue */ 106));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 84));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 120));};var mediaItem = function mediaItem() {return __webpack_require__.e(/*! import() | pages/anchor/news-item */ "pages/anchor/news-item").then(__webpack_require__.bind(null, /*! ./news-item.nvue */ 125));};var _default =
 
 {
@@ -331,21 +340,51 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
 
   },
   onLoad: function onLoad(option) {
-    console.log(option.pid);
-    uni.setStorageSync('pid', option.pid);
-    // if (option.scene) {
-    // 	let qrId = decodeURIComponent(option.scene);
-    // 	// 这里就是你拿着参数qrId进行操作
-    // }
-  },
-  onShow: function onShow() {
     this.getToken();
     this.setEnddate();
     this.getPlat();
+    if (option.scene) {
+      var qrId = decodeURIComponent(option.scene);
+      (0, _request.request)({
+        url: '/api/user/creatRelation',
+        data: { pid: qrId } }).
+      then(function (res) {
+        if (res.data.code == 1) {
+          uni.showToast({
+            title: '关系绑定成功',
+            icon: 'success' });
+
+        }
+      });
+    }
+    if (uni.getStorageSync('ppid')) {
+      var pid = Number(uni.getStorageSync('ppid'));
+      (0, _request.request)({
+        url: '/api/user/creatRelation',
+        data: { pid: pid } }).
+      then(function (res) {
+        if (res.data.code == 1) {
+          uni.showToast({
+            title: '关系绑定成功',
+            icon: 'success' });
+
+        }
+      });
+    }
+  },
+  onShow: function onShow() {
     this.getZblist();
     this.getRanklist();
     this.setNoticebar();
     this.getZbdata();
+  },
+  onShareAppMessage: function onShareAppMessage(res) {
+    var pid = JSON.parse(uni.getStorageSync('login')).user_id;
+    return {
+      title: '分享标题',
+      path: "/pages/anchor/anchor?pid=".concat(pid),
+      imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png' };
+
   },
   methods: {
     getPlat: function getPlat() {var _this = this;

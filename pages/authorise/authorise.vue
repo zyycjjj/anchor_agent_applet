@@ -15,13 +15,6 @@
 				<view class="swiper-item">
 					<view class="bg3 bg"><image src="../../static/sq/3.png" mode=""></image></view>
 					<button class="authorize" type="primary" size="mini" @tap="modalTap">授权</button>
-					<!-- <neil-modal
-            :show="show2"
-            @close="closeModal('2')"
-            :show-cancel="false"
-            title="服务协议"
-            content="这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议这里是协议" @confirm="getuserinfo"
-          ></neil-modal> -->
 					<view class="modal" v-show="show2">
 						<view class="modal_tit">服务协议</view>
 						<view class="mod_info">
@@ -33,7 +26,7 @@
 						</view>
 						<view class="btn">
 							<button type="primary" size="mini" open-type="getUserInfo" @getuserinfo="mpGetUserInfo" v-if="show1">同意并继续</button>
-							<button type="primary" size="mini" open-type="openSetting" bindopensetting="callback" v-else>重新授权</button>
+							<button type="primary" size="mini" open-type="openSetting" @opensetting="callback" v-else>重新授权</button>
 						</view>
 					</view>
 				</view>
@@ -64,10 +57,14 @@ export default {
 	},
 	onLoad(e) {
 		this.pid = Number(uni.getStorageSync('pid'));
-		console.log(typeof this.pid);
-		console.log(this.pid);
 	},
 	methods: {
+		callback(e){
+			console.log(e)
+			if(e.detail.authSetting['scope.userinfo']){
+				this.show1 = true
+			}
+		},
 		modalTap: function(e) {
 			//   展示用户协议框
 			this.show2 = true;
@@ -89,64 +86,17 @@ export default {
 					if (~content.indexOf('uni.login')) {
 						content = '请在登录页面完成登录操作';
 					}
-					// #ifndef APP-PLUS
-					uni.getSetting({
-						success: res => {
-							let authStatus = res.authSetting['scope.userInfo'];
-							if (!authStatus) {
-								uni.showModal({
-									title: '授权失败',
-									content: 'Hello uni-app需要获取您的用户信息，请在设置界面打开相关权限',
-									success: res => {
-										if (res.confirm) {
-											uni.openSetting();
-										}
-									}
-								});
-							} else {
-								uni.showModal({
-									title: '获取用户信息失败',
-									content: '错误原因' + content,
-									showCancel: false
-								});
-							}
-						}
-					});
-					// #endif
-					// #ifdef APP-PLUS
-					uni.showModal({
-						title: '获取用户信息失败',
-						content: '错误原因' + content,
-						showCancel: false
-					});
-					// #endif
 				}
 			});
 		},
 		mpGetUserInfo(result) {
 			if (result.detail.errMsg !== 'getUserInfo:ok') {
-				// uni.showModal({
-				// 	title: '获取用户信息失败',
-				// 	content: '错误原因' + result.detail.errMsg,
-				// 	showCancel: false
-				// });
 				//用户点击拒绝授权，跳转到设置页，引导用户授权
 				this.show1 = false;
-				wx.openSetting({
-					success() {
-						wx.authorize({
-							scope: 'scope.userinfo',
-							success() {
-								that.getUserInfo();
-							}
-						});
-					}
-				});
 				return;
 			}
 			this.userInfo = result.detail.userInfo;
 			const that = this;
-
 			uni.login({
 				provider: 'weixin',
 				success: function(loginRes) {
@@ -170,15 +120,21 @@ export default {
 						},
 						method: 'POST'
 					}).then(res => {
+						console.log(res)
 						if (res.data.code != 1) {
 							uni.showModal({
-								title: '登录失败',
+								title: res.data.errMsg,
 								showCancel: false
 							});
 						} else {
+							uni.showModal({
+								title: res.data.errMsg,
+								showCancel: false
+							});
 							// uni.setStorageSync('token', res.data.userinfo.token)
 							uni.setStorageSync('token', res.data.data.userinfo.token);
 							uni.setStorageSync('login', res.data.data.userinfo);
+							console.log(res.data.data.userinfo)
 							// 登陆成功 跳转到tab首页
 							uni.switchTab({
 								url: '/pages/anchor/anchor'

@@ -96,7 +96,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
-  onLaunch: function onLaunch() {
+  onLaunch: function onLaunch(e) {
+    console.log(e);
+    if (e.query.pid) {
+      var pid = e.query.pid;
+      uni.setStorageSync('ppid', pid);
+    }
   },
   onShow: function onShow() {
     wx.getSetting({
@@ -109,8 +114,7 @@ __webpack_require__.r(__webpack_exports__);
       } });
 
   },
-  onHide: function onHide() {
-  } };exports.default = _default;
+  onHide: function onHide() {} };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

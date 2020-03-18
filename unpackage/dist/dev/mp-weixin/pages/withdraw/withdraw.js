@@ -268,6 +268,14 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
       enrollForm: {} };
 
   },
+  onShareAppMessage: function onShareAppMessage(res) {
+    var pid = JSON.parse(uni.getStorageSync('login')).user_id;
+    return {
+      title: '分享标题',
+      path: "/pages/anchor/anchor?pid=".concat(pid),
+      imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png" };
+
+  },
   onShow: function onShow() {
     this.getToken();
     // 调用获取收益信息的函数

@@ -227,14 +227,14 @@ timeSelector {
   padding-right: 15rpx;
 }
 .uni-tab-item text {
-  border: 1px solid #CCCCCC;
+  border: 1px solid #cccccc;
   padding: 2rpx 15px;
   border-radius: 100px;
 }
 .uni-tab-item .uni-tab-item-title-active {
-  color: #FFFFFF;
-  background-color: #ED9F26;
-  border: 1px solid #ED9F26;
+  color: #ffffff;
+  background-color: #ed9f26;
+  border: 1px solid #ed9f26;
 }
 .uni-tab-item-title {
   color: #555;
@@ -276,7 +276,7 @@ timeSelector {
   right: 0;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: #FDDD9B;
+  background-color: #fddd9b;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;

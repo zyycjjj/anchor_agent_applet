@@ -1,20 +1,24 @@
 <script>
 export default {
-	onLaunch: function() {
+	onLaunch: function(e) {
+		console.log(e);
+		if (e.query.pid) {
+			let pid = e.query.pid;
+			uni.setStorageSync('ppid', pid);
+		}
 	},
 	onShow: function() {
 		wx.getSetting({
 			success(res) {
 				if (!res.authSetting['scope.userInfo']) {
 					uni.reLaunch({
-						url:'/pages/authorise/authorise'
-					})
+						url: '/pages/authorise/authorise'
+					});
 				}
 			}
 		});
 	},
-	onHide: function() {
-	}
+	onHide: function() {}
 };
 </script>
 

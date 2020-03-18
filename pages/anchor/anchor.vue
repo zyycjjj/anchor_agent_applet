@@ -8,7 +8,7 @@
 				<view>
 					<scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto" style="overflow: auto hidden;">
 						<view class="uni-tab-item" id="1" data-current="all" @click="ontabtap">
-								<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">全部</text>
+							<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">全部</text>
 						</view>
 						<view v-for="(tab, index) in tabBars" :key="tab.platform_id" class="uni-tab-item" :id="tab.platform_id" :data-current="index" @click="ontabtap">
 							<text class="uni-tab-item-title" :class="tabIndex == index ? 'uni-tab-item-title-active' : ''">{{ tab.platform_name }}</text>
@@ -34,7 +34,16 @@
 						<view class="phbtag"><uni-tag class="phbut" text="排行榜" type="warning" size="small"></uni-tag></view>
 					</navigator>
 					<view class="notice">
-						<uni-notice-bar speed=10 ref="noticebar" :show-icon="true" :scrollable="true" :single="true" :text="rank_string" id="noticebar" background-color="#ffffff" />
+						<uni-notice-bar
+							speed="10"
+							ref="noticebar"
+							:show-icon="true"
+							:scrollable="true"
+							:single="true"
+							:text="rank_string"
+							id="noticebar"
+							background-color="#ffffff"
+						/>
 					</view>
 				</view>
 			</view>
@@ -169,34 +178,64 @@ export default {
 		};
 	},
 	onLoad(option) {
-		console.log(option.pid)
-		uni.setStorageSync('pid',option.pid)
-		// if (option.scene) {
-		// 	let qrId = decodeURIComponent(option.scene);
-		// 	// 这里就是你拿着参数qrId进行操作
-		// }
-	},
-	onShow() {
 		this.getToken();
 		this.setEnddate();
 		this.getPlat();
+		if (option.scene) {
+			let qrId = decodeURIComponent(option.scene);
+			request({
+				url: '/api/user/creatRelation',
+				data: { pid: qrId }
+			}).then(res => {
+				if (res.data.code == 1) {
+					uni.showToast({
+						title: '关系绑定成功',
+						icon: 'success'
+					});
+				}
+			});
+		}
+		if (uni.getStorageSync('ppid')) {
+			let pid = Number(uni.getStorageSync('ppid'));
+			request({
+				url: '/api/user/creatRelation',
+				data: { pid: pid }
+			}).then(res => {
+				if (res.data.code == 1) {
+					uni.showToast({
+						title: '关系绑定成功',
+						icon: 'success'
+					});
+				}
+			});
+		}
+	},
+	onShow() {
 		this.getZblist();
 		this.getRanklist();
 		this.setNoticebar();
 		this.getZbdata();
+	},
+	onShareAppMessage(res) {
+		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
+		return {
+			title: '分享标题',
+			path: `/pages/anchor/anchor?pid=${pid}`,
+			imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png'
+		};
 	},
 	methods: {
 		getPlat() {
 			request({
 				url: '/api/platform/lists'
 			}).then(res => {
-				this.tabBars = res.data.data
+				this.tabBars = res.data.data;
 			});
 		},
 		setEnddate() {
 			let endtimeYear = new Date().getFullYear();
 			let endtimeMonth = new Date().getMonth() + 1;
-			let endtimeDay = new Date().getDate() ;
+			let endtimeDay = new Date().getDate();
 			this.endDate = `${endtimeYear}-${endtimeMonth}-${endtimeDay}`;
 		},
 		getToken() {
@@ -524,150 +563,148 @@ timeSelector {
 	}
 }
 
- .tabs {
-        flex: 1;
-        flex-direction: column;
-        overflow: hidden;
-        background-color: #ffffff;
-        /* #ifdef MP-ALIPAY || MP-BAIDU */
-        height: 100vh;
-        /* #endif */
-    }
+.tabs {
+	flex: 1;
+	flex-direction: column;
+	overflow: hidden;
+	background-color: #ffffff;
+	/* #ifdef MP-ALIPAY || MP-BAIDU */
+	height: 100vh;
+	/* #endif */
+}
 
-    .scroll-h {
-        width: 750rpx;
-        height: 80rpx;
-        flex-direction: row;
-        /* #ifndef APP-PLUS */
-        white-space: nowrap;
-        /* #endif */
-        /* flex-wrap: nowrap; */
-        /* border-color: #cccccc;
+.scroll-h {
+	width: 750rpx;
+	height: 80rpx;
+	flex-direction: row;
+	/* #ifndef APP-PLUS */
+	white-space: nowrap;
+	/* #endif */
+	/* flex-wrap: nowrap; */
+	/* border-color: #cccccc;
 		border-bottom-style: solid;
 		border-bottom-width: 1px; */
-    }
+}
 
-    .line-h {
-        height: 1rpx;
-        background-color: #cccccc;
-    }
+.line-h {
+	height: 1rpx;
+	background-color: #cccccc;
+}
 
-    .uni-tab-item {
-        /* #ifndef APP-PLUS */
-        display: inline-block;
-        /* #endif */
-        flex-wrap: nowrap;
-        padding-left: 15rpx;
-        padding-right: 15rpx;
-		text{
-			border: 1px solid #CCCCCC;
-			padding: 2rpx 15px;
-			border-radius: 100px;
-		}
-		.uni-tab-item-title-active {
-		    color: #FFFFFF;
-			background-color:#ED9F26 ;
-			border: 1px solid #ED9F26;
-		}
-    }
-
-    .uni-tab-item-title {
-        color: #555;
-        font-size: 30rpx;
-        height: 80rpx;
-        line-height: 80rpx;
-        flex-wrap: nowrap;
-        /* #ifndef APP-PLUS */
-        white-space: nowrap;
-        /* #endif */
-    }
-
-   
-
-    .swiper-box {
-        flex: 1;
-    }
-
-    .swiper-item {
-        flex: 1;
-        flex-direction: row;
-    }
-
-    .scroll-v {
-        flex: 1;
-        /* #ifndef MP-ALIPAY */
-        flex-direction: column;
-        /* #endif */
-        width: 750rpx;
-    }
-
-    .update-tips {
-        position: absolute;
-        left: 0;
-        top: 41px;
-        right: 0;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        background-color: #FDDD9B;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-
-    .update-tips-text {
-        font-size: 14px;
-        color: #ffffff;
-    }
-
-    .refresh {
-        width: 750rpx;
-        height: 64px;
-        justify-content: center;
-    }
-
-    .refresh-view {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: center;
-    }
-
-	.refresh-icon {
-		width: 30px;
-		height: 30px;
-		transition-duration: .5s;
-		transition-property: transform;
-		transform: rotate(0deg);
-		transform-origin: 15px 15px;
+.uni-tab-item {
+	/* #ifndef APP-PLUS */
+	display: inline-block;
+	/* #endif */
+	flex-wrap: nowrap;
+	padding-left: 15rpx;
+	padding-right: 15rpx;
+	text {
+		border: 1px solid #cccccc;
+		padding: 2rpx 15px;
+		border-radius: 100px;
 	}
-
-	.refresh-icon-active {
-		transform: rotate(180deg);
+	.uni-tab-item-title-active {
+		color: #ffffff;
+		background-color: #ed9f26;
+		border: 1px solid #ed9f26;
 	}
+}
 
-	.loading-icon {
-		width: 20px;
-		height: 20px;
-		margin-right: 5px;
-		color: #999999;
-	}
+.uni-tab-item-title {
+	color: #555;
+	font-size: 30rpx;
+	height: 80rpx;
+	line-height: 80rpx;
+	flex-wrap: nowrap;
+	/* #ifndef APP-PLUS */
+	white-space: nowrap;
+	/* #endif */
+}
 
-    .loading-text {
-        margin-left: 2px;
-        font-size: 16px;
-        color: #999999;
-    }
+.swiper-box {
+	flex: 1;
+}
 
-    .loading-more {
-        align-items: center;
-        justify-content: center;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        text-align: center;
-    }
+.swiper-item {
+	flex: 1;
+	flex-direction: row;
+}
 
-    .loading-more-text {
-        font-size: 28rpx;
-        color: #999;
-    }
+.scroll-v {
+	flex: 1;
+	/* #ifndef MP-ALIPAY */
+	flex-direction: column;
+	/* #endif */
+	width: 750rpx;
+}
+
+.update-tips {
+	position: absolute;
+	left: 0;
+	top: 41px;
+	right: 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #fddd9b;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.update-tips-text {
+	font-size: 14px;
+	color: #ffffff;
+}
+
+.refresh {
+	width: 750rpx;
+	height: 64px;
+	justify-content: center;
+}
+
+.refresh-view {
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.refresh-icon {
+	width: 30px;
+	height: 30px;
+	transition-duration: 0.5s;
+	transition-property: transform;
+	transform: rotate(0deg);
+	transform-origin: 15px 15px;
+}
+
+.refresh-icon-active {
+	transform: rotate(180deg);
+}
+
+.loading-icon {
+	width: 20px;
+	height: 20px;
+	margin-right: 5px;
+	color: #999999;
+}
+
+.loading-text {
+	margin-left: 2px;
+	font-size: 16px;
+	color: #999999;
+}
+
+.loading-more {
+	align-items: center;
+	justify-content: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: center;
+}
+
+.loading-more-text {
+	font-size: 28rpx;
+	color: #999;
+}
 </style>
