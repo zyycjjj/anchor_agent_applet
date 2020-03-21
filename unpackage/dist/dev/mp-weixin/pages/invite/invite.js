@@ -179,22 +179,6 @@ __webpack_require__.r(__webpack_exports__);
       hascanvas: false };
 
   },
-  // onShareAppMessage(res) {
-  // 	let pid = JSON.parse(uni.getStorageSync('login')).user_id;
-  // 	if (res.from === 'button') {
-  // 		// 来自页面内分享按钮
-  // 		console.log(res.target);
-  // 		title: '弹出分享时显示的分享标题';
-  // 		desc: '分享页面的内容';
-  // 		path: `/pages/anchor/anchor?pid=${pid}`;
-  // 		imgUrl: this.imgUrl
-  // 	}
-  // 	return {
-  // 		title: '分享标题',
-  // 		path: `/pages/anchor/anchor?pid=${pid}`,
-  // 		imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
-  // 	};
-  // },
   onShareAppMessage: function onShareAppMessage(res) {
     var pid = JSON.parse(uni.getStorageSync('login')).user_id;
     if (res.from === 'button') {

@@ -220,6 +220,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { uniSection: uniSection },
@@ -272,11 +274,9 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
       (0, _request.request)({
         url: '/api/user/userCenter' }).
       then(function (res) {
-        // if(res.data.data.code == 1){
-        that.ablemoney = res.data.data.able_money.toString();
+        that.ablemoney = res.data.data.able_money.toFixed(2);
         that.num = res.data.data.anchor_num.toString();
-        that.all = res.data.data.money;
-        // }
+        that.all = Number(res.data.data.money).toFixed(2);
       });
     },
     getuserInfo: function getuserInfo() {var _this = this;

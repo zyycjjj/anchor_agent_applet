@@ -1,6 +1,9 @@
 {
   "navigationBarTitleText": "授权",
   "usingComponents": {
-    "neil-modal": "/components/neil-modal/neil-modal"
+    "uni-swiper-dot": "/components/uni-swiper-dot/uni-swiper-dot",
+    "neil-modal": "/components/neil-modal/neil-modal",
+    "uni-swiperdot": "/components/uni-swiper-dot/uni-swiper-dot",
+    "uni-section": "/components/uni-section/uni-section"
   }
 }

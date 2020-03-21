@@ -95,7 +95,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components
+var components = {
+  "uni-swiper-dot": () =>
+    __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ 155))
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -171,10 +174,79 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var _default =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniSwiperdot = function uniSwiperdot() {return __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! ../../components/uni-swiper-dot/uni-swiper-dot.vue */ 155));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
+
+
 {
   components: {
-    neilModal: neilModal },
+    neilModal: neilModal,
+    uniSwiperdot: uniSwiperdot,
+    uniSection: uniSection },
 
   data: function data() {
     return {
@@ -187,16 +259,42 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
       userInfo: {},
       show1: true,
       // 用户扫码传递的参数
-      pid: '' };
+      pid: '',
+      // 轮播图数据
+      info: [
+      {
+        url: 'https://ww1.yunjiexi.club/2020/03/21/bW0EL.png',
+        content: '1' },
+
+      {
+        url: 'https://ww1.yunjiexi.club/2020/03/21/bPi3b.png',
+        content: '2' },
+
+      {
+        url: 'https://ww1.yunjiexi.club/2020/03/21/bPx79.png',
+        content: '3' }],
+
+
+      dotsStyles: {
+        backgroundColor: 'rgba(83, 200, 249,0.3)',
+        border: '1px rgba(83, 200, 249,0.3) solid',
+        color: '#fff',
+        selectedBackgroundColor: 'rgba(83, 200, 249,0.9)',
+        selectedBorder: '1px rgba(83, 200, 249,0.9) solid',
+        bottom: 100 },
+
+      current: 0 };
 
   },
   onLoad: function onLoad(e) {
     this.pid = Number(uni.getStorageSync('pid'));
   },
   methods: {
+    change: function change(e) {
+      this.current = e.detail.current;
+    },
     callback: function callback(e) {
-      console.log(e);
-      if (e.detail.authSetting['scope.userinfo']) {
+      if (e.detail.authSetting['scope.userInfo']) {
         this.show1 = true;
       }
     },

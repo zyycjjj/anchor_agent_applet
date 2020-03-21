@@ -50,5 +50,6 @@
   "permission": {},
   "usingComponents": {
     "uni-pop": "/components/uni-popup/uni-popup"
-  }
+  },
+  "sitemapLocation": "sitemap94.json"
 }

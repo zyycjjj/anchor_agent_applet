@@ -48,11 +48,13 @@
 					</navigator>
 				</li>
 				<li>
-					<uni-icons class="tit iconfont icon-erji"></uni-icons>
-					<text>我的客服</text>
-					<!-- <text open-type="contact" bindcontact="handleContact" size="mini">我的客服</text> -->
-					<button open-type="contact" bindcontact="handleContact" size="mini"></button>
-					<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
+					<navigator open-type="contact">
+						<uni-icons class="tit iconfont icon-erji"></uni-icons>
+						<text>我的客服</text>
+						<!-- <text open-type="contact" bindcontact="handleContact" size="mini">我的客服</text> -->
+						<button open-type="contact" bindcontact="handleContact" size="mini"></button>
+						<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
+					</navigator>
 				</li>
 				<li>
 					<navigator url="" hover-class="navigator-hover">
@@ -132,11 +134,9 @@ export default {
 			request({
 				url: '/api/user/userCenter'
 			}).then(res => {
-				// if(res.data.data.code == 1){
-				that.ablemoney = res.data.data.able_money.toString();
+				that.ablemoney = res.data.data.able_money.toFixed(2);
 				that.num = res.data.data.anchor_num.toString();
-				that.all = res.data.data.money;
-				// }
+				that.all = Number(res.data.data.money).toFixed(2);
 			});
 		},
 		getuserInfo() {

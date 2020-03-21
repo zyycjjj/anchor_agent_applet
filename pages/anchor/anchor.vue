@@ -67,7 +67,7 @@
 						<view><text>抖音账号</text></view>
 						<view><text>真实姓名</text></view>
 						<view><text>收益金额</text></view>
-						<view><text>印票</text></view>
+						<view><text>音浪</text></view>
 					</view>
 					<view v-for="item in zbdata" :key="item.createtime">
 						<view class="zbdataItem">

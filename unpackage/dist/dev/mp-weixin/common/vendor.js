@@ -754,7 +754,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7204,7 +7204,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7225,14 +7225,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7308,7 +7308,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8687,7 +8687,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@alpha","_id":"@dcloudio/uni-stat@2
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/anchor/anchor": { "navigationBarTitleText": "我的主播", "usingComponents": { "segmented-control": "/pages/components/tabbar-own/tabbar-own", "neil-modal": "/components/neil-modal/neil-modal", "uni-tag": "/components/uni-tag/uni-tag", "uni-section": "/components/uni-section/uni-section", "uni-noticebar": "/components/uni-notice-bar/uni-notice-bar", "time-selector": "/components/wing-time-selector/wing-time-selector", "media-item": "/pages/anchor/news-item" }, "usingAutoImportComponents": { "uni-tag": "/components/uni-tag/uni-tag", "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar", "uni-icons": "/components/uni-icons/uni-icons", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/withdraw/withdraw": { "navigationBarTitleText": "提现", "usingComponents": { "unitag": "/components/uni-tag/uni-tag", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-tag": "/components/uni-tag/uni-tag", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/invite/invite": { "navigationBarTitleText": "邀请", "usingComponents": { "uni-icons": "/components/uni-icons/uni-icons", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-icons": "/components/uni-icons/uni-icons" } }, "pages/mine/mine": { "navigationBarTitleText": "个人中心", "usingComponents": { "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-icons": "/components/uni-icons/uni-icons", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/authorise/authorise": { "navigationBarTitleText": "授权", "usingComponents": { "neil-modal": "/components/neil-modal/neil-modal" }, "usingAutoImportComponents": {} }, "pages/anchor/ranklist/ranklist": { "navigationBarTitleText": "提现排行榜", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/mine/help/help": { "usingComponents": {}, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "经纪人云系统", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/anchor/anchor": { "navigationBarTitleText": "我的主播", "usingComponents": { "segmented-control": "/pages/components/tabbar-own/tabbar-own", "neil-modal": "/components/neil-modal/neil-modal", "uni-tag": "/components/uni-tag/uni-tag", "uni-section": "/components/uni-section/uni-section", "uni-noticebar": "/components/uni-notice-bar/uni-notice-bar", "time-selector": "/components/wing-time-selector/wing-time-selector", "media-item": "/pages/anchor/news-item" }, "usingAutoImportComponents": { "uni-tag": "/components/uni-tag/uni-tag", "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar", "uni-icons": "/components/uni-icons/uni-icons", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/withdraw/withdraw": { "navigationBarTitleText": "提现", "usingComponents": { "unitag": "/components/uni-tag/uni-tag", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-tag": "/components/uni-tag/uni-tag", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/invite/invite": { "navigationBarTitleText": "邀请", "usingComponents": { "uni-icons": "/components/uni-icons/uni-icons", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-icons": "/components/uni-icons/uni-icons" } }, "pages/mine/mine": { "navigationBarTitleText": "个人中心", "usingComponents": { "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-icons": "/components/uni-icons/uni-icons", "neil-modal": "/components/neil-modal/neil-modal" } }, "pages/authorise/authorise": { "navigationBarTitleText": "授权", "usingComponents": { "neil-modal": "/components/neil-modal/neil-modal", "uni-swiperdot": "/components/uni-swiper-dot/uni-swiper-dot", "uni-section": "/components/uni-section/uni-section" }, "usingAutoImportComponents": { "uni-swiper-dot": "/components/uni-swiper-dot/uni-swiper-dot" } }, "pages/anchor/ranklist/ranklist": { "navigationBarTitleText": "提现排行榜", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/mine/help/help": { "usingComponents": {}, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "经纪人云系统", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 
