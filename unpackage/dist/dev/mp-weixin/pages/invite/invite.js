@@ -183,7 +183,6 @@ __webpack_require__.r(__webpack_exports__);
     var pid = JSON.parse(uni.getStorageSync('login')).user_id;
     if (res.from === 'button') {
       // 来自页面内分享按钮
-      console.log(res.target);
     }
     return {
       title: '天天来提现',
@@ -193,7 +192,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     open: function open(e) {
-      console.log(e);
       if (e.detail.authSetting['scope.writePhotosAlbum']) {
         this.show1 = false;
       }
@@ -223,7 +221,6 @@ __webpack_require__.r(__webpack_exports__);
       uni.getImageInfo({
         src: that.cover,
         success: function success(res) {
-          console.log(res);
           var path = res.path;
           ctx.drawImage(path, 0, 0, uni.upx2px(500), uni.upx2px(878));
           // ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
@@ -253,7 +250,6 @@ __webpack_require__.r(__webpack_exports__);
 
         },
         fail: function fail(error) {
-          console.log(error);
         } });
 
     },
@@ -280,7 +276,6 @@ __webpack_require__.r(__webpack_exports__);
                 that.savePhoto();
               },
               fail: function fail() {
-                console.log('用户拒绝授权，跳转到设置页面');
                 //用户点击拒绝授权，跳转到设置页，引导用户授权
                 that.show1 = true;
               } });
@@ -297,7 +292,6 @@ __webpack_require__.r(__webpack_exports__);
       wx.saveImageToPhotosAlbum({
         filePath: this.canvasUrl,
         success: function success(res) {
-          console.log(res);
           uni.showToast({
             title: '保存成功',
             icon: 'success',

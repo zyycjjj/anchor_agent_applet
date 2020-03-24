@@ -1,7 +1,7 @@
 <template>
 	<view class="sq-container">
 		<uni-swiper-dot class="dotcontainer" :info="info" :current="current" :mode="mode" :dots-styles="dotsStyles" field="content">
-			<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" @change="change">
+			<swiper class="swiper" :indicator-dots="true" :autoplay="false" :interval="interval" @change="change">
 				<swiper-item v-for="(item, index) in info" :key="index">
 					<view class="swiper-item">
 						<view class="bg1 bg"><image :src="item.url" mode="aspectFill"></image></view>
@@ -112,16 +112,11 @@ export default {
 	},
 	data() {
 		return {
-			background: ['color1', 'color2', 'color3'],
-			indicatorDots: true,
-			autoplay: false,
 			//  用户协议框的显示隐藏
 			show2: false,
 			// 获取到的用户信息
 			userInfo: {},
 			show1: true,
-			// 用户扫码传递的参数
-			pid: '',
 			// 轮播图数据
 			info: [
 				{
@@ -148,45 +143,46 @@ export default {
 			current: 0
 		};
 	},
-	onLoad(e) {
-		this.pid = Number(uni.getStorageSync('pid'));
-	},
 	methods: {
+		// 切换轮播图图片
 		change(e) {
 			this.current = e.detail.current;
 		},
+		// 二次授权后的回调函数
 		callback(e) {
 			if (e.detail.authSetting['scope.userInfo']) {
 				this.show1 = true;
 			}
 		},
+		// 调用用户协议框
 		modalTap: function(e) {
-			//   展示用户协议框
 			this.show2 = true;
 		},
-		cancelAuth() {
-			this.show2 = false;
-		},
-		// 获取用户信息 API 在小程序可直接使用，在 5+App 里面需要先登录才能调用
+		// 获取用户信息，如果获取失败跳转到登录页面
 		getUserInfo() {
 			uni.getUserInfo({
 				provider: 'weixin',
 				success: result => {
-					console.log('getUserInfo success', result);
 					this.userInfo = result.userInfo;
 				},
 				fail: error => {
-					console.log('getUserInfo fail', error);
 					let content = error.errMsg;
 					if (~content.indexOf('uni.login')) {
 						content = '请在登录页面完成登录操作';
+						uni.showToast({
+							title: '请重新登陆',
+							icon: 'none'
+						});
+						uni.reLaunch({
+							url: '/pages/authorise/authorise'
+						});
 					}
 				}
 			});
 		},
+		// 获取到用户信息后，调用登录接口，如果被拒绝授权，就跳转到设置页面
 		mpGetUserInfo(result) {
 			if (result.detail.errMsg !== 'getUserInfo:ok') {
-				//用户点击拒绝授权，跳转到设置页，引导用户授权
 				this.show1 = false;
 				return;
 			}
@@ -196,9 +192,7 @@ export default {
 				provider: 'weixin',
 				success: function(loginRes) {
 					uni.setStorageSync('code', loginRes.code);
-					uni.setStorageSync('pid', Number(uni.getStorageSync('pid')));
 					that.userInfo.code = loginRes.code;
-					uni.setStorageSync('userinfo', result.detail.userInfo);
 					// 优化过得代码
 					request({
 						url: '/api/user/MiniProgramLogin',
@@ -209,27 +203,27 @@ export default {
 							gender: that.userInfo.gender,
 							province: that.userInfo.province,
 							city: that.userInfo.city,
-							country: that.userInfo.country,
-							// 注意this指向
-							pid: that.pid
+							country: that.userInfo.country
 						},
 						method: 'POST'
 					}).then(res => {
-						console.log(res);
+						// 登录失败，提示错误信息
 						if (res.data.code != 1) {
 							uni.showModal({
 								title: res.data.errMsg,
 								showCancel: false
 							});
+							// 登陆成功
 						} else {
+							// 同样 展示登录信息
 							uni.showModal({
 								title: res.data.errMsg,
 								showCancel: false
 							});
-							// uni.setStorageSync('token', res.data.userinfo.token)
+							// 保存登陆成功获取的token
 							uni.setStorageSync('token', res.data.data.userinfo.token);
+							// 保存返回的被处理过的用户信息
 							uni.setStorageSync('login', res.data.data.userinfo);
-							console.log(res.data.data.userinfo);
 							// 登陆成功 跳转到tab首页
 							uni.switchTab({
 								url: '/pages/anchor/anchor'
@@ -312,7 +306,7 @@ text {
 		text-align: left;
 		height: 25px;
 		// line-height: 25px;
-		color: #DE794D;
+		color: #de794d;
 		font-size: 18px;
 	}
 	.mod_info {

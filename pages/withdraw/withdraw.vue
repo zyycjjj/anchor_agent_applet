@@ -53,11 +53,25 @@
 				</view>
 				<!-- 放一个分页组件 -->
 				<view class="pagenation">
-					<button type="primary" :disabled="hasprepage" @tap="getPrepage" size="mini" plain="true" style="float: left;margin-left: 50rpx;margin-top: 20rpx;font-size: 10px;">
+					<button
+						type="primary"
+						:disabled="hasprepage"
+						@tap="getPrepage"
+						size="mini"
+						plain="true"
+						style="float: left;margin-left: 50rpx;margin-top: 20rpx;font-size: 10px;"
+					>
 						上一页
 					</button>
-					<button type="primary" :disabled="hasNextpage" @tap="getNextpage" size="mini" plain="true" style="float: right;margin-right: 50rpx;margin-top: 16rpx;font-size:10px;">
-						下一页	
+					<button
+						type="primary"
+						:disabled="hasNextpage"
+						@tap="getNextpage"
+						size="mini"
+						plain="true"
+						style="float: right;margin-right: 50rpx;margin-top: 16rpx;font-size:10px;"
+					>
+						下一页
 					</button>
 				</view>
 			</view>
@@ -68,12 +82,12 @@
 			<view class="input-view">
 				<view class="moneyNum">
 					<view>提现金额</view>
-					<input type="number" placeholder="请输入提现金额" v-model="form.cashMoney" />
+					<input type="digit" placeholder="请输入提现金额" v-model="form.cashMoney" />
 				</view>
 			</view>
 		</neil-modal>
-
-		<neil-modal :autoClose="true" :showCancel="false" :show="enroll" @close="closeModal1()" title="请输入真实信息"  @confirm="enrollInfo()">
+		<!-- 登记真实信息的模态框 -->
+		<neil-modal :autoClose="true" :showCancel="false" :show="enroll" @close="closeModal1()" title="请输入真实信息" @confirm="enrollInfo()">
 			<view class="input-view">
 				<view class="moneyNum">
 					<view>真实姓名</view>
@@ -110,7 +124,7 @@ export default {
 			haslist: 1,
 			// token
 			token: '',
-			// 要体现的金额
+			// 要提现的金额
 			form: {
 				cashMoney: ''
 			},
@@ -128,15 +142,16 @@ export default {
 			enrollForm: {}
 		};
 	},
+	// 设置分享信息
 	onShareAppMessage(res) {
 		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
 		return {
 			title: '分享标题',
 			path: `/pages/anchor/anchor?pid=${pid}`,
-			imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
+			imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png'
 		};
 	},
-	onShow() {
+	mounted() {
 		this.getToken();
 		// 调用获取收益信息的函数
 		this.getWithdraw();
@@ -144,12 +159,6 @@ export default {
 		this.getWithdrawList();
 	},
 	methods: {
-		getdate(now) {
-		　　y = now.getFullYear(),
-		　　m = now.getMonth() + 1,
-		　　d = now.getDate();
-		　　return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) ;
-		},
 		// 登记信息模态框的显示
 		enrollCard() {
 			this.enroll = true;
@@ -168,15 +177,15 @@ export default {
 							title: '信息登记成功，您可以继续提现',
 							icon: 'success'
 						});
-						this.enrollForm = {}
-						this.enroll = false
+						this.enrollForm = {};
+						this.enroll = false;
 					} else {
 						uni.showToast({
 							title: res.data.msg,
 							icon: 'none'
 						});
-						this.enrollForm = {}
-						this.enroll = false
+						this.enrollForm = {};
+						this.enroll = false;
 					}
 				})
 				.catch(err => {
@@ -194,9 +203,10 @@ export default {
 					that.haslist = 0;
 				}
 				res.data.data.lists.map(item => {
-					item.createtime_text = item.createtime_text.slice(0,10)
-				})
-				that.widthdrawList = res.data.data.lists
+					item.createtime_text = item.createtime_text.slice(0, 10);
+				});
+				that.widthdrawList = res.data.data.lists;
+				// 判断是否有下一页上一页
 				if (res.data.data.has_next == 0) {
 					this.hasNextpage = true;
 				} else {
@@ -209,7 +219,7 @@ export default {
 				}
 			});
 		},
-		// 上一页列表
+		// 跳转上一页列表
 		getPrepage() {
 			this.page = this.page - 1;
 			this.getWithdrawList();
@@ -236,14 +246,15 @@ export default {
 				that.wimoney = res.data.data.able_money;
 			});
 		},
+		// /提现模态框的显示隐藏
 		getMoney() {
 			this.showMonmodal = true;
 		},
 		closeModal() {
 			this.showMonmodal = false;
 		},
-		closeModal1(){
-			this.enroll = false
+		closeModal1() {
+			this.enroll = false;
 		},
 		// 关于模态框的函数
 		withdraw() {
@@ -296,7 +307,7 @@ export default {
 	.withdrawData {
 		width: 100%;
 		height: 25%;
-		background: url(../../static/widthdraw/bg.png);
+		background: url('https://ww1.yunjiexi.club/2020/03/23/bszdU.png');
 		background-size: cover;
 		display: flex;
 		flex-direction: column;
@@ -440,7 +451,7 @@ export default {
 				height: 10rpx;
 				text-indent: 0;
 				line-height: 10rpx;
-			}	
+			}
 		}
 	}
 	.pagenation {

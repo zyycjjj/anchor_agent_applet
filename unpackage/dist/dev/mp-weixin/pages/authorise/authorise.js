@@ -97,7 +97,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-swiper-dot": () =>
-    __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ 155))
+    __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ 132))
 }
 var render = function() {
   var _vm = this
@@ -239,7 +239,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniSwiperdot = function uniSwiperdot() {return __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! ../../components/uni-swiper-dot/uni-swiper-dot.vue */ 155));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
+var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 99));};var uniSwiperdot = function uniSwiperdot() {return __webpack_require__.e(/*! import() | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then(__webpack_require__.bind(null, /*! ../../components/uni-swiper-dot/uni-swiper-dot.vue */ 132));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 
 
 {
@@ -250,16 +250,11 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
 
   data: function data() {
     return {
-      background: ['color1', 'color2', 'color3'],
-      indicatorDots: true,
-      autoplay: false,
       //  用户协议框的显示隐藏
       show2: false,
       // 获取到的用户信息
       userInfo: {},
       show1: true,
-      // 用户扫码传递的参数
-      pid: '',
       // 轮播图数据
       info: [
       {
@@ -286,45 +281,46 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
       current: 0 };
 
   },
-  onLoad: function onLoad(e) {
-    this.pid = Number(uni.getStorageSync('pid'));
-  },
   methods: {
+    // 切换轮播图图片
     change: function change(e) {
       this.current = e.detail.current;
     },
+    // 二次授权后的回调函数
     callback: function callback(e) {
       if (e.detail.authSetting['scope.userInfo']) {
         this.show1 = true;
       }
     },
+    // 调用用户协议框
     modalTap: function modalTap(e) {
-      //   展示用户协议框
       this.show2 = true;
     },
-    cancelAuth: function cancelAuth() {
-      this.show2 = false;
-    },
-    // 获取用户信息 API 在小程序可直接使用，在 5+App 里面需要先登录才能调用
+    // 获取用户信息，如果获取失败跳转到登录页面
     getUserInfo: function getUserInfo() {var _this = this;
       uni.getUserInfo({
         provider: 'weixin',
         success: function success(result) {
-          console.log('getUserInfo success', result);
           _this.userInfo = result.userInfo;
         },
         fail: function fail(error) {
-          console.log('getUserInfo fail', error);
           var content = error.errMsg;
           if (~content.indexOf('uni.login')) {
             content = '请在登录页面完成登录操作';
+            uni.showToast({
+              title: '请重新登陆',
+              icon: 'none' });
+
+            uni.reLaunch({
+              url: '/pages/authorise/authorise' });
+
           }
         } });
 
     },
+    // 获取到用户信息后，调用登录接口，如果被拒绝授权，就跳转到设置页面
     mpGetUserInfo: function mpGetUserInfo(result) {
       if (result.detail.errMsg !== 'getUserInfo:ok') {
-        //用户点击拒绝授权，跳转到设置页，引导用户授权
         this.show1 = false;
         return;
       }
@@ -334,9 +330,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
         provider: 'weixin',
         success: function success(loginRes) {
           uni.setStorageSync('code', loginRes.code);
-          uni.setStorageSync('pid', Number(uni.getStorageSync('pid')));
           that.userInfo.code = loginRes.code;
-          uni.setStorageSync('userinfo', result.detail.userInfo);
           // 优化过得代码
           (0, _request.request)({
             url: '/api/user/MiniProgramLogin',
@@ -347,27 +341,27 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var neilMod
               gender: that.userInfo.gender,
               province: that.userInfo.province,
               city: that.userInfo.city,
-              country: that.userInfo.country,
-              // 注意this指向
-              pid: that.pid },
+              country: that.userInfo.country },
 
             method: 'POST' }).
           then(function (res) {
-            console.log(res);
+            // 登录失败，提示错误信息
             if (res.data.code != 1) {
               uni.showModal({
                 title: res.data.errMsg,
                 showCancel: false });
 
+              // 登陆成功
             } else {
+              // 同样 展示登录信息
               uni.showModal({
                 title: res.data.errMsg,
                 showCancel: false });
 
-              // uni.setStorageSync('token', res.data.userinfo.token)
+              // 保存登陆成功获取的token
               uni.setStorageSync('token', res.data.data.userinfo.token);
+              // 保存返回的被处理过的用户信息
               uni.setStorageSync('login', res.data.data.userinfo);
-              console.log(res.data.data.userinfo);
               // 登陆成功 跳转到tab首页
               uni.switchTab({
                 url: '/pages/anchor/anchor' });

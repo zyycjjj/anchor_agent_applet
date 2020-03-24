@@ -138,6 +138,7 @@ export default {
 		return {
 			// tab选项卡信息
 			items: ['主播列表', '主播数据'],
+			// 判断展示主播列表还是数据
 			current: 0,
 			// 添加主播模态框是否显示
 			show4: false,
@@ -151,10 +152,9 @@ export default {
 			haszbdata: 0,
 			// 排行榜信息
 			ranklist: [],
-			title: '当前选择器',
+			// 时间选择器的当前时间
 			time: new Date().toLocaleDateString(),
 			// 查询收益的起止时间
-			beginDate: '',
 			endDate: '',
 			// 登录的token
 			token: '',
@@ -177,10 +177,18 @@ export default {
 			tabBars: []
 		};
 	},
-	onLoad(option) {
-		this.getToken();
-		this.setEnddate();
+	mounted() {
+		// 挂载成功后获取平台等信息
 		this.getPlat();
+		this.setEnddate();
+		this.getToken();
+		this.getZblist();
+		this.getRanklist();
+		this.setNoticebar();
+		this.getZbdata();
+	},
+	onLoad(option) {
+		// 用户通过分享的二维码扫码进入的用户关系绑定
 		if (option.scene) {
 			let qrId = decodeURIComponent(option.scene);
 			request({
@@ -195,6 +203,7 @@ export default {
 				}
 			});
 		}
+		// 通过分享小程序点击小程序卡片进入
 		if (uni.getStorageSync('ppid')) {
 			let pid = Number(uni.getStorageSync('ppid'));
 			request({
@@ -210,21 +219,17 @@ export default {
 			});
 		}
 	},
-	onShow() {
-		this.getZblist();
-		this.getRanklist();
-		this.setNoticebar();
-		this.getZbdata();
-	},
+	// 设置用户转发分享信息
 	onShareAppMessage(res) {
 		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
 		return {
-			title: '分享标题',
+			title: '天天赚钱',
 			path: `/pages/anchor/anchor?pid=${pid}`,
 			imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png'
 		};
 	},
 	methods: {
+		// 获取直播平台列表
 		getPlat() {
 			request({
 				url: '/api/platform/lists'
@@ -232,15 +237,18 @@ export default {
 				this.tabBars = res.data.data;
 			});
 		},
+		// 设置时间选择器截止时间
 		setEnddate() {
 			let endtimeYear = new Date().getFullYear();
 			let endtimeMonth = new Date().getMonth() + 1;
 			let endtimeDay = new Date().getDate();
 			this.endDate = `${endtimeYear}-${endtimeMonth}-${endtimeDay}`;
 		},
+		// 获取并保存token
 		getToken() {
 			this.token = uni.getStorageSync('token');
 		},
+		// 设置底部提现人员列表信息
 		setNoticebar() {
 			this.$refs.noticebar.text = this.rank_string;
 		},
@@ -263,7 +271,6 @@ export default {
 		},
 		// 获取主播收益数据
 		getZbdata() {
-			// console.log('获取主播收益信息');
 			const that = this;
 			request({
 				url: '/api/anchor/AnchorData',
@@ -277,7 +284,7 @@ export default {
 				that.zbdata = res.data.data;
 			});
 		},
-		// 获取排行榜数据
+		// 获取昨日排行榜数据
 		getRanklist() {
 			const that = this;
 			request({
@@ -314,11 +321,12 @@ export default {
 		bindBtn(type) {
 			this.show4 = false;
 		},
+		// 提交增加主播信息
 		addzbinfo() {
 			// 发请求提交主播信息
 			console.log('提交');
 			// 先做表单校验，再发请求提交
-			let regMob = /^[1][3,4,5,7,8,4][0-9]{9}$/;
+			let regMob = /^[1][3,4,5,,6,7,8,,9,4][0-9]{9}$/;
 			if (!this.anchorInfo.third_user_id) {
 				uni.showToast({
 					title: '抖音账号不能为空',
@@ -357,8 +365,6 @@ export default {
 					});
 					that.getZblist();
 				} else {
-					console.log('添加失败');
-					console.log(res.data.msg);
 					uni.showToast({
 						title: res.data.msg,
 						icon: 'none'
@@ -366,15 +372,14 @@ export default {
 				}
 			});
 			// 提交后重新获取主播列表数据
+			this.getZblist()
 		},
 		// 时间选择器相关函数
 		btnConfirm(e) {
+			// 确定选择时间后发请求请求对应时间的主播数据
 			this.time = e.key;
 			this.date = e.key;
 			this.getZbdata();
-		},
-		btnCancel() {
-			// console.log('取消时间：');
 		}
 	}
 };
@@ -464,7 +469,7 @@ timeSelector {
 	height: 5em;
 	position: relative;
 	text-indent: 80px;
-	padding-top: 25px;
+	padding-top: 10px;
 	.avatar {
 		width: 60px;
 		height: 60px;

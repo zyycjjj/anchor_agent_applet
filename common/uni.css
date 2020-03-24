@@ -1,8 +1,79 @@
 @font-face {
-	font-family: uniicons;
-	font-weight: normal;
-	font-style: normal;
-	src: url('~@/static/uni.ttf') format('truetype');
+  font-family: 'iconfont';  /* project id 1674603 */
+  src: url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.eot');
+  src: url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.eot?#iefix') format('embedded-opentype'),
+  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.woff2') format('woff2'),
+  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.woff') format('woff'),
+  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.ttf') format('truetype'),
+  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.svg#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fenye-shangyiye:before {
+  content: "\e60a";
+}
+
+.icon-fenye-shangyiye1:before {
+  content: "\e61f";
+}
+
+.icon-edu-biji:before {
+  content: "\e678";
+}
+
+.icon-iconfontyoujiantou-copy:before {
+  content: "\e67b";
+}
+
+.icon-bingtu:before {
+  content: "\e62a";
+}
+
+.icon-rili:before {
+  content: "\e611";
+}
+
+.icon-huomiao:before {
+  content: "\e603";
+}
+
+.icon-huomiao1:before {
+  content: "\e7eb";
+}
+
+.icon-addfollow:before {
+  content: "\e60e";
+}
+
+.icon-tianjia:before {
+  content: "\e637";
+}
+
+.icon-tianjiayonghu:before {
+  content: "\e60f";
+}
+
+.icon-bangzhuzhongxin:before {
+  content: "\e652";
+}
+
+.icon-xiaolaba:before {
+  content: "\e64c";
+}
+
+.icon-biji:before {
+  content: "\e649";
+}
+
+.icon-erji:before {
+  content: "\e848";
 }
 
 /*通用 */

@@ -212,16 +212,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { uniSection: uniSection },
@@ -246,11 +236,9 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
 
 
   },
-  onLoad: function onLoad() {
+  mounted: function mounted() {
     this.getToken();
     this.getuserInfo();
-  },
-  onShow: function onShow() {
     this.getMineinfo();
   },
   onShareAppMessage: function onShareAppMessage(res) {
@@ -266,9 +254,11 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var uniSect
 
   },
   methods: {
+    // 获取token
     getToken: function getToken() {
       this.token = uni.getStorageSync('token');
     },
+    // 获取用户相关信息
     getMineinfo: function getMineinfo() {
       var that = this;
       (0, _request.request)({

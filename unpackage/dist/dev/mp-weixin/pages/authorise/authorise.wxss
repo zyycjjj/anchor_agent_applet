@@ -69,7 +69,7 @@ text.data-v-03d45c9c {
 .modal .modal_tit.data-v-03d45c9c {
   text-align: left;
   height: 25px;
-  color: #DE794D;
+  color: #de794d;
   font-size: 18px;
 }
 .modal .mod_info.data-v-03d45c9c {

@@ -97,13 +97,14 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
   onLaunch: function onLaunch(e) {
-    console.log(e);
+    console.log('onlaunch');
     if (e.query.pid) {
       var pid = e.query.pid;
       uni.setStorageSync('ppid', pid);
     }
   },
   onShow: function onShow() {
+    console.log('onshow');
     wx.getSetting({
       success: function success(res) {
         if (!res.authSetting['scope.userInfo']) {

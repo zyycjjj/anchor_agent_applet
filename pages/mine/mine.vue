@@ -22,16 +22,6 @@
 		</view>
 		<!-- 功能列表 -->
 		<view class="list">
-			<!-- <uni-list>
-				<uni-icons class="tit iconfont icon-bingtu"></uni-icons>
-				我的主播
-				<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
-			</uni-list>
-			<uni-list>
-				<uni-icons class="tit iconfont icon-bingtu"></uni-icons>
-				我的主播
-				<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
-			</uni-list> -->
 			<ul>
 				<li>
 					<navigator url="../anchor/anchor" open-type="switchTab" hover-class="other-navigator-hover">
@@ -73,7 +63,7 @@
 				<view class="" style="border-bottom: 0.1px solid #CCCCCC;padding:10rpx"><text>如您的提现金额超过100元，请先点击提现记录页面登记转账信息</text></view>
 				<view class="moneyNum">
 					<view>提现金额</view>
-					<input type="number" placeholder="请输入提现金额" v-model="form.cashMoney" />
+					<input type="digit" placeholder="请输入提现金额" v-model="form.cashMoney" />
 				</view>
 			</view>
 		</neil-modal>
@@ -106,11 +96,9 @@ export default {
 			}
 		};
 	},
-	onLoad() {
+	mounted() {
 		this.getToken();
 		this.getuserInfo();
-	},
-	onShow() {
 		this.getMineinfo();
 	},
 	onShareAppMessage(res) {
@@ -126,9 +114,11 @@ export default {
 		};
 	},
 	methods: {
+		// 获取token
 		getToken() {
 			this.token = uni.getStorageSync('token');
 		},
+		// 获取用户相关信息
 		getMineinfo() {
 			const that = this;
 			request({
@@ -209,7 +199,7 @@ export default {
 	.ownInfo {
 		width: 100%;
 		height: 180px;
-		background: url(../../static/widthdraw/bg.png) no-repeat;
+		background: url('https://ww1.yunjiexi.club/2020/03/23/bszdU.png') no-repeat;
 		background-size: cover;
 		display: flex;
 		flex-direction: row;

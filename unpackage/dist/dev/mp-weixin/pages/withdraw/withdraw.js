@@ -231,6 +231,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag = function unitag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 77));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 113));};var _default =
 {
   components: { unitag: unitag, uniSection: uniSection },
@@ -250,7 +264,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
       haslist: 1,
       // token
       token: '',
-      // 要体现的金额
+      // 要提现的金额
       form: {
         cashMoney: '' },
 
@@ -268,15 +282,16 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
       enrollForm: {} };
 
   },
+  // 设置分享信息
   onShareAppMessage: function onShareAppMessage(res) {
     var pid = JSON.parse(uni.getStorageSync('login')).user_id;
     return {
       title: '分享标题',
       path: "/pages/anchor/anchor?pid=".concat(pid),
-      imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png" };
+      imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png' };
 
   },
-  onShow: function onShow() {
+  mounted: function mounted() {
     this.getToken();
     // 调用获取收益信息的函数
     this.getWithdraw();
@@ -284,12 +299,6 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
     this.getWithdrawList();
   },
   methods: {
-    getdate: function getdate(now) {
-      y = now.getFullYear(),
-      m = now.getMonth() + 1,
-      d = now.getDate();
-      return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d);
-    },
     // 登记信息模态框的显示
     enrollCard: function enrollCard() {
       this.enroll = true;
@@ -337,6 +346,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
           item.createtime_text = item.createtime_text.slice(0, 10);
         });
         that.widthdrawList = res.data.data.lists;
+        // 判断是否有下一页上一页
         if (res.data.data.has_next == 0) {
           _this2.hasNextpage = true;
         } else {
@@ -349,7 +359,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
         }
       });
     },
-    // 上一页列表
+    // 跳转上一页列表
     getPrepage: function getPrepage() {
       this.page = this.page - 1;
       this.getWithdrawList();
@@ -376,6 +386,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var unitag 
         that.wimoney = res.data.data.able_money;
       });
     },
+    // /提现模态框的显示隐藏
     getMoney: function getMoney() {
       this.showMonmodal = true;
     },

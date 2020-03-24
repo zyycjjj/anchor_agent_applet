@@ -300,6 +300,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
     return {
       // tab选项卡信息
       items: ['主播列表', '主播数据'],
+      // 判断展示主播列表还是数据
       current: 0,
       // 添加主播模态框是否显示
       show4: false,
@@ -313,10 +314,9 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
       haszbdata: 0,
       // 排行榜信息
       ranklist: [],
-      title: '当前选择器',
+      // 时间选择器的当前时间
       time: new Date().toLocaleDateString(),
       // 查询收益的起止时间
-      beginDate: '',
       endDate: '',
       // 登录的token
       token: '',
@@ -339,10 +339,18 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
       tabBars: [] };
 
   },
-  onLoad: function onLoad(option) {
-    this.getToken();
-    this.setEnddate();
+  mounted: function mounted() {
+    // 挂载成功后获取平台等信息
     this.getPlat();
+    this.setEnddate();
+    this.getToken();
+    this.getZblist();
+    this.getRanklist();
+    this.setNoticebar();
+    this.getZbdata();
+  },
+  onLoad: function onLoad(option) {
+    // 用户通过分享的二维码扫码进入的用户关系绑定
     if (option.scene) {
       var qrId = decodeURIComponent(option.scene);
       (0, _request.request)({
@@ -357,6 +365,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
         }
       });
     }
+    // 通过分享小程序点击小程序卡片进入
     if (uni.getStorageSync('ppid')) {
       var pid = Number(uni.getStorageSync('ppid'));
       (0, _request.request)({
@@ -372,21 +381,17 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
       });
     }
   },
-  onShow: function onShow() {
-    this.getZblist();
-    this.getRanklist();
-    this.setNoticebar();
-    this.getZbdata();
-  },
+  // 设置用户转发分享信息
   onShareAppMessage: function onShareAppMessage(res) {
     var pid = JSON.parse(uni.getStorageSync('login')).user_id;
     return {
-      title: '分享标题',
+      title: '天天赚钱',
       path: "/pages/anchor/anchor?pid=".concat(pid),
       imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png' };
 
   },
   methods: {
+    // 获取直播平台列表
     getPlat: function getPlat() {var _this = this;
       (0, _request.request)({
         url: '/api/platform/lists' }).
@@ -394,15 +399,18 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
         _this.tabBars = res.data.data;
       });
     },
+    // 设置时间选择器截止时间
     setEnddate: function setEnddate() {
       var endtimeYear = new Date().getFullYear();
       var endtimeMonth = new Date().getMonth() + 1;
       var endtimeDay = new Date().getDate();
       this.endDate = "".concat(endtimeYear, "-").concat(endtimeMonth, "-").concat(endtimeDay);
     },
+    // 获取并保存token
     getToken: function getToken() {
       this.token = uni.getStorageSync('token');
     },
+    // 设置底部提现人员列表信息
     setNoticebar: function setNoticebar() {
       this.$refs.noticebar.text = this.rank_string;
     },
@@ -425,7 +433,6 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
     },
     // 获取主播收益数据
     getZbdata: function getZbdata() {
-      // console.log('获取主播收益信息');
       var that = this;
       (0, _request.request)({
         url: '/api/anchor/AnchorData',
@@ -439,7 +446,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
         that.zbdata = res.data.data;
       });
     },
-    // 获取排行榜数据
+    // 获取昨日排行榜数据
     getRanklist: function getRanklist() {
       var that = this;
       (0, _request.request)({
@@ -476,11 +483,12 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
     bindBtn: function bindBtn(type) {
       this.show4 = false;
     },
+    // 提交增加主播信息
     addzbinfo: function addzbinfo() {
       // 发请求提交主播信息
       console.log('提交');
       // 先做表单校验，再发请求提交
-      var regMob = /^[1][3,4,5,7,8,4][0-9]{9}$/;
+      var regMob = /^[1][3,4,5,,6,7,8,,9,4][0-9]{9}$/;
       if (!this.anchorInfo.third_user_id) {
         uni.showToast({
           title: '抖音账号不能为空',
@@ -519,8 +527,6 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
 
           that.getZblist();
         } else {
-          console.log('添加失败');
-          console.log(res.data.msg);
           uni.showToast({
             title: res.data.msg,
             icon: 'none' });
@@ -528,15 +534,14 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 21);var segment
         }
       });
       // 提交后重新获取主播列表数据
+      this.getZblist();
     },
     // 时间选择器相关函数
     btnConfirm: function btnConfirm(e) {
+      // 确定选择时间后发请求请求对应时间的主播数据
       this.time = e.key;
       this.date = e.key;
       this.getZbdata();
-    },
-    btnCancel: function btnCancel() {
-      // console.log('取消时间：');
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

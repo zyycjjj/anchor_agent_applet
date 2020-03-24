@@ -45,7 +45,6 @@ export default {
 		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
 		if (res.from === 'button') {
 			// 来自页面内分享按钮
-			console.log(res.target);
 		}
 		return {
 			title: '天天来提现',
@@ -55,7 +54,6 @@ export default {
 	},
 	methods: {
 		open(e) {
-			console.log(e);
 			if (e.detail.authSetting['scope.writePhotosAlbum']) {
 				this.show1 = false;
 			}
@@ -83,9 +81,8 @@ export default {
 			// 绘制canvas
 			let ctx = uni.createCanvasContext('firstCanvas');
 			uni.getImageInfo({
-				src: that.cover,
+				src: that.cover	,
 				success(res) {
-					console.log(res);
 					const path = res.path;
 					ctx.drawImage(path, 0, 0, uni.upx2px(500), uni.upx2px(878));
 					// ctx.fillRect(uni.upx2px(165), uni.upx2px(650), uni.upx2px(200), uni.upx2px(200));
@@ -115,7 +112,6 @@ export default {
 					});
 				},
 				fail(error) {
-					console.log(error);
 				}
 			});
 		},
@@ -142,7 +138,6 @@ export default {
 								that.savePhoto();
 							},
 							fail() {
-								console.log('用户拒绝授权，跳转到设置页面');
 								//用户点击拒绝授权，跳转到设置页，引导用户授权
 								that.show1 = true;
 							}
@@ -159,7 +154,6 @@ export default {
 			wx.saveImageToPhotosAlbum({
 				filePath: this.canvasUrl,
 				success(res) {
-					console.log(res);
 					uni.showToast({
 						title: '保存成功',
 						icon: 'success',
