@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import segmentedControl from '../components/tabbar-own/tabbar-own.vue';
+import segmentedControl from '../../components/tabbar-own/tabbar-own.vue';
 import neilModal from '../../components/neil-modal/neil-modal.vue';
 import uniTag from '../../components/uni-tag/uni-tag.vue';
 import uniSection from '../../components/uni-section/uni-section.vue';

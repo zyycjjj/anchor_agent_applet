@@ -61,6 +61,9 @@
                     }
                 }
             }
+        },
+        "uniStatistics" : {
+            "enable" : false
         }
     },
     /* 快应用特有相关 */
@@ -75,16 +78,28 @@
             "minified" : true
         },
         "usingComponents" : true,
-        "permission" : {}
+        "permission" : {},
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-alipay" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-baidu" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-toutiao" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-qq" : {
         "setting" : {
@@ -92,6 +107,17 @@
             "postcss" : true,
             "minified" : false,
             "urlCheck" : false
+        },
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "h5" : {
+        "uniStatistics" : {
+            "enable" : false
         }
     }
 }

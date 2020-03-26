@@ -1,14 +1,12 @@
 <script>
 export default {
 	onLaunch: function(e) {
-		console.log('onlaunch')
 		if (e.query.pid) {
 			let pid = e.query.pid;
 			uni.setStorageSync('ppid', pid);
 		}
 	},
 	onShow: function() {
-		console.log('onshow')
 		wx.getSetting({
 			success(res) {
 				if (!res.authSetting['scope.userInfo']) {

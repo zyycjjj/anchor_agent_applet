@@ -48,6 +48,9 @@
     ]
   },
   "permission": {},
+  "uniStatistics": {
+    "enable": false
+  },
   "usingComponents": {
     "uni-pop": "/components/uni-popup/uni-popup"
   },
