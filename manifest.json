@@ -1,5 +1,5 @@
 {
-    "name" : "jjr-wx",
+    "name" : "云经纪人",
     "appid" : "__UNI__EABC7DE",
     "description" : "",
     "versionName" : "1.0.0",
@@ -70,9 +70,9 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx411269bd437e0aa9",
+        "appid" : "wxbca14c3f6ee1f930",
         "setting" : {
-            "urlCheck" : true,
+            "urlCheck" : false,
             "es6" : true,
             "postcss" : true,
             "minified" : true

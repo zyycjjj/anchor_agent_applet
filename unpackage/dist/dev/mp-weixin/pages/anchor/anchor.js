@@ -280,6 +280,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 17);var segmentedControl = function segmentedControl() {return __webpack_require__.e(/*! import() | components/tabbar-own/tabbar-own */ "components/tabbar-own/tabbar-own").then(__webpack_require__.bind(null, /*! ../../components/tabbar-own/tabbar-own.vue */ 102));};var neilModal = function neilModal() {return __webpack_require__.e(/*! import() | components/neil-modal/neil-modal */ "components/neil-modal/neil-modal").then(__webpack_require__.bind(null, /*! ../../components/neil-modal/neil-modal.vue */ 95));};var uniTag = function uniTag() {return __webpack_require__.e(/*! import() | components/uni-tag/uni-tag */ "components/uni-tag/uni-tag").then(__webpack_require__.bind(null, /*! ../../components/uni-tag/uni-tag.vue */ 73));};var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 109));};var uniNoticebar = function uniNoticebar() {return __webpack_require__.e(/*! import() | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then(__webpack_require__.bind(null, /*! ../../components/uni-notice-bar/uni-notice-bar.vue */ 80));};var timeSelector = function timeSelector() {return __webpack_require__.e(/*! import() | components/wing-time-selector/wing-time-selector */ "components/wing-time-selector/wing-time-selector").then(__webpack_require__.bind(null, /*! ../../components/wing-time-selector/wing-time-selector.vue */ 116));};var mediaItem = function mediaItem() {return __webpack_require__.e(/*! import() | pages/anchor/news-item */ "pages/anchor/news-item").then(__webpack_require__.bind(null, /*! ./news-item.nvue */ 121));};var _default =
 
 {
@@ -417,7 +419,8 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 17);var segment
         url: '/api/anchor/lists',
         method: 'GET' }).
       then(function (res) {
-        if (res.data.data.list) {
+        if (res.data.data.list.length != 0) {
+          console.log(res.data.data.list.length);
           that.zblist = res.data.data.list;
           that.rank_string = res.data.data.rank_string;
           that.haszblist = 1;

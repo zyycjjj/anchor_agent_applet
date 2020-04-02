@@ -4,15 +4,15 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.9.2",
-	"appid": "wx411269bd437e0aa9",
-	"projectname": "jjr-wx",
+	"appid": "wxbca14c3f6ee1f930",
+	"projectname": "云经纪人",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

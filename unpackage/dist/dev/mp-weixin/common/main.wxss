@@ -24,65 +24,68 @@
 
 /* uni.css - 通用组件、模板样式库，可以当作一套ui库应用 */
 @font-face {
-  font-family: 'iconfont';  /* project id 1674603 */
-  src: url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.eot');
-  src: url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.eot?#iefix') format('embedded-opentype'),
-  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.woff2') format('woff2'),
-  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.woff') format('woff'),
-  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.ttf') format('truetype'),
-  url('https://at.alicdn.com/t/font_1674603_8ihdfdosg8c.svg#iconfont') format('svg');
+	font-family: 'iconfont';  /* project id 1674603 */
+	src: url('https://at.alicdn.com/t/font_1674603_dlzmkcjpdac.eot');
+	src: url('https://at.alicdn.com/t/font_1674603_dlzmkcjpdac.eot?#iefix') format('embedded-opentype'),
+	url('https://at.alicdn.com/t/font_1674603_dlzmkcjpdac.woff2') format('woff2'),
+	url('https://at.alicdn.com/t/font_1674603_dlzmkcjpdac.woff') format('woff'),
+	url('https://at.alicdn.com/t/font_1674603_dlzmkcjpdac.ttf') format('truetype'),
+	url('https://at.alicdn.com/t/font_1674603_dlzmkcjpdac.svg#iconfont') format('svg');
 }
 .iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: "iconfont" !important;
+	font-size: 16px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.icon-guanbi:before {
+	content: "\E778";
 }
 .icon-fenye-shangyiye:before {
-  content: "\E60A";
+	content: "\E60A";
 }
 .icon-fenye-shangyiye1:before {
-  content: "\E61F";
+	content: "\E61F";
 }
 .icon-edu-biji:before {
-  content: "\E678";
+	content: "\E678";
 }
 .icon-iconfontyoujiantou-copy:before {
-  content: "\E67B";
+	content: "\E67B";
 }
 .icon-bingtu:before {
-  content: "\E62A";
+	content: "\E62A";
 }
 .icon-rili:before {
-  content: "\E611";
+	content: "\E611";
 }
 .icon-huomiao:before {
-  content: "\E603";
+	content: "\E603";
 }
 .icon-huomiao1:before {
-  content: "\E7EB";
+	content: "\E7EB";
 }
 .icon-addfollow:before {
-  content: "\E60E";
+	content: "\E60E";
 }
 .icon-tianjia:before {
-  content: "\E637";
+	content: "\E637";
 }
 .icon-tianjiayonghu:before {
-  content: "\E60F";
+	content: "\E60F";
 }
 .icon-bangzhuzhongxin:before {
-  content: "\E652";
+	content: "\E652";
 }
 .icon-xiaolaba:before {
-  content: "\E64C";
+	content: "\E64C";
 }
 .icon-biji:before {
-  content: "\E649";
+	content: "\E649";
 }
 .icon-erji:before {
-  content: "\E848";
+	content: "\E848";
 }
 /*通用 */
 page{

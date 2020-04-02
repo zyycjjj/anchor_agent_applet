@@ -18,13 +18,15 @@
 						<i class="iconfont icon-tianjia"></i>
 						<text style="color:grey">添加新主播</text>
 					</view>
-					<view class="showanchlist" v-else v-for="item in zblist" :key="item.anchor_id">
-						<view class="zblistitem">
-							<image :src="item.headimage" mode="" class="avatar"></image>
-							<text class="zbname">{{ item.real_name }}</text>
-							<text class="dyid">抖音id:{{ item.third_user_id }}</text>
-							<uni-tag text="未开播" type="warning" :inverted="true" :circle="true" size="small" v-if="item.live_status == 0" />
-							<uni-tag text="已开播" type="warning" :inverted="true" :circle="true" size="small" v-else />
+					<view v-else>
+						<view class="showanchlist" v-for="item in zblist" :key="item.anchor_id">
+							<view class="zblistitem">
+								<image :src="item.headimage" mode="" class="avatar"></image>
+								<text class="zbname">{{ item.real_name }}</text>
+								<text class="dyid">抖音id:{{ item.third_user_id }}</text>
+								<uni-tag text="未开播" type="warning" :inverted="true" :circle="true" size="small" v-if="item.live_status == 0" />
+								<uni-tag text="已开播" type="warning" :inverted="true" :circle="true" size="small" v-else />
+							</view>
 						</view>
 					</view>
 				</view>
@@ -259,7 +261,8 @@ export default {
 				url: '/api/anchor/lists',
 				method: 'GET'
 			}).then(res => {
-				if (res.data.data.list) {
+				if (res.data.data.list.length != 0) {
+					console.log(res.data.data.list.length);
 					that.zblist = res.data.data.list;
 					that.rank_string = res.data.data.rank_string;
 					that.haszblist = 1;
@@ -372,7 +375,7 @@ export default {
 				}
 			});
 			// 提交后重新获取主播列表数据
-			this.getZblist()
+			this.getZblist();
 		},
 		// 时间选择器相关函数
 		btnConfirm(e) {

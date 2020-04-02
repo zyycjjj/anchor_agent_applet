@@ -339,7 +339,7 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 17);var unitag 
         url: '/api/user/withdrawList',
         data: { page: that.page } }).
       then(function (res) {
-        if (res.data.data.lists) {
+        if (res.data.data.lists.length != 0) {
           that.haslist = 0;
         }
         res.data.data.lists.map(function (item) {

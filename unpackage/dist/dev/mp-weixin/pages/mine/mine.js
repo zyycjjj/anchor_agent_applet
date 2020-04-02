@@ -212,6 +212,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _request = __webpack_require__(/*! ../../utils/request.js */ 17);var uniSection = function uniSection() {return __webpack_require__.e(/*! import() | components/uni-section/uni-section */ "components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! ../../components/uni-section/uni-section.vue */ 109));};var _default =
 {
   components: { uniSection: uniSection },
@@ -228,6 +245,8 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 17);var uniSect
       ablemoney: '',
       // 提现模态框的显示隐藏
       showMonmodal: false,
+      // 合同签署框的显示隐藏
+      contractShow: false,
       // 用户信息
       userinfo: {},
       token: '',
@@ -250,10 +269,18 @@ var _request = __webpack_require__(/*! ../../utils/request.js */ 17);var uniSect
     return {
       title: '天天提现',
       path: "/pages/anchor/anchor?pid=".concat(pid),
-      imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png" };
+      imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png' };
 
   },
   methods: {
+    // 展示合同签署框
+    showContract: function showContract() {
+      this.contractShow = true;
+    },
+    // 关闭
+    closecontract: function closecontract() {
+      this.contractShow = false;
+    },
     // 获取token
     getToken: function getToken() {
       this.token = uni.getStorageSync('token');

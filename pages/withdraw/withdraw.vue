@@ -199,7 +199,7 @@ export default {
 				url: '/api/user/withdrawList',
 				data: { page: that.page }
 			}).then(res => {
-				if (res.data.data.lists) {
+				if (res.data.data.lists.length != 0) {
 					that.haslist = 0;
 				}
 				res.data.data.lists.map(item => {

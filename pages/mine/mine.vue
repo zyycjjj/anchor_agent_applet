@@ -38,6 +38,13 @@
 					</navigator>
 				</li>
 				<li>
+					<navigator url="javascript:void(0)" open-type="switchTab" hover-class="other-navigator-hover" @click="showContract">
+						<uni-icons class="tit iconfont icon-edu-biji"></uni-icons>
+						<text>合同签署</text>
+						<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
+					</navigator>
+				</li>
+				<li>
 					<navigator open-type="contact">
 						<uni-icons class="tit iconfont icon-erji"></uni-icons>
 						<text>我的客服</text>
@@ -47,7 +54,7 @@
 					</navigator>
 				</li>
 				<li>
-					<navigator url="" hover-class="navigator-hover">
+					<navigator url="javascript:void(0)" hover-class="navigator-hover">
 						<uni-icons class="tit iconfont icon-bangzhuzhongxin"></uni-icons>
 						<text>帮助中心</text>
 						<uni-icons class="rig iconfont icon-iconfontyoujiantou-copy"></uni-icons>
@@ -58,7 +65,7 @@
 
 		<!-- 提现模态框 -->
 		<!-- 提现模态框 -->
-		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入提现金额" @cancel="bindBtn('cancel')" @confirm="withdraw()">
+		<neil-modal :autoClose="true" :showCancel="false" :show="showMonmodal" @close="closeModal()" title="请输入提现金额" @confirm="withdraw()">
 			<view class="input-view">
 				<view class="" style="border-bottom: 0.1px solid #CCCCCC;padding:10rpx"><text>如您的提现金额超过100元，请先点击提现记录页面登记转账信息</text></view>
 				<view class="moneyNum">
@@ -67,6 +74,16 @@
 				</view>
 			</view>
 		</neil-modal>
+
+		<!-- 合同签署模态框 -->
+		<view class="mask" v-show="contractShow">
+			<view class="contractmodal">
+				<view class="tit">合同签署</view>
+				<view class="info">为了保障您的合法权益，建议您前述合同之后再进行合作，合同签署请联系客服</view>
+				<view class="btn"><button open-type="contact" type="default" bindcontact="handleContact">联系客服</button></view>
+				<i class='iconfont icon-guanbi' @click='closecontract'></i>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -88,6 +105,8 @@ export default {
 			ablemoney: '',
 			// 提现模态框的显示隐藏
 			showMonmodal: false,
+			// 合同签署框的显示隐藏
+			contractShow: false,
 			// 用户信息
 			userinfo: {},
 			token: '',
@@ -110,10 +129,18 @@ export default {
 		return {
 			title: '天天提现',
 			path: `/pages/anchor/anchor?pid=${pid}`,
-			imgUrl: "https://ww1.yunjiexi.club/2020/03/18/GwFBk.png"
+			imgUrl: 'https://ww1.yunjiexi.club/2020/03/18/GwFBk.png'
 		};
 	},
 	methods: {
+		// 展示合同签署框
+		showContract() {
+			this.contractShow = true;
+		},
+		// 关闭
+		closecontract() {
+			this.contractShow = false;
+		},
 		// 获取token
 		getToken() {
 			this.token = uni.getStorageSync('token');
@@ -196,6 +223,8 @@ export default {
 
 <style lang="less">
 .mine {
+	width: 100%;
+	height: 100%;
 	.ownInfo {
 		width: 100%;
 		height: 180px;
@@ -344,5 +373,58 @@ export default {
 }
 .neil-modal__footer-right {
 	height: 60px;
+}
+// 合同签署模态框
+.mask {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,.5);
+	position: absolute;
+	top: 0;
+	
+	.contractmodal {
+		width: 70%;
+		height: 400rpx;
+		border-radius: 20rpx;
+		position: absolute;
+		top: 300rpx;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #ffffff;
+		padding: 0 20px;
+		.tit{
+			height: 40px;
+			line-height: 40px;
+			text-indent: 10px;
+			font-size: 22px;
+			color: blue;
+		}
+		.info{
+			font-size: 16px;
+			font-weight: bold;
+			width: 100%;
+			height: 80px;
+			padding: 10px;
+		}
+		.btn{
+			width: 100%;
+			height: 60px;
+			button{
+				font-size: 13px;
+				width: 80%;
+				background-color: #FF0000;
+				color: #FFFFFF;
+				border-radius:1000rpx;
+			}
+		}
+		i{
+			font-size: 22px;
+			color: #FFFFFF;
+			position: absolute;
+			bottom: -40px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
 }
 </style>
