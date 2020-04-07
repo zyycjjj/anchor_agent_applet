@@ -53,6 +53,5 @@
   },
   "usingComponents": {
     "uni-pop": "/components/uni-popup/uni-popup"
-  },
-  "sitemapLocation": "sitemap40.json"
+  }
 }

@@ -8,7 +8,6 @@
     "segmented-control": "/components/tabbar-own/tabbar-own",
     "uni-section": "/components/uni-section/uni-section",
     "uni-noticebar": "/components/uni-notice-bar/uni-notice-bar",
-    "time-selector": "/components/wing-time-selector/wing-time-selector",
-    "media-item": "/pages/anchor/news-item"
+    "time-selector": "/components/wing-time-selector/wing-time-selector"
   }
 }

@@ -170,9 +170,12 @@ export default {
 				url: '/api/user/withdrawInfo',
 				data: this.enrollForm,
 				method: 'POST'
-			})
-				.then(res => {
-					if (res.data.code == 1) {
+			}).then(res => {
+					if (res.data.code == 401) {
+						uni.reLaunch({
+							url: '/pages/authorise/authorise'
+						});
+					}else if (res.data.code == 1) {
 						uni.showToast({
 							title: '信息登记成功，您可以继续提现',
 							icon: 'success'
@@ -189,7 +192,6 @@ export default {
 					}
 				})
 				.catch(err => {
-					console.log(err);
 				});
 		},
 		// 获取经纪人提现记录
@@ -199,9 +201,16 @@ export default {
 				url: '/api/user/withdrawList',
 				data: { page: that.page }
 			}).then(res => {
+				if (res.data.code == 401) {
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+					return
+				}
 				if (res.data.data.lists.length != 0) {
 					that.haslist = 0;
 				}
+				// 修改返回的时间格式
 				res.data.data.lists.map(item => {
 					item.createtime_text = item.createtime_text.slice(0, 10);
 				});
@@ -240,6 +249,11 @@ export default {
 				url: '/api/user/cashShow',
 				method: 'POST'
 			}).then(res => {
+				if (res.data.code == 401) {
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+				}
 				that.all = res.data.data.total_money;
 				that.lasmo = res.data.data.before_yester_money;
 				that.yester = res.data.data.yester_money;
@@ -267,8 +281,13 @@ export default {
 						money: that.form.cashMoney
 					}
 				}).then(res => {
+					if (res.data.code == 401) {
+						uni.reLaunch({
+							url: '/pages/authorise/authorise'
+						});
+						return
+					}
 					if (res.code !== 1) {
-						console.log(res.data.msg);
 						uni.showToast({
 							title: res.data.msg,
 							icon: 'none'
@@ -277,7 +296,6 @@ export default {
 						this.getWithdraw();
 						this.getWithdrawList();
 					} else {
-						console.log(res.data.msg);
 						that.form.cashMoney = '';
 						uni.showToast({
 							title: res.data.msg,

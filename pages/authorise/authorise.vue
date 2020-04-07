@@ -94,7 +94,7 @@
 			</view>
 			<view class="btn">
 				<button type="primary" size="mini" open-type="getUserInfo" @getuserinfo="mpGetUserInfo" v-if="show1">同意并继续</button>
-				<button type="primary" size="mini" open-type="openSetting" @opensetting="callback" v-else>重新授权</button>
+				<button type="primary" size="mini" open-type="openSetting" @opensetting="reauthorize" v-else>重新授权</button>
 			</view>
 		</view>
 	</view>
@@ -116,6 +116,7 @@ export default {
 			show2: false,
 			// 获取到的用户信息
 			userInfo: {},
+			// show1为false时，代表用户拒绝授权，此时显示重新授权按钮
 			show1: true,
 			// 轮播图数据
 			info: [
@@ -149,13 +150,14 @@ export default {
 			this.current = e.detail.current;
 		},
 		// 二次授权后的回调函数
-		callback(e) {
+		reauthorize(e) {
 			if (e.detail.authSetting['scope.userInfo']) {
+				// 若二次授权成功，切换对话框的显示按钮
 				this.show1 = true;
 			}
 		},
 		// 调用用户协议框
-		modalTap: function(e) {
+		modalTap(){
 			this.show2 = true;
 		},
 		// 获取用户信息，如果获取失败跳转到登录页面
@@ -169,10 +171,6 @@ export default {
 					let content = error.errMsg;
 					if (~content.indexOf('uni.login')) {
 						content = '请在登录页面完成登录操作';
-						uni.showToast({
-							title: '请重新登陆',
-							icon: 'none'
-						});
 						uni.reLaunch({
 							url: '/pages/authorise/authorise'
 						});
@@ -191,27 +189,23 @@ export default {
 			uni.login({
 				provider: 'weixin',
 				success: function(loginRes) {
-					uni.setStorageSync('code', loginRes.code);
+					// uni.setStorageSync('code', loginRes.code);
 					that.userInfo.code = loginRes.code;
+					that.userInfo.headimage = that.userInfo.avatarUrl
 					// 优化过得代码
 					request({
 						url: '/api/user/MiniProgramLogin',
-						data: {
-							code: that.userInfo.code,
-							nickname: that.userInfo.nickName,
-							headimage: that.userInfo.avatarUrl,
-							gender: that.userInfo.gender,
-							province: that.userInfo.province,
-							city: that.userInfo.city,
-							country: that.userInfo.country
-						},
+						data: that.userInfo,
 						method: 'POST'
 					}).then(res => {
-						// 登录失败，提示错误信息
+						// 登录失败，提示错误信息,重新打开授权页面
 						if (res.data.code != 1) {
 							uni.showModal({
 								title: res.data.errMsg,
 								showCancel: false
+							});
+							uni.reLaunch({
+								url: '/pages/authorise/authorise'
 							});
 							// 登陆成功
 						} else {

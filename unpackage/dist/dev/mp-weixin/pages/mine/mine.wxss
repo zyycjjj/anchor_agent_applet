@@ -215,13 +215,13 @@
 .mask .contractmodal .btn button {
   font-size: 13px;
   width: 80%;
-  background-color: #FF0000;
-  color: #FFFFFF;
+  background-color: #ff0000;
+  color: #ffffff;
   border-radius: 1000rpx;
 }
 .mask .contractmodal ._i {
   font-size: 22px;
-  color: #FFFFFF;
+  color: #ffffff;
   position: absolute;
   bottom: -40px;
   left: 50%;

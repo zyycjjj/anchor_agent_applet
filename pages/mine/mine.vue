@@ -81,7 +81,7 @@
 				<view class="tit">合同签署</view>
 				<view class="info">为了保障您的合法权益，建议您前述合同之后再进行合作，合同签署请联系客服</view>
 				<view class="btn"><button open-type="contact" type="default" bindcontact="handleContact">联系客服</button></view>
-				<i class='iconfont icon-guanbi' @click='closecontract'></i>
+				<i class="iconfont icon-guanbi" @click="closecontract"></i>
 			</view>
 		</view>
 	</view>
@@ -124,7 +124,6 @@ export default {
 		let pid = JSON.parse(uni.getStorageSync('login')).user_id;
 		if (res.from === 'button') {
 			// 来自页面内分享按钮
-			console.log(res.target);
 		}
 		return {
 			title: '天天提现',
@@ -151,6 +150,11 @@ export default {
 			request({
 				url: '/api/user/userCenter'
 			}).then(res => {
+				if (res.code == 401) {
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+				}
 				that.ablemoney = res.data.data.able_money.toFixed(2);
 				that.num = res.data.data.anchor_num.toString();
 				that.all = Number(res.data.data.money).toFixed(2);
@@ -182,9 +186,6 @@ export default {
 		// 关于模态框的函数
 		withdraw() {
 			const that = this;
-			console.log(that.form.cashMoney);
-			console.log(that.ablemoney);
-			console.log(that.form.cashMoney <= that.ablemoney);
 			if (that.form.cashMoney <= that.ablemoney) {
 				request({
 					url: '/api/user/applyWithdraw',
@@ -197,6 +198,11 @@ export default {
 						uni.showToast({
 							title: res.data.msg,
 							icon: 'success'
+						});
+						// 如果提示请登录后操作，跳转到授权页
+					} else if (res.code == 401) {
+						uni.reLaunch({
+							url: '/pages/authorise/authorise'
 						});
 					} else {
 						uni.showToast({
@@ -378,10 +384,10 @@ export default {
 .mask {
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,.5);
+	background-color: rgba(0, 0, 0, 0.5);
 	position: absolute;
 	top: 0;
-	
+
 	.contractmodal {
 		width: 70%;
 		height: 400rpx;
@@ -392,34 +398,34 @@ export default {
 		transform: translateX(-50%);
 		background-color: #ffffff;
 		padding: 0 20px;
-		.tit{
+		.tit {
 			height: 40px;
 			line-height: 40px;
 			text-indent: 10px;
 			font-size: 22px;
 			color: blue;
 		}
-		.info{
+		.info {
 			font-size: 16px;
 			font-weight: bold;
 			width: 100%;
 			height: 80px;
 			padding: 10px;
 		}
-		.btn{
+		.btn {
 			width: 100%;
 			height: 60px;
-			button{
+			button {
 				font-size: 13px;
 				width: 80%;
-				background-color: #FF0000;
-				color: #FFFFFF;
-				border-radius:1000rpx;
+				background-color: #ff0000;
+				color: #ffffff;
+				border-radius: 1000rpx;
 			}
 		}
-		i{
+		i {
 			font-size: 22px;
-			color: #FFFFFF;
+			color: #ffffff;
 			position: absolute;
 			bottom: -40px;
 			left: 50%;

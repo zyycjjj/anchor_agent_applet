@@ -91,7 +91,7 @@
 			</view>
 
 			<!-- 添加主播信息模态框 -->
-			<neil-modal :show="show4" :autoClose="true" :showCancel="false" @close="closeModal" title="新主播信息" @cancel="bindBtn('cancel')" @confirm="addzbinfo()">
+			<neil-modal :show="show4" :autoClose="true" :showCancel="false" @close="closeModal" title="新主播信息" @confirm="addzbinfo()">
 				<form>
 					<view class="input-view">
 						<view class="mtk-input input-name">
@@ -125,7 +125,6 @@ import uniSection from '../../components/uni-section/uni-section.vue';
 import uniNoticebar from '../../components/uni-notice-bar/uni-notice-bar.vue';
 import timeSelector from '../../components/wing-time-selector/wing-time-selector.vue';
 import { request } from '../../utils/request.js';
-import mediaItem from './news-item.nvue';
 export default {
 	components: {
 		segmentedControl,
@@ -133,8 +132,7 @@ export default {
 		uniTag,
 		uniSection,
 		uniNoticebar,
-		timeSelector,
-		mediaItem
+		timeSelector
 	},
 	data() {
 		return {
@@ -143,7 +141,7 @@ export default {
 			// 判断展示主播列表还是数据
 			current: 0,
 			// 添加主播模态框是否显示
-			show4: false,
+			show: false,
 			// 主播列表信息
 			zblist: [],
 			// 是否有主播列表
@@ -155,8 +153,8 @@ export default {
 			// 排行榜信息
 			ranklist: [],
 			// 时间选择器的当前时间
-			time: new Date().toLocaleDateString(),
-			// 查询收益的起止时间
+			time: '',
+			// 查询收益的截止时间
 			endDate: '',
 			// 登录的token
 			token: '',
@@ -186,7 +184,6 @@ export default {
 		this.getToken();
 		this.getZblist();
 		this.getRanklist();
-		this.setNoticebar();
 		this.getZbdata();
 	},
 	onLoad(option) {
@@ -212,6 +209,12 @@ export default {
 				url: '/api/user/creatRelation',
 				data: { pid: pid }
 			}).then(res => {
+				if (res.data.code == 401) {
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+					return
+				}
 				if (res.data.code == 1) {
 					uni.showToast({
 						title: '关系绑定成功',
@@ -244,15 +247,12 @@ export default {
 			let endtimeYear = new Date().getFullYear();
 			let endtimeMonth = new Date().getMonth() + 1;
 			let endtimeDay = new Date().getDate();
-			this.endDate = `${endtimeYear}-${endtimeMonth}-${endtimeDay}`;
+			this.endDate = `${endtimeYear}-0${endtimeMonth}-0${endtimeDay}`;
+			this.time = `${endtimeYear}-0${endtimeMonth}-0${endtimeDay}`;
 		},
 		// 获取并保存token
 		getToken() {
 			this.token = uni.getStorageSync('token');
-		},
-		// 设置底部提现人员列表信息
-		setNoticebar() {
-			this.$refs.noticebar.text = this.rank_string;
 		},
 		// 获取主播列表信息
 		getZblist() {
@@ -261,8 +261,13 @@ export default {
 				url: '/api/anchor/lists',
 				method: 'GET'
 			}).then(res => {
+				if (res.data.code == 401) {
+					// 未登录状态，跳转到授权页
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+				}
 				if (res.data.data.list.length != 0) {
-					console.log(res.data.data.list.length);
 					that.zblist = res.data.data.list;
 					that.rank_string = res.data.data.rank_string;
 					that.haszblist = 1;
@@ -279,6 +284,12 @@ export default {
 				url: '/api/anchor/AnchorData',
 				data: { date: this.date, page: this.page }
 			}).then(res => {
+				if (res.data.code == 401) {
+					// 未登录状态，跳转到授权页
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+				}
 				if (res.data.data.length != 0) {
 					that.haszbdata = 1;
 				} else {
@@ -293,13 +304,14 @@ export default {
 			request({
 				url: '/api/Rank/yesterList'
 			}).then(res => {
+				// 未登录状态，跳转到授权页
+				if (res.code == 401) {
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+					return
+				}
 				that.ranklist = res.data.data;
-			});
-		},
-		// 点击跳转到排行榜列表页
-		navagateto() {
-			uni.navigateTo({
-				url: '`./ranklist/ranklist?`+encodeURIComponent(JSON.stringify(this.ranklist))'
 			});
 		},
 		/**
@@ -316,20 +328,16 @@ export default {
 		},
 		// 关于模态框的函数
 		bindClick() {
-			this.show4 = true;
+			this.show = true;
 		},
 		closeModal() {
-			this.show4 = false;
-		},
-		bindBtn(type) {
-			this.show4 = false;
+			this.show = false;
 		},
 		// 提交增加主播信息
 		addzbinfo() {
 			// 发请求提交主播信息
-			console.log('提交');
 			// 先做表单校验，再发请求提交
-			let regMob = /^[1][3,4,5,,6,7,8,,9,4][0-9]{9}$/;
+			let regMob = /(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
 			if (!this.anchorInfo.third_user_id) {
 				uni.showToast({
 					title: '抖音账号不能为空',
@@ -346,7 +354,6 @@ export default {
 				this.show4 = true;
 				return;
 			}
-			console.log(regMob.test(this.anchorInfo.mobile));
 			if (!regMob.test(this.anchorInfo.mobile)) {
 				uni.showToast({
 					title: '请输入正确格式手机号',
@@ -361,6 +368,12 @@ export default {
 				method: 'POST',
 				data: this.anchorInfo
 			}).then(res => {
+				if (res.code == 401) {
+					uni.reLaunch({
+						url: '/pages/authorise/authorise'
+					});
+					return
+				}
 				if (res.data.code == 1) {
 					that.anchorInfo = {};
 					uni.showToast({
@@ -380,6 +393,7 @@ export default {
 		// 时间选择器相关函数
 		btnConfirm(e) {
 			// 确定选择时间后发请求请求对应时间的主播数据
+			console.log(e)
 			this.time = e.key;
 			this.date = e.key;
 			this.getZbdata();

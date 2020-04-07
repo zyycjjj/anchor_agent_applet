@@ -51,8 +51,6 @@ var component = Object(_E_HBuilderX_plugins_uniapp_cli_node_modules_dcloudio_vue
   renderjs
 )
 
-/* hot reload */
-if (false) { var api; }
 component.options.__file = "G:/uni-app/jjr-wx/pages/mine/help/help.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
